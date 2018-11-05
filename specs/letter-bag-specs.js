@@ -4,13 +4,16 @@ const expect = require('chai').expect;
 describe('LetterBag', () => {
   describe('getTile', () => {
     it('should return a tile from the letter bag', () => {
-      // arrange
-        let letterBag = new LetterBag;
-      // act
-        let tile = letterBag.getTile();
-      // assert
-        expect(tile.letter).to.deep.equal('Blank');
+      let letterBag = new LetterBag;
+      let tile = letterBag.getTile();
+      expect(tile.letter).to.deep.equal('Blank');
     });
+
+    it('should remove a tile from the letter bag', () => {
+      let letterBag = new LetterBag;
+      letterBag.getTile();
+      expect(letterBag.tiles.length).to.deep.equal(99);
+    })
   });
 
   // describe('shuffle', () => {
