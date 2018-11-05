@@ -1,0 +1,23 @@
+{
+  "name": "scrabble",
+  "version": "1.0.0",
+  "description": "A multiplayer JavaScript Scrabble game.",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/T-Betts/Scrabble.git"
+  },
+  "author": "Tom Betts",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/T-Betts/Scrabble/issues"
+  },
+  "homepage": "https://github.com/T-Betts/Scrabble#readme",
+  "dependencies": {
+    "chai": "^4.2.0",
+    "mocha": "^5.2.0"
+  }
+}
