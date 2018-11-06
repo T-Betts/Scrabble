@@ -19,8 +19,8 @@ function LetterBag() {
   });
 }
 
-LetterBag.prototype.getTile = function () {
-  return this.tiles.pop();
+LetterBag.prototype.remainingTilesCount = function() {
+  return this.tiles.length;
 }
 
 // Durstenfeld Shuffle
