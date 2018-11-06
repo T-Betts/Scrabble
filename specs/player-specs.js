@@ -10,4 +10,12 @@ describe('Player', () => {
       expect(player1.rack.length).to.deep.equal(4);
     })
   });
+
+  describe('updateScore', () => {
+    it('should change a player score by a given amount', () => {
+      let player1 = new Player(1, "Tom");
+      player1.updateScore(10);
+      expect(player1.score).to.deep.equal(10);
+    })
+  })
 });
