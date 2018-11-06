@@ -13,7 +13,7 @@ describe('LetterBag', () => {
       let letterBag = new LetterBag;
       letterBag.getTile();
       expect(letterBag.tiles.length).to.deep.equal(99);
-    })
+    });
   });
 
   // describe('shuffle', () => {
