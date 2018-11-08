@@ -1,4 +1,4 @@
-function LetterBag() {
+function TileBag() {
   const tileTypes = [
     {letter: 'A', val: 1, count: 9}, {letter: 'B', val: 3, count: 2}, {letter: 'C', val: 3, count: 2},
     {letter: 'D', val: 2, count: 4}, {letter: 'E', val: 1, count: 12}, {letter: 'F', val: 4, count: 2},
@@ -19,12 +19,12 @@ function LetterBag() {
   });
 }
 
-LetterBag.prototype.remainingTilesCount = function() {
+TileBag.prototype.remainingTilesCount = function() {
   return this.tiles.length;
 }
 
 // Durstenfeld Shuffle
-LetterBag.prototype.shuffle = function () {
+TileBag.prototype.shuffle = function () {
   for (let i = this.tiles.length - 1; i > 0; i--) {
     let j = Math.floor(Math.random() * (i + 1));
     let temp = this.tiles[i];
@@ -33,4 +33,4 @@ LetterBag.prototype.shuffle = function () {
   }
 }
 
-module.exports = LetterBag;
+module.exports = TileBag;

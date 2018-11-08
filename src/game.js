@@ -1,8 +1,8 @@
 const Player = require('./player.js');
-const LetterBag = require('./letter-bag.js');
+const TileBag = require('./tile-bag.js');
 const Board = require('./board.js');
 
-function Game(playerNamesArray, board = new Board, player = Player, letterBag = new LetterBag) {
+function Game(playerNamesArray, player = Player, board = new Board, letterBag = new TileBag) {
   this.playerNames = playerNamesArray;
   this.playerCount = playerNamesArray.length;
   this.board = board;

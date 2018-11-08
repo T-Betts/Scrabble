@@ -1,11 +1,11 @@
-const LetterBag = require('../src/letter-bag.js');
+const TileBag = require('../src/tile-bag.js');
 const expect = require('chai').expect;
 
-describe('LetterBag', () => {
+describe('TileBag', () => {
   describe('remainingTilesCount', () => {
     it('should return the number of tiles left in the letter bag', () => {
-      let letterBag = new LetterBag;
-      expect(letterBag.remainingTilesCount()).to.deep.equal(100);
+      let tileBag = new TileBag;
+      expect(tileBag.remainingTilesCount()).to.deep.equal(100);
     });   
   });
 });
