@@ -15,4 +15,8 @@ Player.prototype.updateScore = function(amount) {
   this.score += amount;
 }
 
+Player.prototype.getId = function() {
+  return this.id;
+}
+
 module.exports = Player;
