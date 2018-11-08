@@ -6,12 +6,11 @@ function Game(playerNamesArray, board = new Board, player = Player, letterBag = 
   this.playerNames = playerNamesArray;
   this.playerCount = playerNamesArray.length;
   this.board = board;
-  this.player = player;
   this.letterBag =letterBag;
   this.currentTurn = 1;
   this.players = [];
   this.playerNames.forEach((playerName, index) => {
-    this.players.push(new Player(playerName, index + 1));
+    this.players.push(new player(playerName, index + 1));
   });
 }
 
