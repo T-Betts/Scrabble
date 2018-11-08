@@ -1,4 +1,4 @@
-function TileBag() {
+function TileBag(random = Math.random) {
   const tileTypes = [
     {letter: 'A', val: 1, count: 9}, {letter: 'B', val: 3, count: 2}, {letter: 'C', val: 3, count: 2},
     {letter: 'D', val: 2, count: 4}, {letter: 'E', val: 1, count: 12}, {letter: 'F', val: 4, count: 2},
@@ -11,6 +11,7 @@ function TileBag() {
     {letter: 'Y', val: 4, count: 2}, {letter: 'Z', val: 10, count: 1}, {letter: 'Blank', val: 0, count: 2}
   ];
 
+  this.random = random;
   this.tiles = [];
   tileTypes.forEach(tileType => {
     for (let i = 0; i < tileType.count; i++) {
@@ -26,7 +27,7 @@ TileBag.prototype.remainingTilesCount = function() {
 // Durstenfeld Shuffle
 TileBag.prototype.shuffle = function () {
   for (let i = this.tiles.length - 1; i > 0; i--) {
-    let j = Math.floor(Math.random() * (i + 1));
+    let j = Math.floor(this.random() * (i + 1));
     let temp = this.tiles[i];
     this.tiles[i] = this.tiles[j];
     this.tiles[j] = temp;
