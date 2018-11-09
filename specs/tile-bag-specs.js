@@ -18,7 +18,7 @@ describe('TileBag', () => {
       callback.returns(0.4);        
       let tileBag = new TileBag(callback);
       tileBag.shuffle();
-      expect(tileBag.tiles[99].letter).to.deep.equal('B')
+      expect(tileBag.tiles[99].letter).to.deep.equal('B');
     });
   });
 });

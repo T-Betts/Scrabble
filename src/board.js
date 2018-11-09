@@ -26,6 +26,10 @@ function Board() {
   ];
 }
 
+Board.prototype.getSquares = function () {
+  return this.squares;
+}
+
 Board.prototype.insertBonusSquares = function() {
   this.tripWordIndexes.forEach(twIndex => {
     this.squares[twIndex[0]][twIndex[1]] = '3';

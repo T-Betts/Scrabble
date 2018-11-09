@@ -25,4 +25,11 @@ describe('Board', () => {
       expect(board.squares[14][3]).to.deep.equal('d');
     });
   });
+
+  describe('getSquares', () => {
+    it('should return all the squares on the board', () => {
+      let board = new Board;
+      expect(board.getSquares().length).to.deep.equal(15);
+    });
+  });
 });
