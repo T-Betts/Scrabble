@@ -20,6 +20,10 @@ function TileBag(random = Math.random) {
   });
 }
 
+TileBag.prototype.showRemainingTiles = function() {
+  return this.tiles;
+}
+
 TileBag.prototype.remainingTilesCount = function() {
   return this.tiles.length;
 }

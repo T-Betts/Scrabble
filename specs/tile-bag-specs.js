@@ -21,4 +21,14 @@ describe('TileBag', () => {
       expect(tileBag.tiles[99].letter).to.deep.equal('B');
     });
   });
+
+  describe('showRemainingTiles', () => {
+    it('should return all of the tiles left in the tile bag', () => {
+      let tileBag = new TileBag;
+      for (let i = 0; i < 99; i++) {
+        tileBag.tiles.pop();
+      }
+      expect(tileBag.showRemainingTiles()).to.deep.equal([{letter: "A", val: 1}]);
+    });
+  });
 });
