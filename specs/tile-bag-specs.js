@@ -13,8 +13,7 @@ describe('TileBag', () => {
   describe('shuffle', () => {
     it('should shuffle the tiles into a random order', () => {
       var callback = sinon.stub();    
-      callback.onCall(0).returns(0.1);     
-      callback.onCall(1).returns(0.5);     
+      callback.onCall(0).returns(0.1);
       callback.returns(0.4);        
       let tileBag = new TileBag(callback);
       tileBag.shuffle();
@@ -28,7 +27,7 @@ describe('TileBag', () => {
       for (let i = 0; i < 99; i++) {
         tileBag.tiles.pop();
       }
-      expect(tileBag.showRemainingTiles()).to.deep.equal([{letter: "A", val: 1}]);
+      expect(tileBag.showRemainingTiles()).to.deep.equal([{letter: 'A', val: 1}]);
     });
   });
 });

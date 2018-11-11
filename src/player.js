@@ -19,4 +19,8 @@ Player.prototype.getId = function() {
   return this.id;
 }
 
+Player.prototype.getRack = function() {
+  return this.rack;
+}
+
 module.exports = Player;
