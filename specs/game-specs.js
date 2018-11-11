@@ -42,11 +42,20 @@ describe('Game', () => {
   });
 
   describe('placeTile', () => {
-    it('should place a tile in a designated square on the board', () => {
-      let p1Rack = game.players[0].getRack();
+    let p1Rack;
+
+    beforeEach(function() {
+      p1Rack = game.players[0].getRack();
       game.board.squares = game.board.getSquares();
-      game.placeTile(0, 0, p1Rack[1]);
+      game.placeTile(0, 0, p1Rack, 1);
+    });
+
+    it('should place a tile in a designated square on the board', () => {  
       expect(game.board.squares[0][0]).to.deep.equal("T");
+    });
+
+    it('should remove the placed tile from the current players rack', () => {
+      expect(p1Rack).to.deep.equal([{letter: 'A', val: 1}]);
     });
   });
 });

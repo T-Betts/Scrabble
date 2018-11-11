@@ -24,8 +24,9 @@ Game.prototype.checkWordExists = function(word) {
   return this.dictionary.includes(word);
 }
 
-Game.prototype.placeTile = function(row, column, tile) {
-  this.board.squares[row][column] = tile.letter;
+Game.prototype.placeTile = function(row, column, tilesArray, tilesArrayIndex) {
+  this.board.squares[row][column] = tilesArray[tilesArrayIndex].letter;
+  this.players[this.currentTurn - 1].getRack().splice(tilesArrayIndex, 1);
 }
 
 module.exports = Game;
