@@ -4,14 +4,14 @@ const Board = require('./board.js');
 const scrabbleDictionary = require('../word-list.js')
 
 function Game(playerNamesArray, player = (name, id) => new Player(name, id), board = new Board, tileBag = new TileBag, dictionary = scrabbleDictionary) {
-  this.playerNames = playerNamesArray;
   this.playerCount = playerNamesArray.length;
   this.board = board;
+  this.board.insertBonusSquares();
   this.tileBag = tileBag;
-  this.dictionary = dictionary
+  this.dictionary = dictionary;
   this.currentTurn = 1;
   this.players = [];
-  this.playerNames.forEach((playerName, index) => {
+  playerNamesArray.forEach((playerName, index) => {
     this.players.push(player(playerName, index + 1));
   });
 }
@@ -21,7 +21,11 @@ Game.prototype.switchTurn = function() {
 }
 
 Game.prototype.checkWordExists = function(word) {
-  return this.dictionary.includes(word)
+  return this.dictionary.includes(word);
+}
+
+Game.prototype.placeTile = function(row, column, tile) {
+  this.board.squares[row][column] = tile.letter;
 }
 
 module.exports = Game;
