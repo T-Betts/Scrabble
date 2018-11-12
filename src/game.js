@@ -31,17 +31,25 @@ Game.prototype.placeTile = function(row, column, tilesArray, tilesArrayIndex) {
 }
 
 Game.prototype.removeTile = function(row, column) {
-  this.board.squares[row][column] = '-'
+  let initialLetter = this.board.squares[row][column]
+  let bonusSquaresObject = this.board.getBonusSquares();
+  Object.keys(bonusSquaresObject).forEach((key) => {
+    if (JSON.stringify(bonusSquaresObject[key]).includes(JSON.stringify([row, column]))) {
+      if (bonusSquaresObject[key] === bonusSquaresObject.doubleWordIndices) {
+        this.board.squares[row][column] = '2';
+      } else if (bonusSquaresObject[key] === bonusSquaresObject.doubleLetterIndices) {
+        this.board.squares[row][column] = 'd';
+      } else if (bonusSquaresObject[key] === bonusSquaresObject.tripWordIndices) {
+        this.board.squares[row][column] = '3';
+      } else if (bonusSquaresObject[key] === bonusSquaresObject.tripLetterIndices) {
+        this.board.squares[row][column] = 't';
+      } 
+    } 
+  });
+
+  if (this.board.squares[row][column] === initialLetter) {
+    this.board.squares[row][column] = '-';
+  }
 }
 
 module.exports = Game;
-
-let game = new Game(['Tom', 'Bill']);
-game.tileBag.shuffle();
-game.players[game.currentTurn.playerID - 1].drawTiles(1, game.tileBag);
-console.log(game.board.squares)
-game.placeTile(1,1,game.players[game.currentTurn.playerID - 1].rack, 0);
-console.log(game.board.squares);
-game.removeTile(1,1);
-console.log(game.board.squares)
-

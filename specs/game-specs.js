@@ -86,5 +86,29 @@ describe('Game', () => {
       game.removeTile(1, 1);
       expect(game.board.squares[1][1]).to.deep.equal('-');
     });
+    
+    it('removes a tile from a designated double word square', () => {
+      game.placeTile(0, 0, p1Rack, 1);
+      game.removeTile(0, 0);
+      expect(game.board.squares[0][0]).to.deep.equal('2');
+    });
+
+    it('removes a tile from a designated double letter square', () => {
+      game.placeTile(0, 1, p1Rack, 1);
+      game.removeTile(0, 1);
+      expect(game.board.squares[0][1]).to.deep.equal('d');
+    });
+
+    it('removes a tile from a designated triple word square', () => {
+      game.placeTile(0, 2, p1Rack, 1);
+      game.removeTile(0, 2);
+      expect(game.board.squares[0][2]).to.deep.equal('3');
+    });
+
+    it('removes a tile from a designated triple letter square', () => {
+      game.placeTile(1, 0, p1Rack, 1);
+      game.removeTile(1, 0);
+      expect(game.board.squares[1][0]).to.deep.equal('t');
+    });
   });
 });
