@@ -30,4 +30,18 @@ Game.prototype.placeTile = function(row, column, tilesArray, tilesArrayIndex) {
   this.currentTurn.tileCoordinates.push([row, column]);
 }
 
+Game.prototype.removeTile = function(row, column) {
+  this.board.squares[row][column] = '-'
+}
+
 module.exports = Game;
+
+let game = new Game(['Tom', 'Bill']);
+game.tileBag.shuffle();
+game.players[game.currentTurn.playerID - 1].drawTiles(1, game.tileBag);
+console.log(game.board.squares)
+game.placeTile(1,1,game.players[game.currentTurn.playerID - 1].rack, 0);
+console.log(game.board.squares);
+game.removeTile(1,1);
+console.log(game.board.squares)
+

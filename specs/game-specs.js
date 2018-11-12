@@ -9,7 +9,15 @@ describe('Game', () => {
   let game;
 
     beforeEach(function() {
-      let boardStub = sinon.createStubInstance(Board, {getSquares: [['-','-','-'],['-','-','-'],['-','-','-']]});
+      let boardStub = sinon.createStubInstance(Board, {
+        getSquares: [['-','-','-'],['-','-','-'],['-','-','-']],
+        getBonusSquares: {
+          doubleWordIndices: [[0, 0]],
+          doubleLetterIndices: [[0, 1]],
+          tripWordIndices: [[0, 2]],
+          tripLetterIndices: [[1, 0]]
+        }
+      });
       let tileBagStub = sinon.createStubInstance(TileBag, {showRemainingTiles: [{letter: 'A', val: 1}, {letter: 'T', val: 1}]});
       let createPlayerStub = (name, id) => {
         return sinon.createStubInstance(Player, {getId: id, getRack: [
@@ -64,6 +72,19 @@ describe('Game', () => {
 
     it('should log the coordinates of the placed tiles for the current turn', () => {
       expect(game.currentTurn.tileCoordinates).to.deep.equal([[0,0]]);
+    });
+  });
+
+  describe('removeTile', () => {
+    beforeEach(function() {
+      p1Rack = game.players[0].getRack();
+      game.board.squares = game.board.getSquares();
+    });
+
+    it('removes a tile from a designated normal square', () => {
+      game.placeTile(1, 1, p1Rack, 1);
+      game.removeTile(1, 1);
+      expect(game.board.squares[1][1]).to.deep.equal('-');
     });
   });
 });
