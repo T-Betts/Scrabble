@@ -12,7 +12,7 @@ describe('TileBag', () => {
 
   describe('shuffle', () => {
     it('should shuffle the tiles into a random order', () => {
-      var callback = sinon.stub();    
+      let callback = sinon.stub();    
       callback.onCall(0).returns(0.1);
       callback.returns(0.4);        
       let tileBag = new TileBag(callback);

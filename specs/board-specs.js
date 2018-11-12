@@ -32,4 +32,11 @@ describe('Board', () => {
       expect(board.getSquares().length).to.deep.equal(15);
     });
   });
+
+  describe('getBonusSquares', () => {
+    it('should return the bonusSquares object', () => {
+      let board = new Board;
+      expect(board.getBonusSquares().tripWordIndices.length).to.deep.equal(8);
+    });
+  });
 });
