@@ -12,7 +12,10 @@ describe('Game', () => {
       let boardStub = sinon.createStubInstance(Board, {getSquares: [['-','-','-'],['-','-','-'],['-','-','-']]});
       let tileBagStub = sinon.createStubInstance(TileBag, {showRemainingTiles: [{letter: 'A', val: 1}, {letter: 'T', val: 1}]});
       let createPlayerStub = (name, id) => {
-        return sinon.createStubInstance(Player, {getId: id, getRack: [{letter: 'A', val: 1}, {letter: 'T', val: 1}]});
+        return sinon.createStubInstance(Player, {getId: id, getRack: [
+          {letter: 'A', val: 1}, {letter: 'T', val: 1}, {letter: 'E', val: 1},
+          {letter: 'C', val: 3}, {letter: 'R', val: 1}, {letter: 'S', val: 1}
+        ]});
       }
       game = new Game(['A', 'B', 'C'], createPlayerStub, boardStub, tileBagStub, ['exists']);
     });
@@ -20,14 +23,14 @@ describe('Game', () => {
   describe('switchTurn', () => {
     it('should switch the turn to the next player', () => {
       game.switchTurn();
-      expect(game.currentTurn).to.deep.equal(game.players[1].getId());
+      expect(game.currentTurn.playerID).to.deep.equal(game.players[1].getId());
     });
 
     it('should switch turn back to player 1 after a round of turns is complete', () => {
       game.switchTurn();
       game.switchTurn();
       game.switchTurn();
-      expect(game.currentTurn).to.deep.equal(game.players[0].getId());
+      expect(game.currentTurn.playerID).to.deep.equal(game.players[0].getId());
     });
   });
 
@@ -55,7 +58,12 @@ describe('Game', () => {
     });
 
     it('should remove the placed tile from the current players rack', () => {
-      expect(p1Rack).to.deep.equal([{letter: 'A', val: 1}]);
+      expect(p1Rack).to.deep.equal([{letter: 'A', val: 1}, {letter: 'E', val: 1},
+      {letter: 'C', val: 3}, {letter: 'R', val: 1}, {letter: 'S', val: 1}]);
+    });
+
+    it('should log the coordinates of the placed tiles for the current turn', () => {
+      expect(game.currentTurn.tileCoordinates).to.deep.equal([[0,0]]);
     });
   });
 });

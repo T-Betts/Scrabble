@@ -9,7 +9,7 @@ function Game(playerNamesArray, player = (name, id) => new Player(name, id), boa
   this.board.insertBonusSquares();
   this.tileBag = tileBag;
   this.dictionary = dictionary;
-  this.currentTurn = 1;
+  this.currentTurn = {playerID: 1, tileCoordinates: []};
   this.players = [];
   playerNamesArray.forEach((playerName, index) => {
     this.players.push(player(playerName, index + 1));
@@ -17,7 +17,7 @@ function Game(playerNamesArray, player = (name, id) => new Player(name, id), boa
 }
 
 Game.prototype.switchTurn = function() {
-  this.currentTurn = this.currentTurn % this.playerCount + 1;
+  this.currentTurn.playerID = this.currentTurn.playerID % this.playerCount + 1;
 }
 
 Game.prototype.checkWordExists = function(word) {
@@ -26,7 +26,8 @@ Game.prototype.checkWordExists = function(word) {
 
 Game.prototype.placeTile = function(row, column, tilesArray, tilesArrayIndex) {
   this.board.squares[row][column] = tilesArray[tilesArrayIndex].letter;
-  this.players[this.currentTurn - 1].getRack().splice(tilesArrayIndex, 1);
+  this.players[this.currentTurn.playerID - 1].getRack().splice(tilesArrayIndex, 1);
+  this.currentTurn.tileCoordinates.push([row, column]);
 }
 
 module.exports = Game;
