@@ -36,7 +36,7 @@ describe('Board', () => {
   describe('getBonusSquares', () => {
     it('should return the bonusSquares object', () => {
       let board = new Board;
-      expect(board.getBonusSquares().tripWordIndices.length).to.deep.equal(8);
+      expect(board.getBonusSquares().tripWord.indices.length).to.deep.equal(8);
     });
   });
 });

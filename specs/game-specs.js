@@ -12,10 +12,10 @@ describe('Game', () => {
       let boardStub = sinon.createStubInstance(Board, {
         getSquares: [['-','-','-'],['-','-','-'],['-','-','-']],
         getBonusSquares: {
-          doubleWordIndices: [[0, 0]],
-          doubleLetterIndices: [[0, 1]],
-          tripWordIndices: [[0, 2]],
-          tripLetterIndices: [[1, 0]]
+          doubleWord: {indices: [[0, 0]], symbol: '2'},
+          doubleLetter: {indices: [[0, 1]], symbol: 'd'},
+          tripWord: {indices: [[0, 2]], symbol: '3'},
+          tripLetter: {indices: [[1, 0]], symbol: 't'}
         }
       });
       let tileBagStub = sinon.createStubInstance(TileBag, {showRemainingTiles: [{letter: 'A', val: 1}, {letter: 'T', val: 1}]});
@@ -86,7 +86,7 @@ describe('Game', () => {
       game.removeTile(1, 1);
       expect(game.board.squares[1][1]).to.deep.equal('-');
     });
-    
+
     it('removes a tile from a designated double word square', () => {
       game.placeTile(0, 0, p1Rack, 1);
       game.removeTile(0, 0);
