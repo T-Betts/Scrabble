@@ -30,4 +30,11 @@ describe('TileBag', () => {
       expect(tileBag.showRemainingTiles()).to.deep.equal([{letter: 'A', val: 1}]);
     });
   });
+
+  describe('getTileTypes', () => {
+    it('should return all of the tile types', () => {
+      let tileBag = new TileBag;
+      expect(tileBag.getTileTypes().length).to.deep.equal(27);
+    });
+  });
 });
