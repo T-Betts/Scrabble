@@ -124,5 +124,11 @@ describe('Game', () => {
       expect(p1Rack).to.deep.equal([{letter: 'A', val: 1}, {letter: 'T', val: 1}, {letter: 'E', val: 1},
       {letter: 'C', val: 3}, {letter: 'R', val: 1}, {letter: 'S', val: 1}]);
     });
+
+    it('should remove chosen coordinates from current turn\'s tileCoordinates array', () => {
+      game.placeTile(1, 0, p1Rack, 1);
+      game.removeTile(1, 0, 1);
+      expect(game.currentTurn.tileCoordinates.length).to.deep.equal(0);
+    });
   });
 });

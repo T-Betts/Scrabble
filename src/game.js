@@ -48,7 +48,8 @@ Game.prototype.removeTile = function(row, column, rackIndex) {
       removedTile = {letter: initialLetter, val: this.tileBag.getTileTypes()[i].val};
     }
   }
-  this.players[this.currentTurn.playerID - 1].getRack().splice(rackIndex, 0, removedTile);
+  this.players[this.currentTurn.playerID - 1].getRack().splice(rackIndex, 0, removedTile);  
+  this.currentTurn.tileCoordinates.splice(this.currentTurn.tileCoordinates.map(el => String(el)).indexOf(JSON.stringify([row, column])), 1);
 }
 
 module.exports = Game;
