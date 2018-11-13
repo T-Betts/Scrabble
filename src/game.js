@@ -25,6 +25,10 @@ Game.prototype.checkWordExists = function(word) {
 }
 
 Game.prototype.placeTile = function(row, column, rack, rackIndex) {
+  let capitalLettersRegEx = new RegExp('^[A-Z\d&Ñ]+$');
+  if (this.board.squares[row][column].match(capitalLettersRegEx)) {
+    throw 'Square already occupied.';
+  }
   this.board.squares[row][column] = rack[rackIndex].letter;
   this.players[this.currentTurn.playerID - 1].getRack().splice(rackIndex, 1);
   this.currentTurn.tileCoordinates.push([row, column]);

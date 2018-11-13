@@ -76,6 +76,10 @@ describe('Game', () => {
     it('should log the coordinates of the placed tiles for the current turn', () => {
       expect(game.currentTurn.tileCoordinates).to.deep.equal([[0,0]]);
     });
+
+    it('should throw error if trying to place a tile in an already occupied square', () => {
+      expect(() => {game.placeTile(0, 0, p1Rack, 1)}).to.throw('Square already occupied.');
+    });
   });
 
   describe('removeTile', () => {
