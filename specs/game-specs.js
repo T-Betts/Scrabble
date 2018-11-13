@@ -107,8 +107,13 @@ describe('Game', () => {
 
     it('removes a tile from a designated triple letter square', () => {
       game.placeTile(1, 0, p1Rack, 1);
+      console.log(game.currentTurn)
       game.removeTile(1, 0);
       expect(game.board.squares[1][0]).to.deep.equal('t');
+    });
+
+    it('should throw error if designated square does not contain tile letter placed during current turn', () => {
+      expect(() => {game.removeTile(0,0)}).to.throw('No tile placed in this square during current turn.');
     });
   });
 });

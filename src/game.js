@@ -31,6 +31,9 @@ Game.prototype.placeTile = function(row, column, tilesArray, tilesArrayIndex) {
 }
 
 Game.prototype.removeTile = function(row, column) {
+  if (!JSON.stringify(this.currentTurn.tileCoordinates).includes(JSON.stringify([row, column]))) {
+    throw 'No tile placed in this square during current turn.';
+  }
   let initialLetter = this.board.squares[row][column];
   Object.keys(this.board.getBonusSquares()).forEach((key) => {
     if (JSON.stringify(this.board.getBonusSquares()[key].indices).includes(JSON.stringify([row, column]))) {
