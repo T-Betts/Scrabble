@@ -24,13 +24,13 @@ Game.prototype.checkWordExists = function(word) {
   return this.dictionary.includes(word);
 }
 
-Game.prototype.placeTile = function(row, column, tilesArray, tilesArrayIndex) {
-  this.board.squares[row][column] = tilesArray[tilesArrayIndex].letter;
-  this.players[this.currentTurn.playerID - 1].getRack().splice(tilesArrayIndex, 1);
+Game.prototype.placeTile = function(row, column, rack, rackIndex) {
+  this.board.squares[row][column] = rack[rackIndex].letter;
+  this.players[this.currentTurn.playerID - 1].getRack().splice(rackIndex, 1);
   this.currentTurn.tileCoordinates.push([row, column]);
 }
 
-Game.prototype.removeTile = function(row, column) {
+Game.prototype.removeTile = function(row, column, rackIndex) {
   if (!JSON.stringify(this.currentTurn.tileCoordinates).includes(JSON.stringify([row, column]))) {
     throw 'No tile placed in this square during current turn.';
   }
@@ -43,6 +43,12 @@ Game.prototype.removeTile = function(row, column) {
   if (this.board.squares[row][column] === initialLetter) {
     this.board.squares[row][column] = '-';
   }
+  for (let i = 0; i < this.tileBag.getTileTypes().length; i++) {
+    if (this.tileBag.getTileTypes()[i].letter === initialLetter) {
+      removedTile = {letter: initialLetter, val: this.tileBag.getTileTypes()[i].val};
+    }
+  }
+  this.players[this.currentTurn.playerID - 1].getRack().splice(rackIndex, 0, removedTile);
 }
 
 module.exports = Game;
