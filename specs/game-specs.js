@@ -136,6 +136,29 @@ describe('Game', () => {
     });
   });
 
+  describe('sortTileCoordinatesArray', () => {
+    beforeEach(() => {
+      p1Rack = game.players[0].getRack();
+      game.board.squares = game.board.getSquares();
+    });
+
+    it('should sort the tiles into correct order for horizontal words', () => {
+      game.placeTile(1, 3, p1Rack, 1);
+      game.placeTile(1, 1, p1Rack, 3);
+      game.placeTile(1, 2, p1Rack, 2);
+      game.sortTileCoordinatesArray('horizontal');
+      expect(game.currentTurn.tileCoordinates).to.deep.equal([[1, 1], [1, 2], [1, 3]]);
+    });
+
+    it('should sort the tiles into correct order for horizontal words', () => {
+      game.placeTile(3, 1, p1Rack, 1);
+      game.placeTile(1, 1, p1Rack, 3);
+      game.placeTile(2, 1, p1Rack, 2);
+      game.sortTileCoordinatesArray('vertical');
+      expect(game.currentTurn.tileCoordinates).to.deep.equal([[1, 1], [2, 1], [3, 1]]);
+    });
+  });
+
   describe('validateTilePlacements', () => {
     beforeEach(() => {
       p1Rack = game.players[0].getRack();
@@ -143,10 +166,10 @@ describe('Game', () => {
     });
 
     it('returns false if the tiles placed during the current tile are not all in the same row or column', () => {
-      game.placeTile(2, 2, p1Rack, 1);
-      game.placeTile(1, 2, p1Rack, 2);
-      game.placeTile(2, 3, p1Rack, 3);
-      expect(() => {game.validateTilePlacements()}).to.throw('Invalid tile placement.');
+      game.placeTile(1, 0, p1Rack, 1);
+      game.placeTile(0, 2, p1Rack, 2);
+      game.placeTile(1, 3, p1Rack, 3);
+      expect(game.validateTilePlacements()).to.deep.equal(false);
     });
   });
 });

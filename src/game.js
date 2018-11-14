@@ -56,12 +56,19 @@ Game.prototype.removeTile = function(row, column, rackIndex) {
   this.currentTurn.tileCoordinates.splice(this.currentTurn.tileCoordinates.map(el => String(el)).indexOf(JSON.stringify([row, column])), 1);
 }
 
+Game.prototype.sortTileCoordinatesArray = function(direction) {
+  if(direction === 'horizontal') {
+    this.currentTurn.tileCoordinates.sort((a, b) => {return a[1] > b[1] ? 1 : -1});
+  } else if (direction === 'vertical') {
+    this.currentTurn.tileCoordinates.sort((a, b) => {return a[0] > b[0] ? 1 : -1});
+  }
+}
+
 Game.prototype.validateTilePlacements = function () {
   let tileCoords = this.currentTurn.tileCoordinates
-  let allSameRowOrCol = tileCoords.every(location => {location[1] === tileCoords[0][1]}) ||
-  tileCoords.every(location => {location[0] === tileCoords[0][0]});
+  let allSameRowOrCol = tileCoords.every(tc => tc[1] === tileCoords[0][1]) || tileCoords.every(tc => tc[0] === tileCoords[0][0]);
   if (!allSameRowOrCol) {
-    throw 'Invalid tile placement.';
+    return false;
   }
 }
 
