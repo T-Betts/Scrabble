@@ -30,7 +30,7 @@ Game.prototype.placeTile = function(row, column, rack, rackIndex) {
     throw 'Square already occupied.';
   }
   this.board.squares[row][column] = rack[rackIndex].letter;
-  this.players[this.currentTurn.playerID - 1].getRack().splice(rackIndex, 1);
+  this.players[this.currentTurn.playerID - 1].getRack()[rackIndex] = '-';
   this.currentTurn.tileCoordinates.push([row, column]);
 }
 
@@ -52,7 +52,7 @@ Game.prototype.removeTile = function(row, column, rackIndex) {
       removedTile = {letter: initialLetter, val: this.tileBag.getTileTypes()[i].val};
     }
   }
-  this.players[this.currentTurn.playerID - 1].getRack().splice(rackIndex, 0, removedTile);  
+  this.players[this.currentTurn.playerID - 1].getRack()[rackIndex] = removedTile;  
   this.currentTurn.tileCoordinates.splice(this.currentTurn.tileCoordinates.map(el => String(el)).indexOf(JSON.stringify([row, column])), 1);
 }
 

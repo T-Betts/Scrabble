@@ -19,7 +19,7 @@ describe('Player', () => {
   describe('drawTiles', () => {
     it('should draw a given number of tiles and place them into the players rack', () => {
       player1.drawTiles(4, fakeLetterBag);
-      expect(player1.rack.length).to.deep.equal(4);
+      expect(player1.rack[3]).to.deep.equal('B');
     });
   });
 
@@ -33,7 +33,7 @@ describe('Player', () => {
   describe('getRack', () => {
     it('should return a players tile rack', () => {
       player1.drawTiles(4, fakeLetterBag);
-      expect(player1.getRack()).to.deep.equal(['E', 'D', 'C', 'B']);
+      expect(player1.getRack()).to.deep.equal(['E', 'D', 'C', 'B', '-', '-', '-']);
     });
   });
 });
