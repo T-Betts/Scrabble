@@ -9,7 +9,8 @@ function Game(playerNamesArray, player = (name, id) => new Player(name, id), boa
   this.board.insertBonusSquares();
   this.tileBag = tileBag;
   this.dictionary = dictionary;
-  this.currentTurn = {playerID: 1, tileCoordinates: []};
+  this.capitalLettersRegEx = new RegExp('^[A-Z\d&Ñ]+$');
+  this.currentTurn = {playerID: 1, tileCoordinates: [], direction: undefined};
   this.players = [];
   playerNamesArray.forEach((playerName, index) => {
     this.players.push(player(playerName, index + 1));
@@ -25,8 +26,7 @@ Game.prototype.checkWordExists = function(word) {
 }
 
 Game.prototype.placeTile = function(row, column, rack, rackIndex) {
-  let capitalLettersRegEx = new RegExp('^[A-Z\d&Ñ]+$');
-  if (this.board.squares[row][column].match(capitalLettersRegEx)) {
+  if (this.board.squares[row][column].match(this.capitalLettersRegEx)) {
     throw 'Square already occupied.';
   }
   this.board.squares[row][column] = rack[rackIndex].letter;
@@ -65,9 +65,33 @@ Game.prototype.sortTileCoordinatesArray = function(direction) {
 }
 
 Game.prototype.validateTilePlacements = function () {
-  let tileCoords = this.currentTurn.tileCoordinates
-  let allSameRowOrCol = tileCoords.every(tc => tc[1] === tileCoords[0][1]) || tileCoords.every(tc => tc[0] === tileCoords[0][0]);
-  if (!allSameRowOrCol) {
+  let tcs = this.currentTurn.tileCoordinates;
+  let allSameCol = tcs.every(tc => tc[1] === tcs[0][1]);
+  let allSameRow =  tcs.every(tc => tc[0] === tcs[0][0]);
+  if (allSameRow || allSameCol) {
+    this.currentTurn.direction = allSameRow ?  'horizontal' : 'vertical';
+    this.sortTileCoordinatesArray(this.currentTurn.direction);
+    if (this.currentTurn.direction === 'horizontal') {
+      let row = tcs[0][0];
+      let min = tcs[0][1];
+      let max = tcs[tcs.length - 1][1];
+      let boardSection = []; 
+      for (let col = min; col <= max; col++) {
+        boardSection.push(this.board.squares[row][col]);
+      }
+      return boardSection.every(square => square.match(this.capitalLettersRegEx) ? true : false);
+    } else if (this.currentTurn.direction === 'vertical') {
+      let col = tcs[0][1];
+      let min = tcs[0][0];
+      let max = tcs[tcs.length - 1][0];
+      let boardSection = [];
+
+      for (let row = min; row <= max; row++) {
+        boardSection.push(this.board.squares[row][col]);
+      }
+      return boardSection.every(square => square.match(this.capitalLettersRegEx) ? true : false);
+    } 
+  } else {
     return false;
   }
 }

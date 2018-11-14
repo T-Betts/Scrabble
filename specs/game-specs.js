@@ -171,5 +171,33 @@ describe('Game', () => {
       game.placeTile(1, 3, p1Rack, 3);
       expect(game.validateTilePlacements()).to.deep.equal(false);
     });
+
+    it('returns false if there is a non-letter space between tiles that are all placed in the same row', () => {
+      game.placeTile(1, 0, p1Rack, 1);
+      game.placeTile(1, 2, p1Rack, 2);
+      game.placeTile(1, 3, p1Rack, 3);
+      expect(game.validateTilePlacements()).to.deep.equal(false);
+    });
+
+    it('returns false if there is a non-letter space between tiles that are all placed in the same column', () => {
+      game.placeTile(0, 3, p1Rack, 1);
+      game.placeTile(2, 3, p1Rack, 2);
+      game.placeTile(3, 3, p1Rack, 3);
+      expect(game.validateTilePlacements()).to.deep.equal(false);
+    });
+
+    it('returns true if tiles are all in same row and there are no non-letter spaces between them', () => {
+      game.placeTile(1, 1, p1Rack, 1);
+      game.placeTile(1, 2, p1Rack, 2);
+      game.placeTile(1, 3, p1Rack, 3);
+      expect(game.validateTilePlacements()).to.deep.equal(true);
+    });
+
+    it('returns true if tiles are all in same column and there are no non-letter spaces between them', () => {
+      game.placeTile(1, 1, p1Rack, 1);
+      game.placeTile(3, 1, p1Rack, 2);
+      game.placeTile(2, 1, p1Rack, 3);
+      expect(game.validateTilePlacements()).to.deep.equal(true);
+    });
   });
 });
