@@ -8,9 +8,9 @@ const TileBag = require('../src/tile-bag.js');
 describe('Game', () => {
   let game;
 
-    beforeEach(function() {
+    beforeEach(() => {
       let boardStub = sinon.createStubInstance(Board, {
-        getSquares: [['-','-','-'],['-','-','-'],['-','-','-']],
+        getSquares: [['-','-','-','-','-'],['-','-','-','-','-'],['-','-','-','-','-'],['-','-','-','-','-'],['-','-','-','-','-']],
         getBonusSquares: {
           doubleWord: {indices: [[0, 0]], symbol: '2'},
           doubleLetter: {indices: [[0, 1]], symbol: 'd'},
@@ -58,7 +58,7 @@ describe('Game', () => {
   describe('placeTile', () => {
     let p1Rack;
 
-    beforeEach(function() {
+    beforeEach(() => {
       p1Rack = game.players[0].getRack();
       game.board.squares = game.board.getSquares();
       game.placeTile(0, 0, p1Rack, 1);
@@ -83,7 +83,7 @@ describe('Game', () => {
   });
 
   describe('removeTile', () => {
-    beforeEach(function() {
+    beforeEach(() => {
       p1Rack = game.players[0].getRack();
       game.board.squares = game.board.getSquares();
     });
@@ -133,6 +133,20 @@ describe('Game', () => {
       game.placeTile(1, 0, p1Rack, 1);
       game.removeTile(1, 0, 1);
       expect(game.currentTurn.tileCoordinates.length).to.deep.equal(0);
+    });
+  });
+
+  describe('validateTilePlacements', () => {
+    beforeEach(() => {
+      p1Rack = game.players[0].getRack();
+      game.board.squares = game.board.getSquares();
+    });
+
+    it('returns false if the tiles placed during the current tile are not all in the same row or column', () => {
+      game.placeTile(2, 2, p1Rack, 1);
+      game.placeTile(1, 2, p1Rack, 2);
+      game.placeTile(2, 3, p1Rack, 3);
+      expect(() => {game.validateTilePlacements()}).to.throw('Invalid tile placement.');
     });
   });
 });

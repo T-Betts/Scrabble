@@ -56,4 +56,13 @@ Game.prototype.removeTile = function(row, column, rackIndex) {
   this.currentTurn.tileCoordinates.splice(this.currentTurn.tileCoordinates.map(el => String(el)).indexOf(JSON.stringify([row, column])), 1);
 }
 
+Game.prototype.validateTilePlacements = function () {
+  let tileCoords = this.currentTurn.tileCoordinates
+  let allSameRowOrCol = tileCoords.every(location => {location[1] === tileCoords[0][1]}) ||
+  tileCoords.every(location => {location[0] === tileCoords[0][0]});
+  if (!allSameRowOrCol) {
+    throw 'Invalid tile placement.';
+  }
+}
+
 module.exports = Game;
