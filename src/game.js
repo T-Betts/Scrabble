@@ -69,9 +69,9 @@ Game.prototype.validateTilePlacements = function () {
   let allSameCol = tcs.every(tc => tc[1] === tcs[0][1]);
   let allSameRow =  tcs.every(tc => tc[0] === tcs[0][0]);
   if (allSameRow || allSameCol) {
-    this.currentTurn.direction = allSameRow ?  'horizontal' : 'vertical';
+    this.currentTurn.direction = tcs.length === 1 ? 'oneTile' : allSameRow ?  'horizontal' : 'vertical';
     this.sortTileCoordinatesArray(this.currentTurn.direction);
-    if (this.currentTurn.direction === 'horizontal') {
+    if (this.currentTurn.direction === 'horizontal' || this.currentTurn.direction === 'oneTile') {
       let row = tcs[0][0];
       let min = tcs[0][1];
       let max = tcs[tcs.length - 1][1];

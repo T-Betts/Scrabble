@@ -199,5 +199,10 @@ describe('Game', () => {
       game.placeTile(2, 1, p1Rack, 3);
       expect(game.validateTilePlacements()).to.deep.equal(true);
     });
+
+    it('should return true if just one tile has been placed', () => {
+      game.placeTile(2, 2, p1Rack, 2);
+      expect(game.validateTilePlacements()).to.deep.equal(true);
+    });
   });
 });
