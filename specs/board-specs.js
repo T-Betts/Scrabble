@@ -39,4 +39,11 @@ describe('Board', () => {
       expect(board.getBonusSquares().tripWord.indices.length).to.deep.equal(8);
     });
   });
+
+  describe('getCentreSquareCoordinates', () => {
+    it('should return the coordinates of the boards centre square', () => {
+      let board = new Board;
+      expect(board.getCentreSquareCoordinates()).to.deep.equal([7, 7]);
+    });
+  });
 });

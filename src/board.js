@@ -38,6 +38,7 @@ function Board() {
       symbol: 't'
     }
   }
+  this.centreSquareCoordinates = [Math.ceil(this.squares.length / 2) - 1, Math.ceil(this.squares.length / 2) - 1];
 }
 
 Board.prototype.getSquares = function () {
@@ -62,6 +63,10 @@ Board.prototype.insertBonusSquares = function() {
 
 Board.prototype.getBonusSquares = function() {
   return this.bonusSquares;
+}
+
+Board.prototype.getCentreSquareCoordinates = function() {
+  return this.centreSquareCoordinates
 }
 
 module.exports = Board;
