@@ -20,6 +20,7 @@ function Game(playerNamesArray, player = (name, id) => new Player(name, id), boa
 
 Game.prototype.switchTurn = function() {
   this.currentTurn.playerID = this.currentTurn.playerID % this.playerCount + 1;
+  this.turnID++;
 }
 
 Game.prototype.checkWordExists = function(word) {

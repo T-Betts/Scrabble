@@ -44,6 +44,11 @@ describe('Game', () => {
       game.switchTurn();
       expect(game.currentTurn.playerID).to.deep.equal(game.players[0].getId());
     });
+
+    it('should add one to the game\'s turnID', () => {
+      game.switchTurn();
+      expect(game.turnID).to.deep.equal(2);
+    });
   });
 
   describe('checkWordExists', () => {
