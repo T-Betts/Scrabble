@@ -9,7 +9,7 @@ function Game(playerNamesArray, player = (name, id) => new Player(name, id), boa
   this.board.insertBonusSquares();
   this.tileBag = tileBag;
   this.dictionary = dictionary;
-  this.capitalLettersRegEx = new RegExp('^[A-Z\d&Ñ]+$');
+  this.capitalLettersRegEx = new RegExp('[A-Z]');
   this.currentTurn = {playerID: 1, tileCoordinates: [], direction: undefined};
   this.players = [];
   playerNamesArray.forEach((playerName, index) => {
