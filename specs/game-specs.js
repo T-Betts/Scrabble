@@ -204,5 +204,9 @@ describe('Game', () => {
       game.placeTile(2, 2, p1Rack, 2);
       expect(game.validateTilePlacements()).to.deep.equal(true);
     });
+
+    it('should throw an error if no tiles have been placed in the current turn', () => {
+      expect(() => {game.validateTilePlacements()}).to.throw('No tiles placed');
+    });
   });
 });

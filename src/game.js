@@ -66,12 +66,14 @@ Game.prototype.sortTileCoordinatesArray = function(direction) {
 
 Game.prototype.validateTilePlacements = function () {
   let tcs = this.currentTurn.tileCoordinates;
+  let direction = this.currentTurn.direction
+  if (this.currentTurn.tileCoordinates.length === 0) throw 'No tiles placed';
   let allSameCol = tcs.every(tc => tc[1] === tcs[0][1]);
   let allSameRow =  tcs.every(tc => tc[0] === tcs[0][0]);
   if (allSameRow || allSameCol) {
-    this.currentTurn.direction = tcs.length === 1 ? 'oneTile' : allSameRow ?  'horizontal' : 'vertical';
-    this.sortTileCoordinatesArray(this.currentTurn.direction);
-    if (this.currentTurn.direction === 'horizontal' || this.currentTurn.direction === 'oneTile') {
+    direction = tcs.length === 1 ? 'oneTile' : allSameRow ?  'horizontal' : 'vertical';
+    this.sortTileCoordinatesArray(direction);
+    if (direction === 'horizontal') {
       let row = tcs[0][0];
       let min = tcs[0][1];
       let max = tcs[tcs.length - 1][1];
@@ -80,7 +82,7 @@ Game.prototype.validateTilePlacements = function () {
         boardSection.push(this.board.squares[row][col]);
       }
       return boardSection.every(square => square.match(this.capitalLettersRegEx) ? true : false);
-    } else if (this.currentTurn.direction === 'vertical') {
+    } else if (direction === 'vertical' || direction === 'oneTile') {
       let col = tcs[0][1];
       let min = tcs[0][0];
       let max = tcs[tcs.length - 1][0];
