@@ -16,7 +16,8 @@ describe('Game', () => {
           doubleLetter: {indices: [[0, 1]], symbol: 'd'},
           tripWord: {indices: [[0, 2]], symbol: '3'},
           tripLetter: {indices: [[1, 0]], symbol: 't'}
-        }
+        },
+        getCentreSquareCoordinates: [2, 2]
       });
       let tileBagStub = sinon.createStubInstance(TileBag, {
         showRemainingTiles: [{letter: 'A', val: 1}, {letter: 'T', val: 1}],
@@ -163,6 +164,7 @@ describe('Game', () => {
     beforeEach(() => {
       p1Rack = game.players[0].getRack();
       game.board.squares = game.board.getSquares();
+      game.turnID++
     });
 
     it('returns false if the tiles placed during the current tile are not all in the same row or column', () => {
@@ -206,7 +208,15 @@ describe('Game', () => {
     });
 
     it('should throw an error if no tiles have been placed in the current turn', () => {
-      expect(() => {game.validateTilePlacements()}).to.throw('No tiles placed');
+      expect(() => {game.validateTilePlacements()}).to.throw('No tiles placed.');
+    });
+
+    it('should throw error if first turn of game does not use centre square', () => {
+      game.turnID--
+      game.placeTile(1, 1, p1Rack, 1);
+      game.placeTile(3, 1, p1Rack, 2);
+      game.placeTile(2, 1, p1Rack, 3);
+      expect(() => {game.validateTilePlacements()}).to.throw('First move must use centre square.');
     });
   });
 

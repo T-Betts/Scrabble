@@ -12,6 +12,7 @@ function Game(playerNamesArray, player = (name, id) => new Player(name, id), boa
   this.capitalLettersRegEx = new RegExp('[A-Z]');
   this.currentTurn = {playerID: 1, tileCoordinates: [], direction: undefined};
   this.players = [];
+  this.turnID = 1
   playerNamesArray.forEach((playerName, index) => {
     this.players.push(player(playerName, index + 1));
   });
@@ -89,7 +90,8 @@ Game.prototype.validateTilePlacements = function () {
   let direction = this.currentTurn.direction;
   let allSameCol = tileCoordinates.every(tc => tc[1] === tileCoordinates[0][1]);
   let allSameRow =  tileCoordinates.every(tc => tc[0] === tileCoordinates[0][0]);
-  if (this.currentTurn.tileCoordinates.length === 0) throw 'No tiles placed';
+  if(this.turnID === 1 && !tileCoordinates.includes(this.board.getCentreSquareCoordinates())) throw 'First move must use centre square.'
+  if (this.currentTurn.tileCoordinates.length === 0) throw 'No tiles placed.';
   if (allSameRow || allSameCol) {
     direction = tileCoordinates.length === 1 ? 'oneTile' : allSameRow ?  'horizontal' : 'vertical';
     this.sortTileCoordinatesArray(direction);
