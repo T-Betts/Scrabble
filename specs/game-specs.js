@@ -209,4 +209,32 @@ describe('Game', () => {
       expect(() => {game.validateTilePlacements()}).to.throw('No tiles placed');
     });
   });
+
+  describe('selectBoardSection', () => {
+    let tileCoordinates; 
+
+    beforeEach(() => {
+      game.board.squares = game.board.getSquares();
+      game.board.squares[2][1] = 'G';
+      game.board.squares[2][2] = 'A';
+      game.board.squares[1][1] = 'M';
+      game.board.squares[4][1] = 'E';
+      game.board.squares[2][4] = 'S';
+    });
+
+    it('should return a horizontal section of the board between two squares', () => {
+      tileCoordinates = [[2, 1], [2, 2], [2, 4]];
+      expect(game.selectBoardSection('horizontal', tileCoordinates)).to.deep.equal(['G', 'A', '-', 'S']);
+    });
+
+    it('should return a horizontal section of the board between two squares', () => {
+      tileCoordinates = [[1, 1], [2, 1], [4, 1]];
+      expect(game.selectBoardSection('vertical', tileCoordinates)).to.deep.equal(['M', 'G', '-', 'E']);
+    });
+
+    it('should return a single square if only one tile was placed', () => {
+      tileCoordinates = [[1, 1]];
+      expect(game.selectBoardSection('oneTile', tileCoordinates)).to.deep.equal(['M']);
+    });
+  });
 });

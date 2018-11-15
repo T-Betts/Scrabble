@@ -64,35 +64,37 @@ Game.prototype.sortTileCoordinatesArray = function(direction) {
   }
 }
 
-Game.prototype.validateTilePlacements = function () {
-  let tcs = this.currentTurn.tileCoordinates;
-  let direction = this.currentTurn.direction
-  if (this.currentTurn.tileCoordinates.length === 0) throw 'No tiles placed';
-  let allSameCol = tcs.every(tc => tc[1] === tcs[0][1]);
-  let allSameRow =  tcs.every(tc => tc[0] === tcs[0][0]);
-  if (allSameRow || allSameCol) {
-    direction = tcs.length === 1 ? 'oneTile' : allSameRow ?  'horizontal' : 'vertical';
-    this.sortTileCoordinatesArray(direction);
-    if (direction === 'horizontal') {
-      let row = tcs[0][0];
-      let min = tcs[0][1];
-      let max = tcs[tcs.length - 1][1];
-      let boardSection = []; 
-      for (let col = min; col <= max; col++) {
-        boardSection.push(this.board.squares[row][col]);
-      }
-      return boardSection.every(square => square.match(this.capitalLettersRegEx) ? true : false);
-    } else if (direction === 'vertical' || direction === 'oneTile') {
-      let col = tcs[0][1];
-      let min = tcs[0][0];
-      let max = tcs[tcs.length - 1][0];
-      let boardSection = [];
+Game.prototype.selectBoardSection = function(direction, tileCoordinates) {
+  let boardSection = []; 
+  if (direction === 'horizontal') {
+    let row = tileCoordinates[0][0];
+    let min = tileCoordinates[0][1];
+    let max = tileCoordinates[tileCoordinates.length - 1][1];
+    for (let col = min; col <= max; col++) {
+      boardSection.push(this.board.squares[row][col]);
+    }
+  } else if (direction === 'vertical' || direction === 'oneTile') {
+    let col = tileCoordinates[0][1];
+    let min = tileCoordinates[0][0];
+    let max = tileCoordinates[tileCoordinates.length - 1][0];
+    for (let row = min; row <= max; row++) {
+      boardSection.push(this.board.squares[row][col]);
+    }
+  } 
+  return boardSection;
+}
 
-      for (let row = min; row <= max; row++) {
-        boardSection.push(this.board.squares[row][col]);
-      }
-      return boardSection.every(square => square.match(this.capitalLettersRegEx) ? true : false);
-    } 
+Game.prototype.validateTilePlacements = function () {
+  let tileCoordinates = this.currentTurn.tileCoordinates;
+  let direction = this.currentTurn.direction;
+  let allSameCol = tileCoordinates.every(tc => tc[1] === tileCoordinates[0][1]);
+  let allSameRow =  tileCoordinates.every(tc => tc[0] === tileCoordinates[0][0]);
+  if (this.currentTurn.tileCoordinates.length === 0) throw 'No tiles placed';
+  if (allSameRow || allSameCol) {
+    direction = tileCoordinates.length === 1 ? 'oneTile' : allSameRow ?  'horizontal' : 'vertical';
+    this.sortTileCoordinatesArray(direction);
+    let boardSection = this.selectBoardSection(direction, tileCoordinates);
+    return boardSection.every(square => square.match(this.capitalLettersRegEx));
   } else {
     return false;
   }
