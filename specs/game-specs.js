@@ -7,6 +7,8 @@ const TileBag = require('../src/tile-bag.js');
 
 describe('Game', () => {
   let game;
+  let p1Rack;
+  let p2Rack;
 
     beforeEach(() => {
       let boardStub = sinon.createStubInstance(Board, {
@@ -33,6 +35,11 @@ describe('Game', () => {
     });
     
   describe('switchTurn', () => {
+    beforeEach(() => {
+      p1Rack = game.players[0].getRack();
+      game.board.squares = game.board.getSquares();
+    });
+
     it('should switch the turn to the next player', () => {
       game.switchTurn();
       expect(game.currentTurn.playerID).to.deep.equal(game.players[1].getId());
@@ -49,6 +56,18 @@ describe('Game', () => {
       game.switchTurn();
       expect(game.turnID).to.deep.equal(2);
     });
+
+    it('should push the currentTurn object into the games turnHistory property', () => {
+      game.placeTile(1, 0, p1Rack, 1);
+      game.switchTurn();
+      expect(game.turnHistory[0]).to.deep.equal({playerID: 1, tileCoordinates: [[1, 0]]});
+    });
+
+    it('after updating turnID and playerID it should reset all data other data in the currentTurn object', () => {
+      game.placeTile(1, 0, p1Rack, 1);
+      game.switchTurn();
+      expect(game.currentTurn).to.deep.equal({playerID: 2, tileCoordinates: []})
+    });
   });
 
   describe('checkWordExists', () => {
@@ -62,8 +81,6 @@ describe('Game', () => {
   });
 
   describe('placeTile', () => {
-    let p1Rack;
-
     beforeEach(() => {
       p1Rack = game.players[0].getRack();
       game.board.squares = game.board.getSquares();

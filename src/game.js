@@ -10,17 +10,21 @@ function Game(playerNamesArray, player = (name, id) => new Player(name, id), boa
   this.tileBag = tileBag;
   this.dictionary = dictionary;
   this.capitalLettersRegEx = new RegExp('[A-Z]');
-  this.currentTurn = {playerID: 1, tileCoordinates: [], direction: undefined};
+  this.currentTurn = {playerID: 1, tileCoordinates: []};
   this.players = [];
-  this.turnID = 1
+  this.turnID = 1;
+  this.turnHistory = [];
   playerNamesArray.forEach((playerName, index) => {
     this.players.push(player(playerName, index + 1));
   });
 }
 
 Game.prototype.switchTurn = function() {
+  let finishedTurn = JSON.parse(JSON.stringify(this.currentTurn));
+  this.turnHistory.push(finishedTurn);
   this.currentTurn.playerID = this.currentTurn.playerID % this.playerCount + 1;
   this.turnID++;
+  this.currentTurn.tileCoordinates = [];
 }
 
 Game.prototype.checkWordExists = function(word) {
@@ -59,11 +63,8 @@ Game.prototype.removeTile = function(row, column, rackIndex) {
 }
 
 Game.prototype.sortTileCoordinatesArray = function(direction) {
-  if(direction === 'horizontal') {
-    this.currentTurn.tileCoordinates.sort((a, b) => {return a[1] > b[1] ? 1 : -1});
-  } else if (direction === 'vertical') {
-    this.currentTurn.tileCoordinates.sort((a, b) => {return a[0] > b[0] ? 1 : -1});
-  }
+  let i = direction === 'horizontal' ? 1 : 0
+  this.currentTurn.tileCoordinates.sort((a, b) => {return a[i] > b[i] ? 1 : -1});
 }
 
 Game.prototype.selectBoardSection = function(direction, tileCoordinates) {
@@ -87,8 +88,7 @@ Game.prototype.selectBoardSection = function(direction, tileCoordinates) {
 }
 
 Game.prototype.validateTilePlacements = function () {
-  let tileCoordinates = this.currentTurn.tileCoordinates;
-  let direction = this.currentTurn.direction;
+  let { tileCoordinates, direction } = this.currentTurn;
   let allSameCol = tileCoordinates.every(tc => tc[1] === tileCoordinates[0][1]);
   let allSameRow =  tileCoordinates.every(tc => tc[0] === tileCoordinates[0][0]);
   if(this.turnID === 1 && !tileCoordinates.includes(this.board.getCentreSquareCoordinates())) throw 'First move must use centre square.'
