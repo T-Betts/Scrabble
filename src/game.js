@@ -92,10 +92,10 @@ Game.prototype.getNeighbourSquares = function(tileCoordinates) {
   let row = tileCoordinates[0];
   let col = tileCoordinates[1];
   for (let i = row - 1; i <= row + 1; i++){
-    neighbourSquares.push([i, col]);
+    if (i >= 0 && i <= 14) neighbourSquares.push([i, col]);
   }
   for (let i = col - 1; i <= col + 1; i++){
-    neighbourSquares.push([row, i]);
+    if (i >= 0 && i <= 14) neighbourSquares.push([row, i]);
   }
   return neighbourSquares.filter(square => JSON.stringify(square) !== JSON.stringify(tileCoordinates));
 }
