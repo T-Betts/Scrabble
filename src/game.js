@@ -32,7 +32,7 @@ Game.prototype.checkWordExists = function(word) {
 }
 
 Game.prototype.placeTile = function(row, column, rack, rackIndex) {
-  if (this.board.squares[row][column].match(this.capitalLettersRegEx)) {
+  if (this.capitalLettersRegEx.test(this.board.squares[row][column])) {
     throw 'Square already occupied.';
   }
   this.board.squares[row][column] = rack[rackIndex].letter;
@@ -107,17 +107,25 @@ Game.prototype.getWordsNeighbourSquares = function() {
   return flatWordNeighbours;
 }
 
+Game.prototype.checkWordConnects = function() {
+  let { tileCoordinates } = this.currentTurn;
+  let neighbourSquares = this.getWordsNeighbourSquares();
+  return neighbourSquares.some((square) => {
+    return this.capitalLettersRegEx.test(this.board.squares[square[0]][square[1]]) && (!JSON.stringify(tileCoordinates).includes(JSON.stringify(square)))
+  });
+}
+
 Game.prototype.validateTilePlacements = function () {
   let { tileCoordinates, direction } = this.currentTurn;
   let allSameCol = tileCoordinates.every(tc => tc[1] === tileCoordinates[0][1]);
   let allSameRow =  tileCoordinates.every(tc => tc[0] === tileCoordinates[0][0]);
-  if(this.turnID === 1 && !tileCoordinates.includes(this.board.getCentreSquareCoordinates())) throw 'First move must use centre square.'
+  if (this.turnID === 1 && !tileCoordinates.includes(this.board.getCentreSquareCoordinates())) throw 'First move must use centre square.'
   if (this.currentTurn.tileCoordinates.length === 0) throw 'No tiles placed.';
   if (allSameRow || allSameCol) {
     direction = tileCoordinates.length === 1 ? 'oneTile' : allSameRow ?  'horizontal' : 'vertical';
     this.sortTileCoordinatesArray(direction);
     let boardSection = this.selectBoardSection(direction, tileCoordinates);
-    return boardSection.every(square => square.match(this.capitalLettersRegEx));
+    return boardSection.every(square => this.capitalLettersRegEx.test(square));
   } else {
     return false;
   }

@@ -302,4 +302,19 @@ describe('Game', () => {
       expect(game.getWordsNeighbourSquares().length).to.deep.equal(12);
     });
   });
+
+  describe('checkWordConnects', () => {
+    beforeEach(() => {
+      p1Rack = game.players[0].getRack();
+      p2Rack = game.players[1].getRack();
+      game.board.squares = game.board.getSquares();
+    });
+
+    it('should return true if the current turn touches a previously placed word', () => {
+      game.placeTile(2, 2, p1Rack, 1);
+      game.switchTurn();
+      game.placeTile(1, 2, p1Rack, 2);
+      expect(game.checkWordConnects()).to.deep.equal(true);
+    });
+  });
 });
