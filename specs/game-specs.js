@@ -316,5 +316,12 @@ describe('Game', () => {
       game.placeTile(1, 2, p1Rack, 2);
       expect(game.checkWordConnects()).to.deep.equal(true);
     });
+
+    it('should return false if the current turn does not touch a previously placed word', () => {
+      game.placeTile(0, 0, p1Rack, 1);
+      game.switchTurn();
+      game.placeTile(1, 2, p1Rack, 2);
+      expect(game.checkWordConnects()).to.deep.equal(false);
+    });
   });
 });
