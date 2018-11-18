@@ -22,13 +22,13 @@ describe('Game', () => {
         getCentreSquareCoordinates: [2, 2]
       });
       let tileBagStub = sinon.createStubInstance(TileBag, {
-        showRemainingTiles: [{letter: 'A', val: 1}, {letter: 'T', val: 1}],
-        getTileTypes: [{letter: 'A', val: 1, count: 9}, {letter: 'T', val: 1, count: 6}]
+        showRemainingTiles: [{letter: 'A', value: 1}, {letter: 'T', value: 1}],
+        getTileTypes: [{letter: 'A', value: 1, count: 9}, {letter: 'T', value: 1, count: 6}]
       });
       let createPlayerStub = (name, id) => {
         return sinon.createStubInstance(Player, {getId: id, getRack: [
-          {letter: 'A', val: 1}, {letter: 'T', val: 1}, {letter: 'E', val: 1},
-          {letter: 'C', val: 3}, {letter: 'R', val: 1}, {letter: 'S', val: 1}, '-'
+          {letter: 'A', value: 1}, {letter: 'T', value: 1}, {letter: 'E', value: 1},
+          {letter: 'C', value: 3}, {letter: 'R', value: 1}, {letter: 'S', value: 1}, '-'
         ]});
       }
       game = new Game(['A', 'B', 'C'], createPlayerStub, boardStub, tileBagStub, ['exists']);
@@ -92,8 +92,8 @@ describe('Game', () => {
     });
 
     it('should remove the placed tile from the current players rack', () => {
-      expect(p1Rack).to.deep.equal([{letter: 'A', val: 1}, '-', {letter: 'E', val: 1},
-      {letter: 'C', val: 3}, {letter: 'R', val: 1}, {letter: 'S', val: 1}, '-']);
+      expect(p1Rack).to.deep.equal([{letter: 'A', value: 1}, '-', {letter: 'E', value: 1},
+      {letter: 'C', value: 3}, {letter: 'R', value: 1}, {letter: 'S', value: 1}, '-']);
     });
 
     it('should log the coordinates of the placed tiles for the current turn', () => {
@@ -148,8 +148,8 @@ describe('Game', () => {
     it('should return removed tile to the current players rack', () => {
       game.placeTile(1, 0, p1Rack, 1);
       game.removeTile(1, 0, 1);
-      expect(p1Rack).to.deep.equal([{letter: 'A', val: 1}, {letter: 'T', val: 1}, {letter: 'E', val: 1},
-      {letter: 'C', val: 3}, {letter: 'R', val: 1}, {letter: 'S', val: 1}, '-']);
+      expect(p1Rack).to.deep.equal([{letter: 'A', value: 1}, {letter: 'T', value: 1}, {letter: 'E', value: 1},
+      {letter: 'C', value: 3}, {letter: 'R', value: 1}, {letter: 'S', value: 1}, '-']);
     });
 
     it('should remove chosen coordinates from current turn\'s tileCoordinates array', () => {
@@ -185,6 +185,7 @@ describe('Game', () => {
   describe('validateTilePlacements', () => {
     beforeEach(() => {
       p1Rack = game.players[0].getRack();
+      p2Rack = game.players[1].getRack();
       game.board.squares = game.board.getSquares();
       game.turnID++
     });

@@ -3,7 +3,7 @@ const TileBag = require('./tile-bag.js');
 const Board = require('./board.js');
 const scrabbleDictionary = require('../word-list.js')
 
-function Game(playerNamesArray, player = (name, id) => new Player(name, id), board = new Board, tileBag = new TileBag, dictionary = scrabbleDictionary) {
+function Game(playerNamesArray, createPlayer = (name, id) => new Player(name, id), board = new Board, tileBag = new TileBag, dictionary = scrabbleDictionary) {
   this.playerCount = playerNamesArray.length;
   this.board = board;
   this.board.insertBonusSquares();
@@ -15,7 +15,7 @@ function Game(playerNamesArray, player = (name, id) => new Player(name, id), boa
   this.turnID = 1;
   this.turnHistory = [];
   playerNamesArray.forEach((playerName, index) => {
-    this.players.push(player(playerName, index + 1));
+    this.players.push(createPlayer(playerName, index + 1));
   });
 }
 
@@ -55,7 +55,7 @@ Game.prototype.removeTile = function(row, column, rackIndex) {
   }
   for (let i = 0; i < this.tileBag.getTileTypes().length; i++) {
     if (this.tileBag.getTileTypes()[i].letter === initialLetter) {
-      removedTile = {letter: initialLetter, val: this.tileBag.getTileTypes()[i].val};
+      removedTile = {letter: initialLetter, value: this.tileBag.getTileTypes()[i].value};
     }
   }
   this.players[this.currentTurn.playerID - 1].getRack()[rackIndex] = removedTile;  
