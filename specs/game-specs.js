@@ -270,4 +270,16 @@ describe('Game', () => {
       expect(game.selectBoardSection('oneTile', tileCoordinates)).to.deep.equal(['M']);
     });
   });
+
+  describe('getNeighbourSquares', () => {
+    beforeEach(() => {
+      p1Rack = game.players[0].getRack();
+      game.board.squares = game.board.getSquares();
+    });
+
+    it('should return four squares for a tile not placed at the edge of the board', () => {
+      game.placeTile(2, 2, p1Rack, 1);
+      expect(game.getNeighbourSquares([2, 2])).to.deep.equal([[1,2],[3,2],[2,1],[2,3]]);
+    });
+  });
 });

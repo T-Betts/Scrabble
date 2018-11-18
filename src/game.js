@@ -87,6 +87,19 @@ Game.prototype.selectBoardSection = function(direction, tileCoordinates) {
   return boardSection;
 }
 
+Game.prototype.getNeighbourSquares = function(tileCoordinates) {
+  let neighbourSquares = [];
+  let row = tileCoordinates[0];
+  let col = tileCoordinates[1];
+  for (let i = row - 1; i <= row + 1; i++){
+    neighbourSquares.push([i, col]);
+  }
+  for (let i = col - 1; i <= col + 1; i++){
+    neighbourSquares.push([row, i]);
+  }
+  return neighbourSquares.filter(square => JSON.stringify(square) !== JSON.stringify(tileCoordinates));
+}
+
 Game.prototype.validateTilePlacements = function () {
   let { tileCoordinates, direction } = this.currentTurn;
   let allSameCol = tileCoordinates.every(tc => tc[1] === tileCoordinates[0][1]);
