@@ -119,9 +119,13 @@ Game.prototype.validateTilePlacements = function () {
   let { tileCoordinates, direction } = this.currentTurn;
   let allSameCol = tileCoordinates.every(tc => tc[1] === tileCoordinates[0][1]);
   let allSameRow =  tileCoordinates.every(tc => tc[0] === tileCoordinates[0][0]);
-  if (this.turnID === 1 && !tileCoordinates.includes(this.board.getCentreSquareCoordinates())) throw 'First move must use centre square.'
+  console.log(tileCoordinates);
+  console.log(this.turnID)
+  console.log(this.board.getCentreSquareCoordinates())
   if (this.currentTurn.tileCoordinates.length === 0) throw 'No tiles placed.';
+  if (this.turnID === 1 && !JSON.stringify(tileCoordinates).includes(JSON.stringify(this.board.getCentreSquareCoordinates()))) throw 'First move must use centre square.';
   if (allSameRow || allSameCol) {
+    if (this.turnID > 1 && !this.checkWordConnects()) throw 'Invalid move. Must connect to previous moves.';
     direction = tileCoordinates.length === 1 ? 'oneTile' : allSameRow ?  'horizontal' : 'vertical';
     this.sortTileCoordinatesArray(direction);
     let boardSection = this.selectBoardSection(direction, tileCoordinates);

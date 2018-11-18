@@ -187,41 +187,40 @@ describe('Game', () => {
       p1Rack = game.players[0].getRack();
       p2Rack = game.players[1].getRack();
       game.board.squares = game.board.getSquares();
-      game.turnID++
     });
 
     it('returns false if the tiles placed during the current tile are not all in the same row or column', () => {
       game.placeTile(1, 0, p1Rack, 1);
-      game.placeTile(0, 2, p1Rack, 2);
+      game.placeTile(2, 2, p1Rack, 2);
       game.placeTile(1, 3, p1Rack, 3);
       expect(game.validateTilePlacements()).to.deep.equal(false);
     });
 
     it('returns false if there is a non-letter space between tiles that are all placed in the same row', () => {
-      game.placeTile(1, 0, p1Rack, 1);
-      game.placeTile(1, 2, p1Rack, 2);
-      game.placeTile(1, 3, p1Rack, 3);
+      game.placeTile(2, 0, p1Rack, 1);
+      game.placeTile(2, 2, p1Rack, 2);
+      game.placeTile(2, 3, p1Rack, 3);
       expect(game.validateTilePlacements()).to.deep.equal(false);
     });
 
     it('returns false if there is a non-letter space between tiles that are all placed in the same column', () => {
-      game.placeTile(0, 3, p1Rack, 1);
-      game.placeTile(2, 3, p1Rack, 2);
-      game.placeTile(3, 3, p1Rack, 3);
+      game.placeTile(0, 2, p1Rack, 1);
+      game.placeTile(2, 2, p1Rack, 2);
+      game.placeTile(3, 2, p1Rack, 3);
       expect(game.validateTilePlacements()).to.deep.equal(false);
     });
 
     it('returns true if tiles are all in same row and there are no non-letter spaces between them', () => {
-      game.placeTile(1, 1, p1Rack, 1);
-      game.placeTile(1, 2, p1Rack, 2);
-      game.placeTile(1, 3, p1Rack, 3);
+      game.placeTile(2, 1, p1Rack, 1);
+      game.placeTile(2, 2, p1Rack, 2);
+      game.placeTile(2, 3, p1Rack, 3);
       expect(game.validateTilePlacements()).to.deep.equal(true);
     });
 
     it('returns true if tiles are all in same column and there are no non-letter spaces between them', () => {
-      game.placeTile(1, 1, p1Rack, 1);
-      game.placeTile(3, 1, p1Rack, 2);
-      game.placeTile(2, 1, p1Rack, 3);
+      game.placeTile(1, 2, p1Rack, 1);
+      game.placeTile(3, 2, p1Rack, 2);
+      game.placeTile(2, 2, p1Rack, 3);
       expect(game.validateTilePlacements()).to.deep.equal(true);
     });
 
@@ -235,11 +234,18 @@ describe('Game', () => {
     });
 
     it('should throw error if first turn of game does not use centre square', () => {
-      game.turnID--
       game.placeTile(1, 1, p1Rack, 1);
       game.placeTile(3, 1, p1Rack, 2);
       game.placeTile(2, 1, p1Rack, 3);
       expect(() => {game.validateTilePlacements()}).to.throw('First move must use centre square.');
+    });
+
+    it('throws an error if no tiles from the current turn connect with a tile from a previous turn', () => {
+      game.placeTile(2, 2, p1Rack, 1);
+      game.switchTurn();
+      game.placeTile(0, 0, p2Rack, 0)
+      game.placeTile(0, 1, p2Rack, 1)
+      expect(() => {game.validateTilePlacements()}).to.throw('Invalid move. Must connect to previous moves.');
     });
   });
 
