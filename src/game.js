@@ -1,7 +1,7 @@
 const Player = require('./player.js');
 const TileBag = require('./tile-bag.js');
 const Board = require('./board.js');
-const scrabbleDictionary = require('../word-list.js')
+const scrabbleDictionary = require('../word-list.js');
 
 function Game(playerNamesArray, createPlayer = (name, id) => new Player(name, id), board = new Board, tileBag = new TileBag, dictionary = scrabbleDictionary) {
   this.playerCount = playerNamesArray.length;
@@ -9,7 +9,7 @@ function Game(playerNamesArray, createPlayer = (name, id) => new Player(name, id
   this.board.insertBonusSquares();
   this.tileBag = tileBag;
   this.dictionary = dictionary;
-  this.capitalLettersRegEx = new RegExp('[A-Z]');
+  this.capitalLettersRegEx = new RegExp('[*A-Z]');
   this.currentTurn = {playerID: 1, tileCoordinates: []};
   this.players = [];
   this.turnID = 1;
