@@ -271,21 +271,35 @@ describe('Game', () => {
     });
   });
 
-  describe('getNeighbourSquares', () => {
+  describe('getTilesNeighbourSquares', () => {
     beforeEach(() => {
       game.board.squares = game.board.getSquares();
     });
 
     it('should return four squares for a square at the edge of the board', () => {
-      expect(game.getNeighbourSquares([2, 2])).to.deep.equal([[1,2],[3,2],[2,1],[2,3]]);
+      expect(game.getTilesNeighbourSquares([2, 2])).to.deep.equal([[1,2],[3,2],[2,1],[2,3]]);
     });
 
     it('should return two squares for a square in the corner of the board', () => {
-      expect(game.getNeighbourSquares([0, 0])).to.deep.equal([[1,0],[0,1]]);
+      expect(game.getTilesNeighbourSquares([0, 0])).to.deep.equal([[1,0],[0,1]]);
     });
 
     it('should return three squares for a square at the edge of the board', () => {
-      expect(game.getNeighbourSquares([2, 0])).to.deep.equal([[1,0],[3,0],[2,1]]);
+      expect(game.getTilesNeighbourSquares([2, 0])).to.deep.equal([[1,0],[3,0],[2,1]]);
+    });
+  });
+
+  describe('getWordsNeighbourSquares', () => {
+    beforeEach(() => {
+      p1Rack = game.players[0].getRack();
+      game.board.squares = game.board.getSquares();
+    });
+
+    it('should return all the potential neighbouring squares of a word', () => {
+      game.placeTile(1, 2, p1Rack, 2);
+      game.placeTile(2, 2, p1Rack, 3);
+      game.placeTile(3, 2, p1Rack, 4);
+      expect(game.getWordsNeighbourSquares().length).to.deep.equal(12);
     });
   });
 });

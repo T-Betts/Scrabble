@@ -87,7 +87,7 @@ Game.prototype.selectBoardSection = function(direction, tileCoordinates) {
   return boardSection;
 }
 
-Game.prototype.getNeighbourSquares = function(tileCoordinates) {
+Game.prototype.getTilesNeighbourSquares = function(tileCoordinates) {
   let neighbourSquares = [];
   let row = tileCoordinates[0];
   let col = tileCoordinates[1];
@@ -98,6 +98,13 @@ Game.prototype.getNeighbourSquares = function(tileCoordinates) {
     if (i >= 0 && i <= 14) neighbourSquares.push([row, i]);
   }
   return neighbourSquares.filter(square => JSON.stringify(square) !== JSON.stringify(tileCoordinates));
+}
+
+Game.prototype.getWordsNeighbourSquares = function() {
+  let wordNeighbours = [];
+  this.currentTurn.tileCoordinates.forEach(square => wordNeighbours.push(this.getTilesNeighbourSquares(square)));
+  let flatWordNeighbours = [].concat.apply([], wordNeighbours);
+  return flatWordNeighbours;
 }
 
 Game.prototype.validateTilePlacements = function () {
