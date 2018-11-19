@@ -203,25 +203,25 @@ describe('Game', () => {
       game.board.squares = game.board.getSquares();
     });
 
-    it('returns false if the tiles placed during the current tile are not all in the same row or column', () => {
+    it('throws error if the tiles placed during the current tile are not all in the same row or column', () => {
       game.placeTile(1, 0, p1Rack, 1);
       game.placeTile(2, 2, p1Rack, 2);
       game.placeTile(1, 3, p1Rack, 3);
-      expect(game.validateTilePlacements()).to.deep.equal(false);
+      expect(() => {game.validateTilePlacements()}).to.throw("Invalid move. Tiles must all be in same row or column.");
     });
 
-    it('returns false if there is a non-letter space between tiles that are all placed in the same row', () => {
+    it('throws error if there is a non-letter space between tiles that are all placed in the same row', () => {
       game.placeTile(2, 0, p1Rack, 1);
       game.placeTile(2, 2, p1Rack, 2);
       game.placeTile(2, 3, p1Rack, 3);
-      expect(game.validateTilePlacements()).to.deep.equal(false);
+      expect(() => {game.validateTilePlacements()}).to.throw('Invalid move. No non-letter spaces between placed tiles allowed.');
     });
 
-    it('returns false if there is a non-letter space between tiles that are all placed in the same column', () => {
+    it('throws error if there is a non-letter space between tiles that are all placed in the same column', () => {
       game.placeTile(0, 2, p1Rack, 1);
       game.placeTile(2, 2, p1Rack, 2);
       game.placeTile(3, 2, p1Rack, 3);
-      expect(game.validateTilePlacements()).to.deep.equal(false);
+      expect(() => {game.validateTilePlacements()}).to.throw('Invalid move. No non-letter spaces between placed tiles allowed.');
     });
 
     it('returns true if tiles are all in same row and there are no non-letter spaces between them', () => {
@@ -333,15 +333,29 @@ describe('Game', () => {
     it('should return true if the current turn touches a previously placed word', () => {
       game.placeTile(2, 2, p1Rack, 1);
       game.switchTurn();
-      game.placeTile(1, 2, p1Rack, 2);
+      game.placeTile(1, 2, p2Rack, 2);
       expect(game.checkWordConnects()).to.deep.equal(true);
     });
 
     it('should return false if the current turn does not touch a previously placed word', () => {
-      game.placeTile(0, 0, p1Rack, 1);
+      game.placeTile(2, 2, p1Rack, 1);
       game.switchTurn();
-      game.placeTile(1, 2, p1Rack, 2);
+      game.placeTile(0, 0, p2Rack, 2);
       expect(game.checkWordConnects()).to.deep.equal(false);
+    });
+  });
+
+  describe('play', () => {
+    beforeEach(() => {
+      p1Rack = game.players[0].getRack();
+      p2Rack = game.players[1].getRack();
+      game.board.squares = game.board.getSquares();
+    });
+
+    it('should throw an error if the tile placement from the current move is invalid', () => {
+      game.placeTile(2, 2, p1Rack, 1);
+      game.placeTile(1, 1, p1Rack, 2);
+      expect(() => {game.play()}).to.throw('Invalid move. Tiles must all be in same row or column.');
     });
   });
 });

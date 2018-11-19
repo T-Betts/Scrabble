@@ -128,10 +128,18 @@ Game.prototype.validateTilePlacements = function () {
     direction = tileCoordinates.length === 1 ? 'oneTile' : allSameRow ?  'horizontal' : 'vertical';
     this.sortTileCoordinatesArray(direction);
     let boardSection = this.selectBoardSection(direction, tileCoordinates);
-    return boardSection.every(square => this.capitalLettersRegEx.test(square.letter));
+    if (boardSection.every(square => this.capitalLettersRegEx.test(square.letter))) {
+      return true;
+    } else {
+      throw 'Invalid move. No non-letter spaces between placed tiles allowed.';
+    }
   } else {
-    return false;
+    throw 'Invalid move. Tiles must all be in same row or column.';
   }
+}
+
+Game.prototype.play = function() {
+  this.validateTilePlacements();
 }
 
 module.exports = Game;

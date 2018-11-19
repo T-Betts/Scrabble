@@ -4,7 +4,7 @@
   "description": "A multiplayer JavaScript Scrabble game.",
   "main": "app.js",
   "scripts": {
-    "test": "nyc --reporter=html mocha **/*specs.js"
+    "test": "mocha **/*specs.js"
   },
   "repository": {
     "type": "git",
