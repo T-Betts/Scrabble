@@ -134,21 +134,3 @@ Game.prototype.validateTilePlacements = function () {
 }
 
 module.exports = Game;
-
-// let game = new Game(['Tom', 'Bill']);
-// console.log(game.tileBag.createTile('A', 1))
-// game.tileBag.shuffle();
-// game.players[game.currentTurn.playerID - 1].drawTiles(5, game.tileBag);
-// console.log('------------------------');
-// console.log(game.board.squares)
-// console.log(game.players[game.currentTurn.playerID -1].rack);
-// game.placeTile(0,0,game.players[game.currentTurn.playerID - 1].rack, 3);
-// console.log('------------------------');
-// console.log(game.currentTurn.tileCoordinates)
-// console.log(game.board.squares);
-// console.log(game.players[game.currentTurn.playerID -1].rack);
-// game.removeTile(0,0, 3);
-// console.log('------------------------');
-// console.log(game.board.squares)
-// console.log(game.players[game.currentTurn.playerID -1].rack);
-// console.log(game.currentTurn.tileCoordinates)

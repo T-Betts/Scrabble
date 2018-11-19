@@ -69,4 +69,17 @@ Board.prototype.getCentreSquareCoordinates = function() {
   return this.centreSquareCoordinates
 }
 
+Board.prototype.showLetterLayout = function() {
+  let letterLayout = [];
+  for (let i = 0; i < 15; i++) {
+    letterLayout.push([]);
+  }
+  this.squares.forEach((row, index) => {
+    row.forEach((square) => {
+      letterLayout[index].push(square.letter);
+    });
+  });
+  return letterLayout;
+}
+
 module.exports = Board;

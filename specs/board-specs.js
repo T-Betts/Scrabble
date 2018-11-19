@@ -46,4 +46,11 @@ describe('Board', () => {
       expect(board.getCentreSquareCoordinates()).to.deep.equal([7, 7]);
     });
   });
+
+  describe('showLetterLayout', () => {
+    it('returns an easy to read, letters only version of the board', () => {
+      let board = new Board;
+      expect(board.showLetterLayout()[0]).to.deep.equal(['-','-','-','-','-','-','-','-','-','-','-','-','-','-','-']);
+    });
+  });
 });
