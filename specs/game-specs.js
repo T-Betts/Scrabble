@@ -77,7 +77,7 @@ describe('Game', () => {
     it('after updating turnID and playerID it should reset all data other data in the currentTurn object', () => {
       game.placeTile(1, 0, p1Rack, 1);
       game.switchTurn();
-      expect(game.currentTurn).to.deep.equal({playerID: 2, tileCoordinates: []})
+      expect(game.currentTurn).to.deep.equal({playerID: 2, tileCoordinates: []});
     });
   });
 
@@ -116,7 +116,7 @@ describe('Game', () => {
     });
 
     it('should throw an error if trying to use an empty rack space', () => {
-      expect(() => {game.placeTile(0, 0, p1Rack, 6)}).to.throw('Selected rack space does not contain a tile.');
+      expect(() => {game.placeTile(1, 1, p1Rack, 6)}).to.throw('Selected rack space does not contain a tile.');
     });
   });
 

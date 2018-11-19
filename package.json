@@ -4,7 +4,7 @@
   "description": "A multiplayer JavaScript Scrabble game.",
   "main": "app.js",
   "scripts": {
-    "test": "mocha **/*specs.js"
+    "test": "nyc --reporter=html mocha **/*specs.js"
   },
   "repository": {
     "type": "git",
@@ -18,7 +18,9 @@
   "homepage": "https://github.com/T-Betts/Scrabble#readme",
   "dependencies": {
     "chai": "^4.2.0",
+    "istanbul": "^0.4.5",
     "mocha": "^5.2.0",
+    "nyc": "^13.1.0",
     "sinon": "^7.1.1"
   }
 }
