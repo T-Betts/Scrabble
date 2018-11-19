@@ -45,4 +45,11 @@ describe('TileBag', () => {
       expect(tileBag.getTileTypes().length).to.deep.equal(27);
     });
   });
+
+  describe('getCreateTile', () => {
+    it('should return the the createTile function', () => {
+      let tileBag = new TileBag(createTileStub);
+      expect(typeof(tileBag.getCreateTile())).to.deep.equal('function')
+    })
+  });
 });

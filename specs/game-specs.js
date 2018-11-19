@@ -3,6 +3,7 @@ const sinon = require('sinon');
 const Game = require('../src/game.js');
 const Player = require('../src/player.js');
 const Board = require('../src/board.js');
+const Tile = require('../src/tile.js');
 const TileBag = require('../src/tile-bag.js');
 
 describe('Game', () => {
@@ -12,7 +13,13 @@ describe('Game', () => {
 
     beforeEach(() => {
       let boardStub = sinon.createStubInstance(Board, {
-        getSquares: [['-','-','-','-','-'],['-','-','-','-','-'],['-','-','-','-','-'],['-','-','-','-','-'],['-','-','-','-','-']],
+        getSquares: [
+          [{letter: '-'},{letter: '-'},{letter: '-'},{letter: '-'},{letter: '-'}],
+          [{letter: '-'},{letter: '-'},{letter: '-'},{letter: '-'},{letter: '-'}],
+          [{letter: '-'},{letter: '-'},{letter: '-'},{letter: '-'},{letter: '-'}],
+          [{letter: '-'},{letter: '-'},{letter: '-'},{letter: '-'},{letter: '-'}],
+          [{letter: '-'},{letter: '-'},{letter: '-'},{letter: '-'},{letter: '-'}]
+          ],
         getBonusSquares: {
           doubleWord: {indices: [[0, 0]], symbol: '2'},
           doubleLetter: {indices: [[0, 1]], symbol: 'd'},
@@ -21,14 +28,18 @@ describe('Game', () => {
         },
         getCentreSquareCoordinates: [2, 2]
       });
+      let createTileStub = (letter, value) => {
+        return sinon.createStubInstance(Tile, {getLetter: letter, getValue: value});
+      };
       let tileBagStub = sinon.createStubInstance(TileBag, {
         showRemainingTiles: [{letter: 'A', value: 1}, {letter: 'T', value: 1}],
-        getTileTypes: [{letter: 'A', value: 1, count: 9}, {letter: 'T', value: 1, count: 6}]
+        getTileTypes: [{letter: 'A', value: 1, count: 9}, {letter: 'T', value: 1, count: 6}],
+        getCreateTile: createTileStub
       });
       let createPlayerStub = (name, id) => {
         return sinon.createStubInstance(Player, {getId: id, getRack: [
           {letter: 'A', value: 1}, {letter: 'T', value: 1}, {letter: 'E', value: 1},
-          {letter: 'C', value: 3}, {letter: 'R', value: 1}, {letter: 'S', value: 1}, '-'
+          {letter: 'C', value: 3}, {letter: 'R', value: 1}, {letter: 'S', value: 1}, {letter: '-'}
         ]});
       }
       game = new Game(['A', 'B', 'C'], createPlayerStub, boardStub, tileBagStub, ['exists']);
@@ -88,12 +99,12 @@ describe('Game', () => {
     });
 
     it('should place a tile in a designated square on the board', () => {  
-      expect(game.board.squares[0][0]).to.deep.equal("T");
+      expect(game.board.squares[0][0].letter).to.deep.equal("T");
     });
 
     it('should remove the placed tile from the current players rack', () => {
-      expect(p1Rack).to.deep.equal([{letter: 'A', value: 1}, '-', {letter: 'E', value: 1},
-      {letter: 'C', value: 3}, {letter: 'R', value: 1}, {letter: 'S', value: 1}, '-']);
+      expect(p1Rack).to.deep.equal([{letter: 'A', value: 1}, {letter: '-'}, {letter: 'E', value: 1},
+      {letter: 'C', value: 3}, {letter: 'R', value: 1}, {letter: 'S', value: 1}, {letter: '-'}]);
     });
 
     it('should log the coordinates of the placed tiles for the current turn', () => {
@@ -101,7 +112,11 @@ describe('Game', () => {
     });
 
     it('should throw error if trying to place a tile in an already occupied square', () => {
-      expect(() => {game.placeTile(0, 0, p1Rack, 1)}).to.throw('Square already occupied.');
+      expect(() => {game.placeTile(0, 0, p1Rack, 2)}).to.throw('Square already occupied.');
+    });
+
+    it('should throw an error if trying to use an empty rack space', () => {
+      expect(() => {game.placeTile(0, 0, p1Rack, 6)}).to.throw('Selected rack space does not contain a tile.');
     });
   });
 
@@ -114,31 +129,31 @@ describe('Game', () => {
     it('removes a tile from a designated normal square', () => {
       game.placeTile(1, 1, p1Rack, 1);
       game.removeTile(1, 1, 1);
-      expect(game.board.squares[1][1]).to.deep.equal('-');
+      expect(game.board.squares[1][1].letter).to.deep.equal('-');
     });
 
     it('removes a tile from a designated double word square', () => {
       game.placeTile(0, 0, p1Rack, 1);
       game.removeTile(0, 0, 1);
-      expect(game.board.squares[0][0]).to.deep.equal('2');
+      expect(game.board.squares[0][0].letter).to.deep.equal('2');
     });
 
     it('removes a tile from a designated double letter square', () => {
       game.placeTile(0, 1, p1Rack, 1);
       game.removeTile(0, 1, 1);
-      expect(game.board.squares[0][1]).to.deep.equal('d');
+      expect(game.board.squares[0][1].letter).to.deep.equal('d');
     });
 
     it('removes a tile from a designated triple word square', () => {
       game.placeTile(0, 2, p1Rack, 1);
       game.removeTile(0, 2, 1);
-      expect(game.board.squares[0][2]).to.deep.equal('3');
+      expect(game.board.squares[0][2].letter).to.deep.equal('3');
     });
 
     it('removes a tile from a designated triple letter square', () => {
       game.placeTile(1, 0, p1Rack, 1);
       game.removeTile(1, 0, 1);
-      expect(game.board.squares[1][0]).to.deep.equal('t');
+      expect(game.board.squares[1][0].letter).to.deep.equal('t');
     });
 
     it('should throw error if designated square does not contain tile letter placed during current turn', () => {
@@ -148,8 +163,7 @@ describe('Game', () => {
     it('should return removed tile to the current players rack', () => {
       game.placeTile(1, 0, p1Rack, 1);
       game.removeTile(1, 0, 1);
-      expect(p1Rack).to.deep.equal([{letter: 'A', value: 1}, {letter: 'T', value: 1}, {letter: 'E', value: 1},
-      {letter: 'C', value: 3}, {letter: 'R', value: 1}, {letter: 'S', value: 1}, '-']);
+      expect(p1Rack[1].getLetter()).to.deep.equal('T');
     });
 
     it('should remove chosen coordinates from current turn\'s tileCoordinates array', () => {
@@ -254,26 +268,26 @@ describe('Game', () => {
 
     beforeEach(() => {
       game.board.squares = game.board.getSquares();
-      game.board.squares[2][1] = 'G';
-      game.board.squares[2][2] = 'A';
-      game.board.squares[1][1] = 'M';
-      game.board.squares[4][1] = 'E';
-      game.board.squares[2][4] = 'S';
+      game.board.squares[2][1] = {letter: 'G'};
+      game.board.squares[2][2] = {letter: 'A'};
+      game.board.squares[1][1] = {letter: 'M'};
+      game.board.squares[4][1] = {letter: 'E'};
+      game.board.squares[2][4] = {letter: 'S'};
     });
 
     it('should return a horizontal section of the board between two squares', () => {
       tileCoordinates = [[2, 1], [2, 2], [2, 4]];
-      expect(game.selectBoardSection('horizontal', tileCoordinates)).to.deep.equal(['G', 'A', '-', 'S']);
+      expect(game.selectBoardSection('horizontal', tileCoordinates)).to.deep.equal([{letter: 'G'}, {letter: 'A'}, {letter: '-'}, {letter: 'S'}]);
     });
 
     it('should return a horizontal section of the board between two squares', () => {
       tileCoordinates = [[1, 1], [2, 1], [4, 1]];
-      expect(game.selectBoardSection('vertical', tileCoordinates)).to.deep.equal(['M', 'G', '-', 'E']);
+      expect(game.selectBoardSection('vertical', tileCoordinates)).to.deep.equal([{letter: 'M'}, {letter: 'G'}, {letter: '-'}, {letter: 'E'}]);
     });
 
     it('should return a single square if only one tile was placed', () => {
       tileCoordinates = [[1, 1]];
-      expect(game.selectBoardSection('oneTile', tileCoordinates)).to.deep.equal(['M']);
+      expect(game.selectBoardSection('oneTile', tileCoordinates)).to.deep.equal([{letter: 'M'}]);
     });
   });
 
