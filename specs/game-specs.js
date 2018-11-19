@@ -112,7 +112,11 @@ describe('Game', () => {
     });
 
     it('should throw error if trying to place a tile in an already occupied square', () => {
-      expect(() => {game.placeTile(0, 0, p1Rack, 1)}).to.throw('Square already occupied.');
+      expect(() => {game.placeTile(0, 0, p1Rack, 2)}).to.throw('Square already occupied.');
+    });
+
+    it('should throw an error if trying to use an empty rack space', () => {
+      expect(() => {game.placeTile(0, 0, p1Rack, 6)}).to.throw('Selected rack space does not contain a tile.');
     });
   });
 

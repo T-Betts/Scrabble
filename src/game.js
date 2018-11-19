@@ -32,11 +32,13 @@ Game.prototype.checkWordExists = function(word) {
 }
 
 Game.prototype.placeTile = function(row, column, rack, rackIndex) {
+  let currentPlayerRack = this.players[this.currentTurn.playerID - 1].getRack()
+  if (currentPlayerRack[rackIndex].value === undefined) throw 'Selected rack space does not contain a tile.'
   if (this.capitalLettersRegEx.test(this.board.squares[row][column].letter)) {
     throw 'Square already occupied.';
   }
   this.board.squares[row][column] = rack[rackIndex];
-  this.players[this.currentTurn.playerID - 1].getRack()[rackIndex] = {letter: '-'};
+  currentPlayerRack[rackIndex] = {letter: '-'};
   this.currentTurn.tileCoordinates.push([row, column]);
 }
 
@@ -51,12 +53,11 @@ Game.prototype.removeTile = function(row, column, rackIndex) {
     } 
   });
   if (this.board.squares[row][column] === initialTile) {
-    this.board.squares[row][column] = {letter: '-'}
+    this.board.squares[row][column] = {letter: '-'};
   }
   for (let i = 0; i < this.tileBag.getTileTypes().length; i++) {
     if (this.tileBag.getTileTypes()[i].letter === initialTile.letter) {
-      let replaceTile = this.tileBag.getCreateTile();
-      removedTile = replaceTile(initialTile.letter, initialTile.value)
+      removedTile = this.tileBag.getCreateTile()(initialTile.letter, initialTile.value);
     }
   }
   this.players[this.currentTurn.playerID - 1].getRack()[rackIndex] = removedTile;  
