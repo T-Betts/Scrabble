@@ -1,8 +1,11 @@
 function Player(name, id) {
   this.name = name;
   this.id = id;
-  this.rack = ['-', '-', '-', '-', '-', '-', '-'];
+  this.rack = [];
   this.score = 0;
+  for (let i = 0; i < 7; i++) {
+    this.rack.push({letter: '-'}); 
+  }
 }
 
 Player.prototype.drawTiles = function(amount, bag) {

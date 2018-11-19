@@ -10,19 +10,19 @@ describe('Board', () => {
     });
 
     it('should insert triple word squares in the correct places', () => {
-      expect(board.squares[7][0]).to.deep.equal('3');
+      expect(board.squares[7][0].letter).to.deep.equal('3');
     });
 
     it('should insert double word squares in the correct places', () => {
-      expect(board.squares[1][1]).to.deep.equal('2');
+      expect(board.squares[1][1].letter).to.deep.equal('2');
     });
 
     it('should insert triple letter squares in the correct places', () => {
-      expect(board.squares[1][5]).to.deep.equal('t');
+      expect(board.squares[1][5].letter).to.deep.equal('t');
     });
 
     it('should insert double letter squares in the correct places', () => {
-      expect(board.squares[14][3]).to.deep.equal('d');
+      expect(board.squares[14][3].letter).to.deep.equal('d');
     });
   });
 

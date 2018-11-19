@@ -32,11 +32,11 @@ Game.prototype.checkWordExists = function(word) {
 }
 
 Game.prototype.placeTile = function(row, column, rack, rackIndex) {
-  if (this.capitalLettersRegEx.test(this.board.squares[row][column])) {
+  if (this.capitalLettersRegEx.test(this.board.squares[row][column].letter)) {
     throw 'Square already occupied.';
   }
-  this.board.squares[row][column] = rack[rackIndex].letter;
-  this.players[this.currentTurn.playerID - 1].getRack()[rackIndex] = '-';
+  this.board.squares[row][column] = rack[rackIndex];
+  this.players[this.currentTurn.playerID - 1].getRack()[rackIndex] = {letter: '-'};
   this.currentTurn.tileCoordinates.push([row, column]);
 }
 
@@ -44,18 +44,19 @@ Game.prototype.removeTile = function(row, column, rackIndex) {
   if (!JSON.stringify(this.currentTurn.tileCoordinates).includes(JSON.stringify([row, column]))) {
     throw 'No tile placed in this square during current turn.';
   }
-  let initialLetter = this.board.squares[row][column];
+  let initialTile = this.board.squares[row][column];
   Object.keys(this.board.getBonusSquares()).forEach((key) => {
     if (JSON.stringify(this.board.getBonusSquares()[key].indices).includes(JSON.stringify([row, column]))) {
-      this.board.squares[row][column] = this.board.getBonusSquares()[key].symbol;
+      this.board.squares[row][column] = {letter: this.board.getBonusSquares()[key].symbol};
     } 
   });
-  if (this.board.squares[row][column] === initialLetter) {
-    this.board.squares[row][column] = '-';
+  if (this.board.squares[row][column] === initialTile) {
+    this.board.squares[row][column] = {letter: '-'}
   }
   for (let i = 0; i < this.tileBag.getTileTypes().length; i++) {
-    if (this.tileBag.getTileTypes()[i].letter === initialLetter) {
-      removedTile = {letter: initialLetter, value: this.tileBag.getTileTypes()[i].value};
+    if (this.tileBag.getTileTypes()[i].letter === initialTile.letter) {
+      let replaceTile = this.tileBag.getCreateTile();
+      removedTile = replaceTile(initialTile.letter, initialTile.value)
     }
   }
   this.players[this.currentTurn.playerID - 1].getRack()[rackIndex] = removedTile;  
@@ -111,7 +112,7 @@ Game.prototype.checkWordConnects = function() {
   let { tileCoordinates } = this.currentTurn;
   let neighbourSquares = this.getWordsNeighbourSquares();
   return neighbourSquares.some((square) => {
-    return this.capitalLettersRegEx.test(this.board.squares[square[0]][square[1]]) && (!JSON.stringify(tileCoordinates).includes(JSON.stringify(square)))
+    return this.capitalLettersRegEx.test(this.board.squares[square[0]][square[1]].letter) && (!JSON.stringify(tileCoordinates).includes(JSON.stringify(square)))
   });
 }
 
@@ -126,10 +127,28 @@ Game.prototype.validateTilePlacements = function () {
     direction = tileCoordinates.length === 1 ? 'oneTile' : allSameRow ?  'horizontal' : 'vertical';
     this.sortTileCoordinatesArray(direction);
     let boardSection = this.selectBoardSection(direction, tileCoordinates);
-    return boardSection.every(square => this.capitalLettersRegEx.test(square));
+    return boardSection.every(square => this.capitalLettersRegEx.test(square.letter));
   } else {
     return false;
   }
 }
 
 module.exports = Game;
+
+// let game = new Game(['Tom', 'Bill']);
+// console.log(game.tileBag.createTile('A', 1))
+// game.tileBag.shuffle();
+// game.players[game.currentTurn.playerID - 1].drawTiles(5, game.tileBag);
+// console.log('------------------------');
+// console.log(game.board.squares)
+// console.log(game.players[game.currentTurn.playerID -1].rack);
+// game.placeTile(0,0,game.players[game.currentTurn.playerID - 1].rack, 3);
+// console.log('------------------------');
+// console.log(game.currentTurn.tileCoordinates)
+// console.log(game.board.squares);
+// console.log(game.players[game.currentTurn.playerID -1].rack);
+// game.removeTile(0,0, 3);
+// console.log('------------------------');
+// console.log(game.board.squares)
+// console.log(game.players[game.currentTurn.playerID -1].rack);
+// console.log(game.currentTurn.tileCoordinates)

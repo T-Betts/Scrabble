@@ -3,7 +3,7 @@ function Board() {
   for (let i = 0; i < 15; i++) {
     this.squares.push([]);
     for (let j = 0; j < 15; j++) {
-      this.squares[i].push('-');
+      this.squares[i].push({letter:'-'});
     }
   }
   this.bonusSquares = {
@@ -48,16 +48,16 @@ Board.prototype.getSquares = function () {
 Board.prototype.insertBonusSquares = function() {
   let bs = this.bonusSquares
   bs.tripWord.indices.forEach(twIndex => {
-    this.squares[twIndex[0]][twIndex[1]] = '3';
+    this.squares[twIndex[0]][twIndex[1]].letter = '3';
   });
   bs.doubleWord.indices.forEach(dwIndex => {
-    this.squares[dwIndex[0]][dwIndex[1]] = '2';
+    this.squares[dwIndex[0]][dwIndex[1]].letter = '2';
   });
   bs.tripLetter.indices.forEach(tlIndex => {
-    this.squares[tlIndex[0]][tlIndex[1]] = 't';
+    this.squares[tlIndex[0]][tlIndex[1]].letter = 't';
   });
   bs.doubleLetter.indices.forEach(dlIndex => {
-    this.squares[dlIndex[0]][dlIndex[1]] = 'd';
+    this.squares[dlIndex[0]][dlIndex[1]].letter = 'd';
   });
 }
 

@@ -7,7 +7,7 @@ describe('Player', () => {
 
   beforeEach(function() {
     player1 = new Player('Tom', 1);
-    fakeLetterBag = {tiles: ['A', 'B', 'C', 'D', 'E']};
+    fakeLetterBag = {tiles: [{letter: 'A'}, {letter: 'B'}, {letter: 'C'}, {letter: 'D'}, {letter: 'E'}]};
   });
 
   describe('getId', () => {
@@ -19,7 +19,7 @@ describe('Player', () => {
   describe('drawTiles', () => {
     it('should draw a given number of tiles and place them into the players rack', () => {
       player1.drawTiles(4, fakeLetterBag);
-      expect(player1.rack[3]).to.deep.equal('B');
+      expect(player1.rack[3]).to.deep.equal({letter: 'B'});
     });
   });
 
@@ -33,7 +33,7 @@ describe('Player', () => {
   describe('getRack', () => {
     it('should return a players tile rack', () => {
       player1.drawTiles(4, fakeLetterBag);
-      expect(player1.getRack()).to.deep.equal(['E', 'D', 'C', 'B', '-', '-', '-']);
+      expect(player1.getRack()).to.deep.equal([{letter: 'E'}, {letter: 'D'}, {letter: 'C'}, {letter: 'B'}, {letter: '-'}, {letter: '-'}, {letter: '-'}]);
     });
   });
 });
