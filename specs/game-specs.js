@@ -71,13 +71,13 @@ describe('Game', () => {
     it('should push the currentTurn object into the games turnHistory property', () => {
       game.placeTile(1, 0, p1Rack, 1);
       game.switchTurn();
-      expect(game.turnHistory[0]).to.deep.equal({playerID: 1, tileCoordinates: [[1, 0]]});
+      expect(game.turnHistory[0]).to.deep.equal({playerID: 1, tileCoordinates: [[1, 0]], allWordsCoordinates: []});
     });
 
     it('after updating turnID and playerID it should reset all data other data in the currentTurn object', () => {
       game.placeTile(1, 0, p1Rack, 1);
       game.switchTurn();
-      expect(game.currentTurn).to.deep.equal({playerID: 2, tileCoordinates: []});
+      expect(game.currentTurn).to.deep.equal({playerID: 2, tileCoordinates: [], allWordsCoordinates: []});
     });
   });
 
@@ -356,6 +356,22 @@ describe('Game', () => {
       game.placeTile(2, 2, p1Rack, 1);
       game.placeTile(1, 1, p1Rack, 2);
       expect(() => {game.play()}).to.throw('Invalid move. Tiles must all be in same row or column.');
+    });
+  });
+
+  describe('collectHorizontalAdjacentTiles', () => {
+    beforeEach(() => {
+      p1Rack = game.players[0].getRack();
+      p2Rack = game.players[1].getRack();
+      game.board.squares = game.board.getSquares();
+    });
+
+    it('should log the coordinates of all the adjacent horizontal tiles for a given tile', () => {
+      game.placeTile(2, 2, p1Rack, 0);
+      game.placeTile(2, 3, p1Rack, 2);
+      game.validateTilePlacements();
+      game.collectHorizontalAdjacentTiles(game.currentTurn.tileCoordinates[0]);
+      expect(game.currentTurn.allWordsCoordinates).to.deep.equal([[[2, 2], [2, 3]]]);
     });
   });
 });

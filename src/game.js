@@ -10,7 +10,7 @@ function Game(playerNamesArray, createPlayer = (name, id) => new Player(name, id
   this.tileBag = tileBag;
   this.dictionary = dictionary;
   this.capitalLettersRegEx = new RegExp('[*A-Z]');
-  this.currentTurn = {playerID: 1, tileCoordinates: []};
+  this.currentTurn = {playerID: 1, tileCoordinates: [], allWordsCoordinates: []};
   this.players = [];
   this.turnID = 1;
   this.turnHistory = [];
@@ -71,14 +71,14 @@ Game.prototype.sortTileCoordinatesArray = function(direction) {
 
 Game.prototype.selectBoardSection = function(direction, tileCoordinates) {
   let boardSection = []; 
-  if (direction === 'horizontal') {
+  if (direction === 'horizontal' || direction === 'oneTile') {
     let row = tileCoordinates[0][0];
     let min = tileCoordinates[0][1];
     let max = tileCoordinates[tileCoordinates.length - 1][1];
     for (let col = min; col <= max; col++) {
       boardSection.push(this.board.squares[row][col]);
     }
-  } else if (direction === 'vertical' || direction === 'oneTile') {
+  } else if (direction === 'vertical') {
     let col = tileCoordinates[0][1];
     let min = tileCoordinates[0][0];
     let max = tileCoordinates[tileCoordinates.length - 1][0];
@@ -110,7 +110,7 @@ Game.prototype.getWordsNeighbourSquares = function() {
 }
 
 Game.prototype.checkWordConnects = function() {
-  let { tileCoordinates } = this.currentTurn;
+  let tileCoordinates = this.currentTurn.tileCoordinates;
   let neighbourSquares = this.getWordsNeighbourSquares();
   return neighbourSquares.some((square) => {
     return this.capitalLettersRegEx.test(this.board.squares[square[0]][square[1]].letter) && (!JSON.stringify(tileCoordinates).includes(JSON.stringify(square)))
@@ -118,16 +118,16 @@ Game.prototype.checkWordConnects = function() {
 }
 
 Game.prototype.validateTilePlacements = function () {
-  let { tileCoordinates, direction } = this.currentTurn;
+  let tileCoordinates = this.currentTurn.tileCoordinates;
   let allSameCol = tileCoordinates.every(tc => tc[1] === tileCoordinates[0][1]);
   let allSameRow =  tileCoordinates.every(tc => tc[0] === tileCoordinates[0][0]);
   if (this.currentTurn.tileCoordinates.length === 0) throw 'No tiles placed.';
   if (this.turnID === 1 && !JSON.stringify(tileCoordinates).includes(JSON.stringify(this.board.getCentreSquareCoordinates()))) throw 'First move must use centre square.';
   if (allSameRow || allSameCol) {
     if (this.turnID > 1 && !this.checkWordConnects()) throw 'Invalid move. Must connect to previous moves.';
-    direction = tileCoordinates.length === 1 ? 'oneTile' : allSameRow ?  'horizontal' : 'vertical';
-    this.sortTileCoordinatesArray(direction);
-    let boardSection = this.selectBoardSection(direction, tileCoordinates);
+    this.currentTurn.direction = tileCoordinates.length === 1 ? 'oneTile' : allSameRow ?  'horizontal' : 'vertical';
+    this.sortTileCoordinatesArray(this.currentTurn.direction);
+    let boardSection = this.selectBoardSection(this.currentTurn.direction, tileCoordinates);
     if (boardSection.every(square => this.capitalLettersRegEx.test(square.letter))) {
       return true;
     } else {
@@ -135,11 +135,31 @@ Game.prototype.validateTilePlacements = function () {
     }
   } else {
     throw 'Invalid move. Tiles must all be in same row or column.';
-  }
+  } 
 }
 
 Game.prototype.play = function() {
   this.validateTilePlacements();
+}
+
+Game.prototype.collectHorizontalAdjacentTiles = function(tileLocation) {
+  let squares = this.board.squares;
+  let horizontalCoordinates = [];
+  for (let i = tileLocation[1]; i >= 0; i--) {
+    if(this.capitalLettersRegEx.test(squares[tileLocation[0]][i].letter)) {
+      horizontalCoordinates.unshift([tileLocation[0], i]);
+    } else {
+      break;
+    }
+  }
+  for (let i = tileLocation[1] + 1; i < squares.length; i++) {
+    if(this.capitalLettersRegEx.test(squares[tileLocation[0]][i].letter)) {
+      horizontalCoordinates.push([tileLocation[0], i]);
+    } else {
+      break;
+    }
+  }
+  this.currentTurn.allWordsCoordinates.push(horizontalCoordinates);
 }
 
 module.exports = Game;
