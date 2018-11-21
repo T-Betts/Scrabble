@@ -25,6 +25,7 @@ Game.prototype.switchTurn = function() {
   this.currentTurn.playerID = this.currentTurn.playerID % this.playerCount + 1;
   this.turnID++;
   this.currentTurn.tileCoordinates = [];
+  this.currentTurn.allWordsCoordinates = [];
 }
 
 Game.prototype.checkWordExists = function(word) {
