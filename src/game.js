@@ -10,7 +10,7 @@ function Game(playerNamesArray, createPlayer = (name, id) => new Player(name, id
   this.tileBag = tileBag;
   this.dictionary = dictionary;
   this.capitalLettersRegEx = new RegExp('[*A-Z]');
-  this.currentTurn = {playerID: 1, tileCoordinates: [], allWordsCoordinates: []};
+  this.currentTurn = {playerID: 1, tileCoordinates: [], allWordsCoordinates: [], words: []};
   this.players = [];
   this.turnID = 1;
   this.turnHistory = [];
@@ -26,6 +26,7 @@ Game.prototype.switchTurn = function() {
   this.turnID++;
   this.currentTurn.tileCoordinates = [];
   this.currentTurn.allWordsCoordinates = [];
+  this.currentTurn.words = [];
 }
 
 Game.prototype.checkWordExists = function(word) {

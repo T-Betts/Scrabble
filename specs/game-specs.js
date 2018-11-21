@@ -42,7 +42,7 @@ describe('Game', () => {
           {letter: 'C', value: 3}, {letter: 'R', value: 1}, {letter: 'S', value: 1}, {letter: '-'}
         ]});
       }
-      game = new Game(['A', 'B', 'C'], createPlayerStub, boardStub, tileBagStub, ['exists']);
+      game = new Game(['A', 'B', 'C'], createPlayerStub, boardStub, tileBagStub, ['exists', 'cat', 'car', 'set']);
       p1Rack = game.players[0].getRack();
       p2Rack = game.players[1].getRack();
       p3Rack = game.players[2].getRack();
@@ -70,13 +70,13 @@ describe('Game', () => {
     it('should push the currentTurn object into the games turnHistory property', () => {
       game.placeTile(1, 0, p1Rack, 1);
       game.switchTurn();
-      expect(game.turnHistory[0]).to.deep.equal({playerID: 1, tileCoordinates: [[1, 0]], allWordsCoordinates: []});
+      expect(game.turnHistory[0]).to.deep.equal({playerID: 1, tileCoordinates: [[1, 0]], allWordsCoordinates: [], words: []});
     });
 
     it('after updating turnID and playerID it should reset all data other data in the currentTurn object', () => {
       game.placeTile(1, 0, p1Rack, 1);
       game.switchTurn();
-      expect(game.currentTurn).to.deep.equal({playerID: 2, tileCoordinates: [], allWordsCoordinates: []});
+      expect(game.currentTurn).to.deep.equal({playerID: 2, tileCoordinates: [], allWordsCoordinates: [], words: []});
     });
   });
 
