@@ -366,12 +366,30 @@ describe('Game', () => {
       game.board.squares = game.board.getSquares();
     });
 
-    it('should log the coordinates of all the adjacent horizontal tiles for a given tile', () => {
-      game.placeTile(2, 2, p1Rack, 0);
-      game.placeTile(2, 3, p1Rack, 2);
+    it('should log the coordinates of all the adjacent horizontal tiles for a given tile and the tile itself, in order', () => {
+      game.placeTile(2, 3, p1Rack, 0);
+      game.placeTile(2, 2, p1Rack, 2);
       game.validateTilePlacements();
       game.collectHorizontalAdjacentTiles(game.currentTurn.tileCoordinates[0]);
       expect(game.currentTurn.allWordsCoordinates).to.deep.equal([[[2, 2], [2, 3]]]);
+    });
+  });
+
+  describe('collectVerticalAdjacentTiles', () => {
+    beforeEach(() => {
+      p1Rack = game.players[0].getRack();
+      p2Rack = game.players[1].getRack();
+      game.board.squares = game.board.getSquares();
+    });
+
+    it('should log the coordinates of all the adjacent vertical tiles for a given tile and the tile itself, in order', () => {
+      game.placeTile(2, 2, p1Rack, 0);
+      game.placeTile(1, 2, p1Rack, 2);
+      game.placeTile(0, 2, p1Rack, 1);
+      game.placeTile(3, 2, p1Rack, 3);
+      game.validateTilePlacements();
+      game.collectVerticalAdjacentTiles(game.currentTurn.tileCoordinates[0]);
+      expect(game.currentTurn.allWordsCoordinates).to.deep.equal([[[0, 2], [1, 2], [2, 2], [3, 2]]]);
     });
   });
 });

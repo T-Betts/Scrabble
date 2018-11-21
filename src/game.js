@@ -162,4 +162,24 @@ Game.prototype.collectHorizontalAdjacentTiles = function(tileLocation) {
   this.currentTurn.allWordsCoordinates.push(horizontalCoordinates);
 }
 
+Game.prototype.collectVerticalAdjacentTiles = function(tileLocation) {
+  let squares = this.board.squares;
+  let verticalCoordinates = [];
+  for (let i = tileLocation[0]; i >= 0; i--) {
+    if(this.capitalLettersRegEx.test(squares[i][tileLocation[1]].letter)) {
+      verticalCoordinates.unshift([i, tileLocation[1]]);
+    } else {
+      break;
+    }
+  }
+  for (let i = tileLocation[0] + 1; i < squares.length; i++) {
+    if(this.capitalLettersRegEx.test(squares[i][tileLocation[1]].letter)) {
+      verticalCoordinates.push([i, tileLocation[1]]);
+    } else {
+      break;
+    }
+  }
+  this.currentTurn.allWordsCoordinates.push(verticalCoordinates);
+}
+
 module.exports = Game;
