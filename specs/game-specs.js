@@ -425,4 +425,18 @@ describe('Game', () => {
       expect(game.currentTurn.allWordsCoordinates).to.deep.equal([[[3, 0], [3, 1], [3, 2]], [[1, 2], [2, 2], [3, 2]]]);
     });
   });
+
+  describe('getCurrentTurnsWords', () => {
+    it('should return true if every word formed by the current turn exists', () => {
+      game.placeTile(1, 2, p1Rack, 5);
+      game.placeTile(2, 2, p1Rack, 2);
+      game.switchTurn();
+      game.placeTile(3, 0, p2Rack, 3);
+      game.placeTile(3, 1, p2Rack, 0);
+      game.placeTile(3, 2, p2Rack, 1);
+      game.validateTilePlacements();
+      game.collectCurrentTurnWordsCoordinates(game.currentTurn.tileCoordinates[0]); 
+      expect(game.getCurrentTurnsWords()).to.deep.equal(['cat', 'set']);
+    });
+  });
 });

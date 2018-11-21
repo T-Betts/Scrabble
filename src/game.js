@@ -203,4 +203,16 @@ Game.prototype.collectCurrentTurnWordsCoordinates = function(tileLocation) {
   this.currentTurn.allWordsCoordinates = this.currentTurn.allWordsCoordinates.filter(word => word.length > 1);
 }
 
+Game.prototype.getCurrentTurnsWords = function() {
+  let currentTurnWords = []
+  this.currentTurn.allWordsCoordinates.forEach((wordCoordinates) => {
+    let word = []
+    wordCoordinates.forEach((coordinates) => {
+      word.push(this.board.squares[coordinates[0]][coordinates[1]].letter.toLowerCase());
+    })
+    currentTurnWords.push(word.join(''));
+  });
+  return currentTurnWords;
+}
+
 module.exports = Game;
