@@ -200,6 +200,7 @@ Game.prototype.collectCurrentTurnWordsCoordinates = function(tileLocation) {
       this.collectHorizontalAdjacentTiles(tc)
     });
   }
+  this.currentTurn.allWordsCoordinates = this.currentTurn.allWordsCoordinates.filter(word => word.length > 1);
 }
 
 module.exports = Game;

@@ -412,5 +412,17 @@ describe('Game', () => {
         [[1, 3], [2, 3]]
       ]);
     });
+
+    it('should remove any one-letter words from allWordsCoordinates', () => {
+      game.placeTile(1, 2, p1Rack, 5);
+      game.placeTile(2, 2, p1Rack, 2);
+      game.switchTurn();
+      game.placeTile(3, 0, p2Rack, 3);
+      game.placeTile(3, 1, p2Rack, 0);
+      game.placeTile(3, 2, p2Rack, 1);
+      game.validateTilePlacements();
+      game.collectCurrentTurnWordsCoordinates(game.currentTurn.tileCoordinates[0]);
+      expect(game.currentTurn.allWordsCoordinates).to.deep.equal([[[3, 0], [3, 1], [3, 2]], [[1, 2], [2, 2], [3, 2]]]);
+    });
   });
 });
