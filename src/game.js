@@ -182,4 +182,19 @@ Game.prototype.collectVerticalAdjacentTiles = function(tileLocation) {
   this.currentTurn.allWordsCoordinates.push(verticalCoordinates);
 }
 
+Game.prototype.collectCurrentTurnWordsCoordinates = function(tileLocation) {
+  let direction = this.currentTurn.direction
+  if (direction === 'horizontal' || direction === 'oneTile') {
+    this.collectHorizontalAdjacentTiles(tileLocation);
+    this.currentTurn.tileCoordinates.forEach((tc) => {
+      this.collectVerticalAdjacentTiles(tc)
+    });
+  } else if (direction === 'vertical') {
+    this.collectVerticalAdjacentTiles(tileLocation);
+    this.currentTurn.tileCoordinates.forEach((tc) => {
+      this.collectHorizontalAdjacentTiles(tc)
+    });
+  }
+}
+
 module.exports = Game;

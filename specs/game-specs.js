@@ -339,4 +339,25 @@ describe('Game', () => {
       expect(game.currentTurn.allWordsCoordinates).to.deep.equal([[[0, 2], [1, 2], [2, 2], [3, 2]]]);
     });
   });
+
+  describe('collectCurrentTurnWordsCoordinates', () => {
+    it('should collect all the words formed by a move, in coordinate form', () => {
+      game.placeTile(2, 2, p1Rack, 0);
+      game.placeTile(1, 2, p1Rack, 2);
+      game.placeTile(0, 2, p1Rack, 1);
+      game.placeTile(3, 2, p1Rack, 3);
+      game.switchTurn();
+      game.placeTile(2, 1, p2Rack, 0);
+      game.placeTile(1, 1, p2Rack, 2);
+      game.placeTile(0, 1, p2Rack, 1);
+      game.validateTilePlacements();
+      game.collectCurrentTurnWordsCoordinates(game.currentTurn.tileCoordinates[0]);
+      expect(game.currentTurn.allWordsCoordinates).to.deep.equal([
+        [[0, 1], [1, 1], [2, 1]],
+        [[0, 1], [0, 2]],
+        [[1, 1], [1, 2]],
+        [[2, 1], [2, 2]]
+      ])
+    });
+  });
 });
