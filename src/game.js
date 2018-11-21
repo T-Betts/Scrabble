@@ -141,6 +141,7 @@ Game.prototype.validateTilePlacements = function () {
 
 Game.prototype.play = function() {
   this.validateTilePlacements();
+  this.collectCurrentTurnWordsCoordinates(this.currentTurn.tileCoordinates[0]);
 }
 
 Game.prototype.collectHorizontalAdjacentTiles = function(tileLocation) {
