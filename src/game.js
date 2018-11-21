@@ -144,6 +144,7 @@ Game.prototype.play = function() {
 }
 
 Game.prototype.collectHorizontalAdjacentTiles = function(tileLocation) {
+  if (this.currentTurn.tileCoordinates[0] === undefined) throw 'No words to collect as no tiles have been placed this turn.';
   let squares = this.board.squares;
   let horizontalCoordinates = [];
   for (let i = tileLocation[1]; i >= 0; i--) {
@@ -164,6 +165,7 @@ Game.prototype.collectHorizontalAdjacentTiles = function(tileLocation) {
 }
 
 Game.prototype.collectVerticalAdjacentTiles = function(tileLocation) {
+  if (this.currentTurn.tileCoordinates[0] === undefined) throw 'No words to collect as no tiles have been placed this turn.';
   let squares = this.board.squares;
   let verticalCoordinates = [];
   for (let i = tileLocation[0]; i >= 0; i--) {

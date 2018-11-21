@@ -326,6 +326,10 @@ describe('Game', () => {
       game.collectHorizontalAdjacentTiles(game.currentTurn.tileCoordinates[0]);
       expect(game.currentTurn.allWordsCoordinates).to.deep.equal([[[2, 2], [2, 3]]]);
     });
+
+    it('should throw error if called when no tiles have been placed during current move', () => {
+      expect(() => {game.collectHorizontalAdjacentTiles(game.currentTurn.tileCoordinates[0])}).to.throw('No words to collect as no tiles have been placed this turn');
+    });
   });
 
   describe('collectVerticalAdjacentTiles', () => {
@@ -337,6 +341,10 @@ describe('Game', () => {
       game.validateTilePlacements();
       game.collectVerticalAdjacentTiles(game.currentTurn.tileCoordinates[0]);
       expect(game.currentTurn.allWordsCoordinates).to.deep.equal([[[0, 2], [1, 2], [2, 2], [3, 2]]]);
+    });
+
+    it('should throw error if called when no tiles have been placed during current move', () => {
+      expect(() => {game.collectVerticalAdjacentTiles(game.currentTurn.tileCoordinates[0])}).to.throw('No words to collect as no tiles have been placed this turn');
     });
   });
 
@@ -357,7 +365,7 @@ describe('Game', () => {
         [[0, 1], [0, 2]],
         [[1, 1], [1, 2]],
         [[2, 1], [2, 2]]
-      ])
+      ]);
     });
 
     it('should collect all the words formed by a side by side horizontal move, in coordinate form', () => {
