@@ -42,7 +42,7 @@ describe('Game', () => {
           {letter: 'C', value: 3}, {letter: 'R', value: 1}, {letter: 'S', value: 1}, {letter: '-'}
         ]});
       }
-      game = new Game(['A', 'B', 'C'], createPlayerStub, boardStub, tileBagStub, ['exists', 'cat', 'car', 'set']);
+      game = new Game(['A', 'B', 'C'], createPlayerStub, boardStub, tileBagStub, ['exists', 'cat', 'car', 'set', 'ta', 'at']);
       p1Rack = game.players[0].getRack();
       p2Rack = game.players[1].getRack();
       p3Rack = game.players[2].getRack();
@@ -318,13 +318,19 @@ describe('Game', () => {
     });
 
     it('should collect the coordinates of all the words formed by the current turn', () => {
-      game.placeTile(2, 2, p1Rack, 1);
-      game.placeTile(2, 1, p1Rack, 2);
+      game.placeTile(2, 2, p1Rack, 0);
+      game.placeTile(2, 1, p1Rack, 1);
       game.switchTurn();
-      game.placeTile(1, 1, p2Rack, 1);
-      game.placeTile(1, 2, p2Rack, 3);
+      game.placeTile(1, 1, p2Rack, 0);
+      game.placeTile(1, 2, p2Rack, 1);
       game.play();
       expect(game.currentTurn.allWordsCoordinates).to.deep.equal([[[1, 1], [1, 2]], [[1, 1], [2, 1]], [[1, 2], [2, 2]]]);
+    });
+
+    it('should throw error if one or more words formed in current turn are not in the dictionary', () => {
+      game.placeTile(1, 2, p1Rack, 3);
+      game.placeTile(2, 2, p1Rack, 4);
+      expect(() => {game.play()}).to.throw('Invalid word(s): CR');
     });
   });
 

@@ -50,6 +50,6 @@ describe('TileBag', () => {
     it('should return the the createTile function', () => {
       let tileBag = new TileBag(createTileStub);
       expect(typeof(tileBag.getCreateTile())).to.deep.equal('function')
-    })
+    });
   });
 });
