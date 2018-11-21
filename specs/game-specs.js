@@ -451,7 +451,21 @@ describe('Game', () => {
       game.placeTile(3, 2, p2Rack, 1);
       game.validateTilePlacements();
       game.collectCurrentTurnWordsCoordinates(game.currentTurn.tileCoordinates[0]);
+      game.getCurrentTurnsWords();
       expect(game.checkAllTurnsWordsExist()).to.deep.equal(true);
+    });
+
+    it('if not all the words exist, it should let you know which words are not in the dictionary', () => {
+      game.placeTile(0, 3, p1Rack, 3);
+      game.placeTile(1, 3, p1Rack, 4);
+      game.switchTurn();
+      game.placeTile(2, 2, p2Rack, 4);
+      game.placeTile(3, 2, p2Rack, 1);
+      game.placeTile(1, 2, p2Rack, 3);
+      game.validateTilePlacements();
+      game.collectCurrentTurnWordsCoordinates(game.currentTurn.tileCoordinates[0]);
+      game.getCurrentTurnsWords();
+      expect(() => {game.checkAllTurnsWordsExist()}).to.throw('Invalid word(s): CRT, CR');
     });
   });
 });

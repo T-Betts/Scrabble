@@ -214,7 +214,17 @@ Game.prototype.getCurrentTurnsWords = function() {
 }
 
 Game.prototype.checkAllTurnsWordsExist = function() {
-  return this.currentTurn.words.every(word => this.checkWordExists(word));
+  let notWords = [];
+  this.currentTurn.words.forEach((word) => {
+    if (!this.checkWordExists(word)) {
+      notWords.push(word.toUpperCase());
+    }
+  });
+  if (notWords.length === 0) {
+    return true
+  } else {
+    throw `Invalid word(s): ${notWords.join(', ')}`;
+  }
 }
 
 module.exports = Game;
