@@ -188,31 +188,33 @@ Game.prototype.collectVerticalAdjacentTiles = function(tileLocation) {
 }
 
 Game.prototype.collectCurrentTurnWordsCoordinates = function(tileLocation) {
-  let direction = this.currentTurn.direction
+  let direction = this.currentTurn.direction;
   if (direction === 'horizontal' || direction === 'oneTile') {
     this.collectHorizontalAdjacentTiles(tileLocation);
     this.currentTurn.tileCoordinates.forEach((tc) => {
-      this.collectVerticalAdjacentTiles(tc)
+      this.collectVerticalAdjacentTiles(tc);
     });
   } else if (direction === 'vertical') {
     this.collectVerticalAdjacentTiles(tileLocation);
     this.currentTurn.tileCoordinates.forEach((tc) => {
-      this.collectHorizontalAdjacentTiles(tc)
+      this.collectHorizontalAdjacentTiles(tc);
     });
   }
   this.currentTurn.allWordsCoordinates = this.currentTurn.allWordsCoordinates.filter(word => word.length > 1);
 }
 
 Game.prototype.getCurrentTurnsWords = function() {
-  let currentTurnWords = []
   this.currentTurn.allWordsCoordinates.forEach((wordCoordinates) => {
-    let word = []
+    let word = [];
     wordCoordinates.forEach((coordinates) => {
       word.push(this.board.squares[coordinates[0]][coordinates[1]].letter.toLowerCase());
     })
-    currentTurnWords.push(word.join(''));
+    this.currentTurn.words.push(word.join(''));
   });
-  return currentTurnWords;
+}
+
+Game.prototype.checkAllTurnsWordsExist = function() {
+  return this.currentTurn.words.every(word => this.checkWordExists(word));
 }
 
 module.exports = Game;
