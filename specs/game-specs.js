@@ -43,14 +43,13 @@ describe('Game', () => {
         ]});
       }
       game = new Game(['A', 'B', 'C'], createPlayerStub, boardStub, tileBagStub, ['exists']);
+      p1Rack = game.players[0].getRack();
+      p2Rack = game.players[1].getRack();
+      p3Rack = game.players[2].getRack();
+      game.board.squares = game.board.getSquares();
     });
     
   describe('switchTurn', () => {
-    beforeEach(() => {
-      p1Rack = game.players[0].getRack();
-      game.board.squares = game.board.getSquares();
-    });
-
     it('should switch the turn to the next player', () => {
       game.switchTurn();
       expect(game.currentTurn.playerID).to.deep.equal(game.players[1].getId());
@@ -93,8 +92,6 @@ describe('Game', () => {
 
   describe('placeTile', () => {
     beforeEach(() => {
-      p1Rack = game.players[0].getRack();
-      game.board.squares = game.board.getSquares();
       game.placeTile(0, 0, p1Rack, 1);
     });
 
@@ -121,11 +118,6 @@ describe('Game', () => {
   });
 
   describe('removeTile', () => {
-    beforeEach(() => {
-      p1Rack = game.players[0].getRack();
-      game.board.squares = game.board.getSquares();
-    });
-
     it('removes a tile from a designated normal square', () => {
       game.placeTile(1, 1, p1Rack, 1);
       game.removeTile(1, 1, 1);
@@ -174,11 +166,6 @@ describe('Game', () => {
   });
 
   describe('sortTileCoordinatesArray', () => {
-    beforeEach(() => {
-      p1Rack = game.players[0].getRack();
-      game.board.squares = game.board.getSquares();
-    });
-
     it('should sort the tiles into correct order for horizontal words', () => {
       game.placeTile(1, 3, p1Rack, 1);
       game.placeTile(1, 1, p1Rack, 3);
@@ -197,12 +184,6 @@ describe('Game', () => {
   });
 
   describe('validateTilePlacements', () => {
-    beforeEach(() => {
-      p1Rack = game.players[0].getRack();
-      p2Rack = game.players[1].getRack();
-      game.board.squares = game.board.getSquares();
-    });
-
     it('throws error if the tiles placed during the current tile are not all in the same row or column', () => {
       game.placeTile(1, 0, p1Rack, 1);
       game.placeTile(2, 2, p1Rack, 2);
@@ -267,7 +248,6 @@ describe('Game', () => {
     let tileCoordinates; 
 
     beforeEach(() => {
-      game.board.squares = game.board.getSquares();
       game.board.squares[2][1] = {letter: 'G'};
       game.board.squares[2][2] = {letter: 'A'};
       game.board.squares[1][1] = {letter: 'M'};
@@ -292,10 +272,6 @@ describe('Game', () => {
   });
 
   describe('getTilesNeighbourSquares', () => {
-    beforeEach(() => {
-      game.board.squares = game.board.getSquares();
-    });
-
     it('should return four squares for a square at the edge of the board', () => {
       expect(game.getTilesNeighbourSquares([2, 2])).to.deep.equal([[1,2],[3,2],[2,1],[2,3]]);
     });
@@ -310,11 +286,6 @@ describe('Game', () => {
   });
 
   describe('getWordsNeighbourSquares', () => {
-    beforeEach(() => {
-      p1Rack = game.players[0].getRack();
-      game.board.squares = game.board.getSquares();
-    });
-
     it('should return all the potential neighbouring squares of a word', () => {
       game.placeTile(1, 2, p1Rack, 2);
       game.placeTile(2, 2, p1Rack, 3);
@@ -324,12 +295,6 @@ describe('Game', () => {
   });
 
   describe('checkWordConnects', () => {
-    beforeEach(() => {
-      p1Rack = game.players[0].getRack();
-      p2Rack = game.players[1].getRack();
-      game.board.squares = game.board.getSquares();
-    });
-
     it('should return true if the current turn touches a previously placed word', () => {
       game.placeTile(2, 2, p1Rack, 1);
       game.switchTurn();
@@ -346,12 +311,6 @@ describe('Game', () => {
   });
 
   describe('play', () => {
-    beforeEach(() => {
-      p1Rack = game.players[0].getRack();
-      p2Rack = game.players[1].getRack();
-      game.board.squares = game.board.getSquares();
-    });
-
     it('should throw an error if the tile placement from the current move is invalid', () => {
       game.placeTile(2, 2, p1Rack, 1);
       game.placeTile(1, 1, p1Rack, 2);
@@ -360,12 +319,6 @@ describe('Game', () => {
   });
 
   describe('collectHorizontalAdjacentTiles', () => {
-    beforeEach(() => {
-      p1Rack = game.players[0].getRack();
-      p2Rack = game.players[1].getRack();
-      game.board.squares = game.board.getSquares();
-    });
-
     it('should log the coordinates of all the adjacent horizontal tiles for a given tile and the tile itself, in order', () => {
       game.placeTile(2, 3, p1Rack, 0);
       game.placeTile(2, 2, p1Rack, 2);
@@ -376,12 +329,6 @@ describe('Game', () => {
   });
 
   describe('collectVerticalAdjacentTiles', () => {
-    beforeEach(() => {
-      p1Rack = game.players[0].getRack();
-      p2Rack = game.players[1].getRack();
-      game.board.squares = game.board.getSquares();
-    });
-
     it('should log the coordinates of all the adjacent vertical tiles for a given tile and the tile itself, in order', () => {
       game.placeTile(2, 2, p1Rack, 0);
       game.placeTile(1, 2, p1Rack, 2);
