@@ -341,7 +341,7 @@ describe('Game', () => {
   });
 
   describe('collectCurrentTurnWordsCoordinates', () => {
-    it('should collect all the words formed by a move, in coordinate form', () => {
+    it('should collect all the words formed by a side by side vertical move, in coordinate form', () => {
       game.placeTile(2, 2, p1Rack, 0);
       game.placeTile(1, 2, p1Rack, 2);
       game.placeTile(0, 2, p1Rack, 1);
@@ -358,6 +358,41 @@ describe('Game', () => {
         [[1, 1], [1, 2]],
         [[2, 1], [2, 2]]
       ])
+    });
+
+    it('should collect all the words formed by a side by side horizontal move, in coordinate form', () => {
+      game.placeTile(3, 4, p1Rack, 0);
+      game.placeTile(3, 3, p1Rack, 2);
+      game.placeTile(3, 1, p1Rack, 1);
+      game.placeTile(3, 2, p1Rack, 3);
+      game.switchTurn();
+      game.placeTile(4, 3, p2Rack, 0);
+      game.placeTile(4, 2, p2Rack, 2);
+      game.placeTile(4, 4, p2Rack, 1);
+      game.validateTilePlacements();
+      game.collectCurrentTurnWordsCoordinates(game.currentTurn.tileCoordinates[0]);
+      expect(game.currentTurn.allWordsCoordinates).to.deep.equal([
+        [[4, 2], [4, 3], [4, 4]],
+        [[3, 2], [4, 2]],
+        [[3, 3], [4, 3]],
+        [[3, 4], [4, 4]]
+      ]);
+    });
+
+    it('should collect all the words formed by a single tile move, in coordinate form', () => {
+      game.placeTile(1, 2, p1Rack, 0);
+      game.placeTile(2, 2, p1Rack, 1);
+      game.switchTurn();
+      game.placeTile(2, 3, p2Rack, 0);
+      game.placeTile(2, 4, p2Rack, 1);
+      game.switchTurn();
+      game.placeTile(1, 3, p3Rack, 4);
+      game.validateTilePlacements();
+      game.collectCurrentTurnWordsCoordinates(game.currentTurn.tileCoordinates[0]);
+      expect(game.currentTurn.allWordsCoordinates).to.deep.equal([
+        [[1, 2], [1, 3]],
+        [[1, 3], [2, 3]]
+      ]);
     });
   });
 });
