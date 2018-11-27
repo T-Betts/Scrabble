@@ -123,6 +123,7 @@ Game.prototype.validateTilePlacements = function () {
   let tileCoordinates = this.currentTurn.tileCoordinates;
   let allSameCol = tileCoordinates.every(tc => tc[1] === tileCoordinates[0][1]);
   let allSameRow =  tileCoordinates.every(tc => tc[0] === tileCoordinates[0][0]);
+  if (this.turnID === 1 && this.currentTurn.tileCoordinates.length === 1) throw 'Words must be longer than one letter.'
   if (this.currentTurn.tileCoordinates.length === 0) throw 'No tiles placed.';
   if (this.turnID === 1 && !JSON.stringify(tileCoordinates).includes(JSON.stringify(this.board.getCentreSquareCoordinates()))) throw 'First move must use centre square.';
   if (allSameRow || allSameCol) {

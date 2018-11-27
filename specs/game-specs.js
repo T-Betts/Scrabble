@@ -219,9 +219,9 @@ describe('Game', () => {
       expect(game.validateTilePlacements()).to.deep.equal(true);
     });
 
-    it('should return true if just one tile has been placed', () => {
+    it('should throw an error if just one tile has been placed in the first turn', () => {
       game.placeTile(2, 2, p1Rack, 2);
-      expect(game.validateTilePlacements()).to.deep.equal(true);
+      expect(() => {game.validateTilePlacements()}).to.throw('Words must be longer than one letter.');
     });
 
     it('should throw an error if no tiles have been placed in the current turn', () => {
