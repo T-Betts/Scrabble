@@ -45,12 +45,12 @@ Game.prototype.placeTile = function(row, column, rack, rackIndex) {
 }
 
 Game.prototype.removeTile = function(row, column, rackIndex) {
-  if (!JSON.stringify(this.currentTurn.tileCoordinates).includes(JSON.stringify([row, column]))) {
+  if (!this.currentTurn.tileCoordinates.some(tc => this.arraysEqual(tc, [row, column]))) {
     throw 'No tile placed in this square during current turn.';
   }
   let initialTile = this.board.squares[row][column];
   Object.keys(this.board.getBonusSquares()).forEach((key) => {
-    if (JSON.stringify(this.board.getBonusSquares()[key].indices).includes(JSON.stringify([row, column]))) {
+    if (this.board.getBonusSquares()[key].indices.some(index => this.arraysEqual(index, [row, column]))) {
       this.board.squares[row][column] = {letter: this.board.getBonusSquares()[key].symbol};
     } 
   });
@@ -62,8 +62,8 @@ Game.prototype.removeTile = function(row, column, rackIndex) {
       removedTile = this.tileBag.getCreateTile()(initialTile.letter, initialTile.value);
     }
   }
-  this.players[this.currentTurn.playerID - 1].getRack()[rackIndex] = removedTile;  
-  this.currentTurn.tileCoordinates.splice(this.currentTurn.tileCoordinates.map(el => String(el)).indexOf(JSON.stringify([row, column])), 1);
+  this.players[this.currentTurn.playerID - 1].getRack()[rackIndex] = removedTile;
+  this.currentTurn.tileCoordinates.splice(this.currentTurn.tileCoordinates.map(el => String(el)).indexOf(JSON.stringify([row, column])), 1);  
 }
 
 Game.prototype.sortTileCoordinatesArray = function(direction) {
@@ -101,7 +101,7 @@ Game.prototype.getTilesNeighbourSquares = function(tileCoordinates) {
   for (let i = col - 1; i <= col + 1; i++){
     if (i >= 0 && i <= 14) neighbourSquares.push([row, i]);
   }
-  return neighbourSquares.filter(square => JSON.stringify(square) !== JSON.stringify(tileCoordinates));
+  return neighbourSquares.filter(square => !this.arraysEqual(square, tileCoordinates));
 }
 
 Game.prototype.getWordsNeighbourSquares = function() {
@@ -115,7 +115,7 @@ Game.prototype.checkWordConnects = function() {
   let tileCoordinates = this.currentTurn.tileCoordinates;
   let neighbourSquares = this.getWordsNeighbourSquares();
   return neighbourSquares.some((square) => {
-    return this.capitalLettersRegEx.test(this.board.squares[square[0]][square[1]].letter) && (!JSON.stringify(tileCoordinates).includes(JSON.stringify(square)))
+    return this.capitalLettersRegEx.test(this.board.squares[square[0]][square[1]].letter) && (!tileCoordinates.some(tc => this.arraysEqual(tc, square)));
   });
 }
 
@@ -125,7 +125,7 @@ Game.prototype.validateTilePlacements = function () {
   let allSameRow =  tileCoordinates.every(tc => tc[0] === tileCoordinates[0][0]);
   if (this.turnID === 1 && this.currentTurn.tileCoordinates.length === 1) throw 'Words must be longer than one letter.'
   if (this.currentTurn.tileCoordinates.length === 0) throw 'No tiles placed.';
-  if (this.turnID === 1 && !JSON.stringify(tileCoordinates).includes(JSON.stringify(this.board.getCentreSquareCoordinates()))) throw 'First move must use centre square.';
+  if (this.turnID === 1 && !tileCoordinates.some(tc => this.arraysEqual(tc, this.board.getCentreSquareCoordinates()))) throw 'First move must use centre square.';
   if (allSameRow || allSameCol) {
     if (this.turnID > 1 && !this.checkWordConnects()) throw 'Invalid move. Must connect to previous moves.';
     this.currentTurn.direction = tileCoordinates.length === 1 ? 'oneTile' : allSameRow ?  'horizontal' : 'vertical';
