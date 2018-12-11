@@ -70,13 +70,13 @@ describe('Game', () => {
     it('should push the currentTurn object into the games turnHistory property', () => {
       game.placeTile(1, 0, p1Rack, 1);
       game.switchTurn();
-      expect(game.turnHistory[0]).to.deep.equal({playerID: 1, tileCoordinates: [[1, 0]], allWordsCoordinates: [], words: []});
+      expect(game.turnHistory[0]).to.deep.equal({playerID: 1, tilesCoordinates: [[1, 0]], allWordsCoordinates: [], words: []});
     });
 
     it('after updating turnID and playerID it should reset all data other data in the currentTurn object', () => {
       game.placeTile(1, 0, p1Rack, 1);
       game.switchTurn();
-      expect(game.currentTurn).to.deep.equal({playerID: 2, tileCoordinates: [], allWordsCoordinates: [], words: []});
+      expect(game.currentTurn).to.deep.equal({playerID: 2, tilesCoordinates: [], allWordsCoordinates: [], words: []});
     });
   });
 
@@ -105,7 +105,7 @@ describe('Game', () => {
     });
 
     it('should log the coordinates of the placed tiles for the current turn', () => {
-      expect(game.currentTurn.tileCoordinates).to.deep.equal([[0,0]]);
+      expect(game.currentTurn.tilesCoordinates).to.deep.equal([[0,0]]);
     });
 
     it('should throw error if trying to place a tile in an already occupied square', () => {
@@ -158,10 +158,10 @@ describe('Game', () => {
       expect(p1Rack[1].getLetter()).to.deep.equal('T');
     });
 
-    it('should remove chosen coordinates from current turn\'s tileCoordinates array', () => {
+    it('should remove chosen coordinates from current turn\'s tilesCoordinates array', () => {
       game.placeTile(1, 0, p1Rack, 1);
       game.removeTile(1, 0, 1);
-      expect(game.currentTurn.tileCoordinates.length).to.deep.equal(0);
+      expect(game.currentTurn.tilesCoordinates.length).to.deep.equal(0);
     });
   });
 
@@ -171,7 +171,7 @@ describe('Game', () => {
       game.placeTile(1, 1, p1Rack, 3);
       game.placeTile(1, 2, p1Rack, 2);
       game.sortTileCoordinatesArray('horizontal');
-      expect(game.currentTurn.tileCoordinates).to.deep.equal([[1, 1], [1, 2], [1, 3]]);
+      expect(game.currentTurn.tilesCoordinates).to.deep.equal([[1, 1], [1, 2], [1, 3]]);
     });
 
     it('should sort the tiles into correct order for horizontal words', () => {
@@ -179,7 +179,7 @@ describe('Game', () => {
       game.placeTile(1, 1, p1Rack, 3);
       game.placeTile(2, 1, p1Rack, 2);
       game.sortTileCoordinatesArray('vertical');
-      expect(game.currentTurn.tileCoordinates).to.deep.equal([[1, 1], [2, 1], [3, 1]]);
+      expect(game.currentTurn.tilesCoordinates).to.deep.equal([[1, 1], [2, 1], [3, 1]]);
     });
   });
 
@@ -245,7 +245,7 @@ describe('Game', () => {
   });
 
   describe('selectBoardSection', () => {
-    let tileCoordinates; 
+    let tilesCoordinates; 
 
     beforeEach(() => {
       game.board.squares[2][1] = {letter: 'G'};
@@ -256,18 +256,18 @@ describe('Game', () => {
     });
 
     it('should return a horizontal section of the board between two squares', () => {
-      tileCoordinates = [[2, 1], [2, 2], [2, 4]];
-      expect(game.selectBoardSection('horizontal', tileCoordinates)).to.deep.equal([{letter: 'G'}, {letter: 'A'}, {letter: '-'}, {letter: 'S'}]);
+      tilesCoordinates = [[2, 1], [2, 2], [2, 4]];
+      expect(game.selectBoardSection('horizontal', tilesCoordinates)).to.deep.equal([{letter: 'G'}, {letter: 'A'}, {letter: '-'}, {letter: 'S'}]);
     });
 
     it('should return a horizontal section of the board between two squares', () => {
-      tileCoordinates = [[1, 1], [2, 1], [4, 1]];
-      expect(game.selectBoardSection('vertical', tileCoordinates)).to.deep.equal([{letter: 'M'}, {letter: 'G'}, {letter: '-'}, {letter: 'E'}]);
+      tilesCoordinates = [[1, 1], [2, 1], [4, 1]];
+      expect(game.selectBoardSection('vertical', tilesCoordinates)).to.deep.equal([{letter: 'M'}, {letter: 'G'}, {letter: '-'}, {letter: 'E'}]);
     });
 
     it('should return a single square if only one tile was placed', () => {
-      tileCoordinates = [[1, 1]];
-      expect(game.selectBoardSection('oneTile', tileCoordinates)).to.deep.equal([{letter: 'M'}]);
+      tilesCoordinates = [[1, 1]];
+      expect(game.selectBoardSection('oneTile', tilesCoordinates)).to.deep.equal([{letter: 'M'}]);
     });
   });
 
@@ -339,12 +339,12 @@ describe('Game', () => {
       game.placeTile(2, 3, p1Rack, 0);
       game.placeTile(2, 2, p1Rack, 2);
       game.validateTilePlacements();
-      game.collectHorizontalAdjacentTiles(game.currentTurn.tileCoordinates[0]);
+      game.collectHorizontalAdjacentTiles(game.currentTurn.tilesCoordinates[0]);
       expect(game.currentTurn.allWordsCoordinates).to.deep.equal([[[2, 2], [2, 3]]]);
     });
 
     it('should throw error if called when no tiles have been placed during current move', () => {
-      expect(() => {game.collectHorizontalAdjacentTiles(game.currentTurn.tileCoordinates[0])}).to.throw('No words to collect as no tiles have been placed this turn.');
+      expect(() => {game.collectHorizontalAdjacentTiles(game.currentTurn.tilesCoordinates[0])}).to.throw('No words to collect as no tiles have been placed this turn.');
     });
   });
 
@@ -355,12 +355,12 @@ describe('Game', () => {
       game.placeTile(0, 2, p1Rack, 1);
       game.placeTile(3, 2, p1Rack, 3);
       game.validateTilePlacements();
-      game.collectVerticalAdjacentTiles(game.currentTurn.tileCoordinates[0]);
+      game.collectVerticalAdjacentTiles(game.currentTurn.tilesCoordinates[0]);
       expect(game.currentTurn.allWordsCoordinates).to.deep.equal([[[0, 2], [1, 2], [2, 2], [3, 2]]]);
     });
 
     it('should throw error if called when no tiles have been placed during current move', () => {
-      expect(() => {game.collectVerticalAdjacentTiles(game.currentTurn.tileCoordinates[0])}).to.throw('No words to collect as no tiles have been placed this turn.');
+      expect(() => {game.collectVerticalAdjacentTiles(game.currentTurn.tilesCoordinates[0])}).to.throw('No words to collect as no tiles have been placed this turn.');
     });
   });
 
@@ -375,7 +375,7 @@ describe('Game', () => {
       game.placeTile(1, 1, p2Rack, 2);
       game.placeTile(0, 1, p2Rack, 1);
       game.validateTilePlacements();
-      game.collectCurrentTurnWordsCoordinates(game.currentTurn.tileCoordinates[0]);
+      game.collectCurrentTurnWordsCoordinates(game.currentTurn.tilesCoordinates[0]);
       expect(game.currentTurn.allWordsCoordinates).to.deep.equal([
         [[0, 1], [1, 1], [2, 1]],
         [[0, 1], [0, 2]],
@@ -394,7 +394,7 @@ describe('Game', () => {
       game.placeTile(4, 2, p2Rack, 2);
       game.placeTile(4, 4, p2Rack, 1);
       game.validateTilePlacements();
-      game.collectCurrentTurnWordsCoordinates(game.currentTurn.tileCoordinates[0]);
+      game.collectCurrentTurnWordsCoordinates(game.currentTurn.tilesCoordinates[0]);
       expect(game.currentTurn.allWordsCoordinates).to.deep.equal([
         [[4, 2], [4, 3], [4, 4]],
         [[3, 2], [4, 2]],
@@ -412,7 +412,7 @@ describe('Game', () => {
       game.switchTurn();
       game.placeTile(1, 3, p3Rack, 4);
       game.validateTilePlacements();
-      game.collectCurrentTurnWordsCoordinates(game.currentTurn.tileCoordinates[0]);
+      game.collectCurrentTurnWordsCoordinates(game.currentTurn.tilesCoordinates[0]);
       expect(game.currentTurn.allWordsCoordinates).to.deep.equal([
         [[1, 2], [1, 3]],
         [[1, 3], [2, 3]]
@@ -427,7 +427,7 @@ describe('Game', () => {
       game.placeTile(3, 1, p2Rack, 0);
       game.placeTile(3, 2, p2Rack, 1);
       game.validateTilePlacements();
-      game.collectCurrentTurnWordsCoordinates(game.currentTurn.tileCoordinates[0]);
+      game.collectCurrentTurnWordsCoordinates(game.currentTurn.tilesCoordinates[0]);
       expect(game.currentTurn.allWordsCoordinates).to.deep.equal([[[3, 0], [3, 1], [3, 2]], [[1, 2], [2, 2], [3, 2]]]);
     });
   });
@@ -441,7 +441,7 @@ describe('Game', () => {
       game.placeTile(3, 1, p2Rack, 0);
       game.placeTile(3, 2, p2Rack, 1);
       game.validateTilePlacements();
-      game.collectCurrentTurnWordsCoordinates(game.currentTurn.tileCoordinates[0]);
+      game.collectCurrentTurnWordsCoordinates(game.currentTurn.tilesCoordinates[0]);
       game.getCurrentTurnsWords();
       expect(game.currentTurn.words).to.deep.equal(['cat', 'set']);
     });
@@ -456,7 +456,7 @@ describe('Game', () => {
       game.placeTile(3, 1, p2Rack, 0);
       game.placeTile(3, 2, p2Rack, 1);
       game.validateTilePlacements();
-      game.collectCurrentTurnWordsCoordinates(game.currentTurn.tileCoordinates[0]);
+      game.collectCurrentTurnWordsCoordinates(game.currentTurn.tilesCoordinates[0]);
       game.getCurrentTurnsWords();
       expect(game.checkAllTurnsWordsExist()).to.deep.equal(true);
     });
@@ -469,7 +469,7 @@ describe('Game', () => {
       game.placeTile(3, 2, p2Rack, 1);
       game.placeTile(1, 2, p2Rack, 3);
       game.validateTilePlacements();
-      game.collectCurrentTurnWordsCoordinates(game.currentTurn.tileCoordinates[0]);
+      game.collectCurrentTurnWordsCoordinates(game.currentTurn.tilesCoordinates[0]);
       game.getCurrentTurnsWords();
       expect(() => {game.checkAllTurnsWordsExist()}).to.throw('Invalid word(s): CRT, CR');
     });
