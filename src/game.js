@@ -2,6 +2,7 @@ const Player = require('./player.js');
 const TileBag = require('./tile-bag.js');
 const Board = require('./board.js');
 const scrabbleDictionary = require('../word-list.js');
+const arraysEqual = require('./helper-functions.js').arraysEqual;
 
 function Game(playerNamesArray, createPlayer = (name, id) => new Player(name, id), board = new Board, tileBag = new TileBag, dictionary = scrabbleDictionary) {
   this.playerCount = playerNamesArray.length;
@@ -45,12 +46,12 @@ Game.prototype.placeTile = function(row, column, rack, rackIndex) {
 }
 
 Game.prototype.removeTile = function(row, column, rackIndex) {
-  if (!this.currentTurn.tilesCoordinates.some(tc => this.arraysEqual(tc, [row, column]))) {
+  if (!this.currentTurn.tilesCoordinates.some(tc => arraysEqual(tc, [row, column]))) {
     throw 'No tile placed in this square during current turn.';
   }
   let initialTile = this.board.squares[row][column];
   Object.keys(this.board.getBonusSquares()).forEach((key) => {
-    if (this.board.getBonusSquares()[key].indices.some(index => this.arraysEqual(index, [row, column]))) {
+    if (this.board.getBonusSquares()[key].indices.some(index => arraysEqual(index, [row, column]))) {
       this.board.squares[row][column] = {letter: this.board.getBonusSquares()[key].symbol};
     } 
   });
@@ -101,7 +102,7 @@ Game.prototype.getTilesNeighbourSquares = function(tileLocation) {
   for (let i = col - 1; i <= col + 1; i++){
     if (i >= 0 && i <= 14) neighbourSquares.push([row, i]);
   }
-  return neighbourSquares.filter(square => !this.arraysEqual(square, tileLocation));
+  return neighbourSquares.filter(square => !arraysEqual(square, tileLocation));
 }
 
 Game.prototype.getWordsNeighbourSquares = function() {
@@ -115,7 +116,7 @@ Game.prototype.checkWordConnects = function() {
   let tilesCoordinates = this.currentTurn.tilesCoordinates;
   let neighbourSquares = this.getWordsNeighbourSquares();
   return neighbourSquares.some((square) => {
-    return this.capitalLettersRegEx.test(this.board.squares[square[0]][square[1]].letter) && (!tilesCoordinates.some(tc => this.arraysEqual(tc, square)));
+    return this.capitalLettersRegEx.test(this.board.squares[square[0]][square[1]].letter) && (!tilesCoordinates.some(tc => arraysEqual(tc, square)));
   });
 }
 
@@ -125,7 +126,7 @@ Game.prototype.validateTilePlacements = function () {
   let allSameRow =  tilesCoordinates.every(tc => tc[0] === tilesCoordinates[0][0]);
   if (this.turnID === 1 && this.currentTurn.tilesCoordinates.length === 1) throw 'Words must be longer than one letter.'
   if (this.currentTurn.tilesCoordinates.length === 0) throw 'No tiles placed.';
-  if (this.turnID === 1 && !tilesCoordinates.some(tc => this.arraysEqual(tc, this.board.getCentreSquareCoordinates()))) throw 'First move must use centre square.';
+  if (this.turnID === 1 && !tilesCoordinates.some(tc => arraysEqual(tc, this.board.getCentreSquareCoordinates()))) throw 'First move must use centre square.';
   if (allSameRow || allSameCol) {
     if (this.turnID > 1 && !this.checkWordConnects()) throw 'Invalid move. Must connect to previous moves.';
     this.currentTurn.direction = tilesCoordinates.length === 1 ? 'oneTile' : allSameRow ?  'horizontal' : 'vertical';
@@ -228,16 +229,6 @@ Game.prototype.checkAllTurnsWordsExist = function() {
   } else {
     throw `Invalid word(s): ${notWords.join(', ')}`;
   }
-}
-
-Game.prototype.arraysEqual = function(arr1, arr2) {
-  if(arr1.length !== arr2.length)
-    return false;
-  for(var i = arr1.length; i--;) {
-    if(arr1[i] !== arr2[i])
-        return false;
-  }
-  return true;
 }
 
 module.exports = Game;
