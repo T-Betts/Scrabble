@@ -7,7 +7,7 @@ describe('Player', () => {
 
   beforeEach(function() {
     player1 = new Player('Tom', 1);
-    fakeLetterBag = {tiles: [{letter: 'A'}, {letter: 'B'}, {letter: 'C'}, {letter: 'D'}, {letter: 'E'}]};
+    fakeLetterBag = [{letter: 'A'}, {letter: 'B'}, {letter: 'C'}, {letter: 'D'}, {letter: 'E'}];
   });
 
   describe('getId', () => {

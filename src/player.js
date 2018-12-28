@@ -10,7 +10,7 @@ function Player(name, id) {
 
 Player.prototype.drawTiles = function(amount, bag) {
   for (let i = 0; i < amount; i++) {
-    this.rack[i] = (bag.tiles.pop());
+    this.rack[i] = (bag.pop());
   }
 }
 
