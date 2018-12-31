@@ -18,6 +18,7 @@
   "homepage": "https://github.com/T-Betts/Scrabble#readme",
   "dependencies": {
     "chai": "^4.2.0",
+    "clone-deep": "^4.0.1",
     "istanbul": "^0.4.5",
     "mocha": "^5.2.0",
     "nyc": "^13.1.0",
