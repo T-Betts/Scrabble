@@ -16,4 +16,10 @@ Tile.prototype.setBlankLetter = function(letter) {
   this.letter = letter;
 }
 
+Tile.prototype.revertToBlank = function() {
+  if(this.getValue() !== 0) throw 'Only blank tiles can be reset to blank.'
+  if(this.getLetter() === '*') throw 'Tile already blank.'
+  this.letter = '*';
+}
+
 module.exports = Tile;
