@@ -11,4 +11,9 @@ Tile.prototype.getValue = function() {
   return this.value;
 }
 
+Tile.prototype.setBlankLetter = function(letter) {
+  if(this.getValue() !== 0) throw 'Can\'t alter non-blank tiles.'
+  this.letter = letter;
+}
+
 module.exports = Tile;

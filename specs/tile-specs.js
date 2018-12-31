@@ -19,4 +19,16 @@ describe('Tile', () => {
       expect(tile.getValue()).to.deep.equal(1);
     });
   });
+
+  describe('setBlankLetter', () => {
+    it('should set the letter property of a blank tile to a given letter', () => {
+      let blankTile = new Tile('*', 0);
+      blankTile.setBlankLetter('D');
+      expect(blankTile.letter).to.deep.equal('D');
+    });
+
+    it('should throw an error if called on a non-blank tile', () => {
+      expect(() => {tile.setBlankLetter('Q')}).to.throw('Can\'t alter non-blank tiles.');
+    });
+  });
 });
