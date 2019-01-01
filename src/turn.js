@@ -4,7 +4,6 @@ const scrabbleDictionary = require('../word-list.js');
 function Turn(player, startBoard, tileBag, turnID, dictionary = scrabbleDictionary) {
   this.id = turnID;
   this.player = player;
-  this.score = 0;
   this.board = startBoard;
   this.tilesCoordinates = [];
   this.allWordsCoordinates = [];
@@ -224,7 +223,7 @@ Turn.prototype.calculateScore = function() {
     turnScore += wordScore;
   })
   if(this.tilesCoordinates.length === 7) turnScore += 50;
-  return turnScore;
+  this.score = turnScore;
 }
 
 module.exports = Turn;

@@ -457,7 +457,8 @@ describe('Turn', () => {
       turnOne.validateTilePlacements();
       turnOne.collectCurrentTurnWordsCoordinates(turnOne.tilesCoordinates[0]);
       turnOne.getCurrentTurnsWords();
-      expect(turnOne.calculateScore()).to.deep.equal(5);
+      turnOne.calculateScore()
+      expect(turnOne.score).to.deep.equal(5);
     });
 
     it('should return the correct score for a one-word turn that includes a double letter tile', () => {
@@ -467,7 +468,8 @@ describe('Turn', () => {
       turnOne.validateTilePlacements();
       turnOne.collectCurrentTurnWordsCoordinates(turnOne.tilesCoordinates[0]);
       turnOne.getCurrentTurnsWords();
-      expect(turnOne.calculateScore()).to.deep.equal(8);
+      turnOne.calculateScore()
+      expect(turnOne.score).to.deep.equal(8);
     });
 
     it('should return the correct score for a one-word turn that includes a triple letter tile', () => {
@@ -477,7 +479,8 @@ describe('Turn', () => {
       turnOne.validateTilePlacements();
       turnOne.collectCurrentTurnWordsCoordinates(turnOne.tilesCoordinates[0]);
       turnOne.getCurrentTurnsWords();
-      expect(turnOne.calculateScore()).to.deep.equal(7);
+      turnOne.calculateScore();
+      expect(turnOne.score).to.deep.equal(7);
     });
 
     it('should return the correct score for a one-word turn that includes a double word tile', () => {
@@ -487,7 +490,8 @@ describe('Turn', () => {
       turnOne.validateTilePlacements();
       turnOne.collectCurrentTurnWordsCoordinates(turnOne.tilesCoordinates[0]);
       turnOne.getCurrentTurnsWords();
-      expect(turnOne.calculateScore()).to.deep.equal(10);
+      turnOne.calculateScore();
+      expect(turnOne.score).to.deep.equal(10);
     });
 
     it('should return the correct score for a one-word turn that includes a triple word tile', () => {
@@ -497,7 +501,8 @@ describe('Turn', () => {
       turnOne.validateTilePlacements();
       turnOne.collectCurrentTurnWordsCoordinates(turnOne.tilesCoordinates[0]);
       turnOne.getCurrentTurnsWords();
-      expect(turnOne.calculateScore()).to.deep.equal(15);
+      turnOne.calculateScore();
+      expect(turnOne.score).to.deep.equal(15);
     });
 
     it('should return the correct score for a one-word turn that spans multiple bonus squares', () => {
@@ -509,7 +514,8 @@ describe('Turn', () => {
       turnOne.validateTilePlacements();
       turnOne.collectCurrentTurnWordsCoordinates(turnOne.tilesCoordinates[0]);
       turnOne.getCurrentTurnsWords();
-      expect(turnOne.calculateScore()).to.deep.equal(42);
+      turnOne.calculateScore();
+      expect(turnOne.score).to.deep.equal(42);
     });
 
     it('should return the correct score for a multiple-word turn', () => {
@@ -523,10 +529,11 @@ describe('Turn', () => {
       turnTwo.validateTilePlacements();
       turnTwo.collectCurrentTurnWordsCoordinates(turnTwo.tilesCoordinates[0]);
       turnTwo.getCurrentTurnsWords();
-      expect(turnTwo.calculateScore()).to.deep.equal(27);
+      turnTwo.calculateScore();
+      expect(turnTwo.score).to.deep.equal(27);
     });
 
-    it('should add a 50 pint bonus if all 7 tiles are used in a turn', () => {
+    it('should add a 50 point bonus if all 7 tiles are used in a turn', () => {
       turnOne.placeTile(6, 0, 0);
 
       turnTwo.placeTile(5, 0, 1);
@@ -539,7 +546,8 @@ describe('Turn', () => {
       turnTwo.validateTilePlacements();
       turnTwo.collectCurrentTurnWordsCoordinates(turnTwo.tilesCoordinates[0]);
       turnTwo.getCurrentTurnsWords();
-      expect(turnTwo.calculateScore()).to.deep.equal(67);
+      turnTwo.calculateScore();
+      expect(turnTwo.score).to.deep.equal(67);
     });
   });
 });
