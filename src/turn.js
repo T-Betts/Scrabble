@@ -210,6 +210,8 @@ Turn.prototype.calculateScore = function() {
       let tileValue = this.board.squares[tile[0]][tile[1]].value
       if (this.board.getBonusSquares().doubleLetter.indices.some(index => arraysEqual(index, tile))) {
         wordScore += tileValue * 2;
+      } else if(this.board.getBonusSquares().tripLetter.indices.some(index => arraysEqual(index, tile))){
+        wordScore += tileValue * 3;
       } else {
         wordScore += tileValue;
       }   

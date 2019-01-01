@@ -469,5 +469,15 @@ describe('Turn', () => {
       turnOne.getCurrentTurnsWords();
       expect(turnOne.calculateScore()).to.deep.equal(8);
     });
+
+    it('should return the correct score of a word that includes a triple letter tile', () => {
+      turnOne.placeTile(3, 3, 3);
+      turnOne.placeTile(4, 3, 0);
+      turnOne.placeTile(5, 3, 1);
+      turnOne.validateTilePlacements();
+      turnOne.collectCurrentTurnWordsCoordinates(turnOne.tilesCoordinates[0]);
+      turnOne.getCurrentTurnsWords();
+      expect(turnOne.calculateScore()).to.deep.equal(7);
+    });
   });
 });
