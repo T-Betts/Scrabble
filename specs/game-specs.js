@@ -56,6 +56,14 @@ describe('Game', () => {
       game.playTurn();
       expect(game.turnID).to.deep.equal(2);
     });
+
+    it('should calculate the turn score', () => {
+      game.currentTurn.player.drawTiles(5, game.tileBag.showRemainingTiles());
+      game.currentTurn.placeTile(7, 7, 0);
+      game.currentTurn.placeTile(7, 6, 1);
+      game.playTurn();
+      expect(game.turnHistory[0].score).to.deep.equal(4)
+    });
   });
 
   describe('switchTurn', () => {

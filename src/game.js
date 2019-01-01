@@ -25,6 +25,7 @@ Game.prototype.playTurn = function() {
   turn.collectCurrentTurnWordsCoordinates(this.currentTurn.tilesCoordinates[0]);
   turn.getCurrentTurnsWords();
   turn.checkAllTurnsWordsExist();
+  turn.calculateScore();
   this.switchTurn();
 }
 
