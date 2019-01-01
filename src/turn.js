@@ -223,6 +223,7 @@ Turn.prototype.calculateScore = function() {
     wordBonuses.forEach(bonus => wordScore *= bonus);
     turnScore += wordScore;
   })
+  if(this.tilesCoordinates.length === 7) turnScore += 50;
   return turnScore;
 }
 

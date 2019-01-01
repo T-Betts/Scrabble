@@ -525,5 +525,21 @@ describe('Turn', () => {
       turnTwo.getCurrentTurnsWords();
       expect(turnTwo.calculateScore()).to.deep.equal(27);
     });
+
+    it('should add a 50 pint bonus if all 7 tiles are used in a turn', () => {
+      turnOne.placeTile(6, 0, 0);
+
+      turnTwo.placeTile(5, 0, 1);
+      turnTwo.placeTile(5, 1, 6);
+      turnTwo.placeTile(5, 2, 0);
+      turnTwo.placeTile(5, 3, 3);
+      turnTwo.placeTile(5, 4, 2);
+      turnTwo.placeTile(5, 5, 4);
+      turnTwo.placeTile(5, 6, 5);
+      turnTwo.validateTilePlacements();
+      turnTwo.collectCurrentTurnWordsCoordinates(turnTwo.tilesCoordinates[0]);
+      turnTwo.getCurrentTurnsWords();
+      expect(turnTwo.calculateScore()).to.deep.equal(67);
+    });
   });
 });
