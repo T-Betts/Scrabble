@@ -48,10 +48,10 @@ describe('Turn', () => {
         [{letter: '-'},{letter: '-'},{letter: '-'},{letter: '-'},{letter: '-'},{letter: '-'},{letter: '-'}],
         ],
       getBonusSquares: {
-        doubleWord: {indices: [[0, 0]], symbol: '2'},
-        doubleLetter: {indices: [[0, 2]], symbol: 'd'},
-        tripWord: {indices: [[2, 0]], symbol: '3'},
-        tripLetter: {indices: [[2, 4]], symbol: 't'}
+        doubleWord: {indices: [[3, 1]], symbol: '2'},
+        doubleLetter: {indices: [[1, 3]], symbol: 'd'},
+        tripWord: {indices: [[3, 5]], symbol: '3'},
+        tripLetter: {indices: [[5, 3]], symbol: 't'}
       },
       getCentreSquareCoordinates: [3, 3]
     });
@@ -126,27 +126,27 @@ describe('Turn', () => {
     });
 
     it('removes a tile from a designated double word square', () => {
-      turnOne.placeTile(0, 0, 1);
-      turnOne.removeTile(0, 0, 1);
-      expect(turnOne.board.squares[0][0].letter).to.deep.equal('2');
+      turnOne.placeTile(3, 1, 1);
+      turnOne.removeTile(3, 1, 1);
+      expect(turnOne.board.squares[3][1].letter).to.deep.equal('2');
     });
 
     it('removes a tile from a designated double letter square', () => {
-      turnOne.placeTile(0, 2, 1);
-      turnOne.removeTile(0, 2, 1);
-      expect(turnOne.board.squares[0][2].letter).to.deep.equal('d');
+      turnOne.placeTile(1, 3, 1);
+      turnOne.removeTile(1, 3, 1);
+      expect(turnOne.board.squares[1][3].letter).to.deep.equal('d');
     });
 
     it('removes a tile from a designated triple word square', () => {
-      turnOne.placeTile(2, 0, 1);
-      turnOne.removeTile(2, 0, 1);
-      expect(turnOne.board.squares[2][0].letter).to.deep.equal('3');
+      turnOne.placeTile(3, 5, 1);
+      turnOne.removeTile(3, 5, 1);
+      expect(turnOne.board.squares[3][5].letter).to.deep.equal('3');
     });
 
     it('removes a tile from a designated triple letter square', () => {
-      turnOne.placeTile(2, 4, 1);
-      turnOne.removeTile(2, 4, 1);
-      expect(turnOne.board.squares[2][4].letter).to.deep.equal('t');
+      turnOne.placeTile(5, 3, 1);
+      turnOne.removeTile(5, 3, 1);
+      expect(turnOne.board.squares[5][3].letter).to.deep.equal('t');
     });
 
     it('should throw error if designated square does not contain tile letter placed during current turn', () => {
@@ -458,6 +458,16 @@ describe('Turn', () => {
       turnOne.collectCurrentTurnWordsCoordinates(turnOne.tilesCoordinates[0]);
       turnOne.getCurrentTurnsWords();
       expect(turnOne.calculateScore()).to.deep.equal(5);
+    });
+
+    it('should return the correct score of a word that includes a double letter tile', () => {
+      turnOne.placeTile(1, 3, 3);
+      turnOne.placeTile(2, 3, 0);
+      turnOne.placeTile(3, 3, 1);
+      turnOne.validateTilePlacements();
+      turnOne.collectCurrentTurnWordsCoordinates(turnOne.tilesCoordinates[0]);
+      turnOne.getCurrentTurnsWords();
+      expect(turnOne.calculateScore()).to.deep.equal(8);
     });
   });
 });

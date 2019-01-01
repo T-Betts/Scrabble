@@ -207,7 +207,12 @@ Turn.prototype.calculateScore = function() {
   this.allWordsCoordinates.forEach((word) => {
     let wordScore = 0;
     word.forEach((tile) => {
-      wordScore += this.board.squares[tile[0]][tile[1]].value;
+      let tileValue = this.board.squares[tile[0]][tile[1]].value
+      if (this.board.getBonusSquares().doubleLetter.indices.some(index => arraysEqual(index, tile))) {
+        wordScore += tileValue * 2;
+      } else {
+        wordScore += tileValue;
+      }   
     })
     turnScore += wordScore;
   })
