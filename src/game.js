@@ -26,6 +26,7 @@ Game.prototype.playTurn = function() {
   turn.getCurrentTurnsWords();
   turn.checkAllTurnsWordsExist();
   turn.calculateScore();
+  this.currentTurn.player.updateScore(this.currentTurn.score);
   this.switchTurn();
 }
 

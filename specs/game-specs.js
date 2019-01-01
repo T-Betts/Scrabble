@@ -49,20 +49,28 @@ describe('Game', () => {
       expect(() => {game.playTurn()}).to.throw('Invalid word(s): TQ');
     });
 
-    it('should switch to the next turn if current turn was legal', () => {
-      game.currentTurn.player.drawTiles(5, game.tileBag.showRemainingTiles());
-      game.currentTurn.placeTile(7, 7, 0);
-      game.currentTurn.placeTile(7, 6, 1);
-      game.playTurn();
-      expect(game.turnID).to.deep.equal(2);
-    });
-
     it('should calculate the turn score', () => {
       game.currentTurn.player.drawTiles(5, game.tileBag.showRemainingTiles());
       game.currentTurn.placeTile(7, 7, 0);
       game.currentTurn.placeTile(7, 6, 1);
       game.playTurn();
       expect(game.turnHistory[0].score).to.deep.equal(4)
+    });
+
+    it('should add the current turn score to the current player\'s overall score', () => {
+      game.currentTurn.player.drawTiles(5, game.tileBag.showRemainingTiles());
+      game.currentTurn.placeTile(7, 7, 0);
+      game.currentTurn.placeTile(7, 6, 1);
+      game.playTurn();
+      expect(game.players[0].score).to.deep.equal(4);
+    });
+
+    it('should switch to the next turn if current turn was legal', () => {
+      game.currentTurn.player.drawTiles(5, game.tileBag.showRemainingTiles());
+      game.currentTurn.placeTile(7, 7, 0);
+      game.currentTurn.placeTile(7, 6, 1);
+      game.playTurn();
+      expect(game.turnID).to.deep.equal(2);
     });
   });
 
