@@ -203,9 +203,9 @@ Turn.prototype.checkAllTurnsWordsExist = function() {
 }
 
 Turn.prototype.calculateScore = function() {
-  let turnScore = 0
+  let turnScore = 0;
   this.allWordsCoordinates.forEach((word) => {
-    let wordScore = 0
+    let wordScore = 0;
     word.forEach((tile) => {
       wordScore += this.board.squares[tile[0]][tile[1]].value;
     })

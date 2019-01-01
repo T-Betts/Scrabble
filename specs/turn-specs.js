@@ -26,24 +26,26 @@ describe('Turn', () => {
       getId: 2, 
       getRack: [
         {letter: 'A', value: 1}, {letter: 'T', value: 1}, {letter: 'E', value: 1},
-        {letter: 'C', value: 3}, {letter: 'R', value: 1}, {letter: 'S', value: 1}, {letter: '-'}
+        {letter: 'C', value: 3}, {letter: 'R', value: 1}, {letter: 'S', value: 1}, {letter: 'R', value: 1}
       ]
     });
     let playerThreeStub = sinon.createStubInstance(Player, {
       getId: 3, 
       getRack: [
         {letter: 'A', value: 1}, {letter: 'T', value: 1}, {letter: 'E', value: 1},
-        {letter: 'C', value: 3}, {letter: 'R', value: 1}, {letter: 'S', value: 1}, {letter: '-'}
+        {letter: 'C', value: 3}, {letter: 'R', value: 1}, {letter: 'S', value: 1}, {letter: 'R', value: 1}
       ]
     });
 
     let boardStub = sinon.createStubInstance(Board, {
       getSquares: [
-        [{letter: '-'},{letter: '-'},{letter: '-'},{letter: '-'},{letter: '-'}],
-        [{letter: '-'},{letter: '-'},{letter: '-'},{letter: '-'},{letter: '-'}],
-        [{letter: '-'},{letter: '-'},{letter: '-'},{letter: '-'},{letter: '-'}],
-        [{letter: '-'},{letter: '-'},{letter: '-'},{letter: '-'},{letter: '-'}],
-        [{letter: '-'},{letter: '-'},{letter: '-'},{letter: '-'},{letter: '-'}]
+        [{letter: '-'},{letter: '-'},{letter: '-'},{letter: '-'},{letter: '-'},{letter: '-'},{letter: '-'}],
+        [{letter: '-'},{letter: '-'},{letter: '-'},{letter: '-'},{letter: '-'},{letter: '-'},{letter: '-'}],
+        [{letter: '-'},{letter: '-'},{letter: '-'},{letter: '-'},{letter: '-'},{letter: '-'},{letter: '-'}],
+        [{letter: '-'},{letter: '-'},{letter: '-'},{letter: '-'},{letter: '-'},{letter: '-'},{letter: '-'}],
+        [{letter: '-'},{letter: '-'},{letter: '-'},{letter: '-'},{letter: '-'},{letter: '-'},{letter: '-'}],
+        [{letter: '-'},{letter: '-'},{letter: '-'},{letter: '-'},{letter: '-'},{letter: '-'},{letter: '-'}],
+        [{letter: '-'},{letter: '-'},{letter: '-'},{letter: '-'},{letter: '-'},{letter: '-'},{letter: '-'}],
         ],
       getBonusSquares: {
         doubleWord: {indices: [[0, 0]], symbol: '2'},
@@ -51,7 +53,7 @@ describe('Turn', () => {
         tripWord: {indices: [[2, 0]], symbol: '3'},
         tripLetter: {indices: [[2, 4]], symbol: 't'}
       },
-      getCentreSquareCoordinates: [2, 2]
+      getCentreSquareCoordinates: [3, 3]
     });
 
     let createTileStub = (letter, value) => {
@@ -185,41 +187,41 @@ describe('Turn', () => {
   describe('validateTilePlacements', () => {
     it('throws error if the tiles placed during the current tile are not all in the same row or column', () => {
       turnOne.placeTile(1, 0, 1);
-      turnOne.placeTile(2, 2, 2);
+      turnOne.placeTile(3, 3, 2);
       turnOne.placeTile(1, 3, 3);
       expect(() => {turnOne.validateTilePlacements()}).to.throw("Invalid move. Tiles must all be in same row or column.");
     });
 
     it('throws error if there is a non-letter space between tiles that are all placed in the same row', () => {
-      turnOne.placeTile(2, 0, 1);
-      turnOne.placeTile(2, 2, 2);
-      turnOne.placeTile(2, 3, 3);
+      turnOne.placeTile(3, 0, 1);
+      turnOne.placeTile(3, 2, 2);
+      turnOne.placeTile(3, 3, 3);
       expect(() => {turnOne.validateTilePlacements()}).to.throw('Invalid move. No non-letter spaces between placed tiles allowed.');
     });
 
     it('throws error if there is a non-letter space between tiles that are all placed in the same column', () => {
-      turnOne.placeTile(0, 2, 1);
-      turnOne.placeTile(2, 2, 2);
-      turnOne.placeTile(3, 2, 3);
+      turnOne.placeTile(0, 3, 1);
+      turnOne.placeTile(3, 3, 2);
+      turnOne.placeTile(2, 3, 3);
       expect(() => {turnOne.validateTilePlacements()}).to.throw('Invalid move. No non-letter spaces between placed tiles allowed.');
     });
 
     it('returns true if tiles are all in same row and there are no non-letter spaces between them', () => {
-      turnOne.placeTile(2, 1, 1);
-      turnOne.placeTile(2, 2, 2);
-      turnOne.placeTile(2, 3, 3);
+      turnOne.placeTile(3, 1, 1);
+      turnOne.placeTile(3, 3, 2);
+      turnOne.placeTile(3, 2, 3);
       expect(turnOne.validateTilePlacements()).to.deep.equal(true);
     });
 
     it('returns true if tiles are all in same column and there are no non-letter spaces between them', () => {
-      turnOne.placeTile(1, 2, 1);
-      turnOne.placeTile(3, 2, 2);
-      turnOne.placeTile(2, 2, 3);
+      turnOne.placeTile(1, 3, 1);
+      turnOne.placeTile(2, 3, 2);
+      turnOne.placeTile(3, 3, 3);
       expect(turnOne.validateTilePlacements()).to.deep.equal(true);
     });
 
     it('should throw an error if just one tile has been placed in the first turn', () => {
-      turnOne.placeTile(2, 2, 2);
+      turnOne.placeTile(3, 3, 2);
       expect(() => {turnOne.validateTilePlacements()}).to.throw('Words must be longer than one letter.');
     });
 
@@ -235,7 +237,7 @@ describe('Turn', () => {
     });
 
     it('throws an error if no tiles from the current turn connect with a tile from a previous turn', () => {
-      turnOne.placeTile(2, 2, 1);
+      turnOne.placeTile(3, 3, 1);
       turnTwo.placeTile(0, 0, 0)
       turnTwo.placeTile(0, 1, 1)
       expect(() => {turnTwo.validateTilePlacements()}).to.throw('Invalid move. Must connect to previous moves.');
@@ -271,7 +273,7 @@ describe('Turn', () => {
 
   describe('getTilesNeighbourSquares', () => {
     it('should return four squares for a square not at the edge of the board', () => {
-      expect(turnOne.getTilesNeighbourSquares([2, 2])).to.deep.equal([[1,2],[3,2],[2,1],[2,3]]);
+      expect(turnOne.getTilesNeighbourSquares([3, 3])).to.deep.equal([[2,3],[4,3],[3,2],[3,4]]);
     });
 
     it('should return two squares for a square in the corner of the board', () => {
@@ -286,7 +288,7 @@ describe('Turn', () => {
   describe('getWordsNeighbourSquares', () => {
     it('should return all the potential neighbouring squares of a word', () => {
       turnOne.placeTile(1, 2, 2);
-      turnOne.placeTile(2, 2, 3);
+      turnOne.placeTile(3, 3, 3);
       turnOne.placeTile(3, 2, 4);
       expect(turnOne.getWordsNeighbourSquares().length).to.deep.equal(12);
     });
@@ -294,13 +296,13 @@ describe('Turn', () => {
 
   describe('checkWordConnects', () => {
     it('should return true if the current turn touches a previously placed word', () => {
-      turnOne.placeTile(2, 2, 1);
-      turnTwo.placeTile(1, 2, 2);
+      turnOne.placeTile(3, 3, 1);
+      turnTwo.placeTile(3, 2, 2);
       expect(turnTwo.checkWordConnects()).to.deep.equal(true);
     });
 
     it('should return false if the current turn does not touch a previously placed word', () => {
-      turnOne.placeTile(2, 2, 1);
+      turnOne.placeTile(3, 3, 1);
       turnTwo.placeTile(0, 0, 2);
       expect(turnTwo.checkWordConnects()).to.deep.equal(false);
     });
@@ -308,11 +310,11 @@ describe('Turn', () => {
 
   describe('collectHorizontalAdjacentTiles', () => {
     it('should log the coordinates of all the adjacent horizontal tiles for a given tile and the tile itself, in order', () => {
-      turnOne.placeTile(2, 3, 0);
-      turnOne.placeTile(2, 2, 2);
+      turnOne.placeTile(3, 4, 0);
+      turnOne.placeTile(3, 3, 2);
       turnOne.validateTilePlacements();
       turnOne.collectHorizontalAdjacentTiles(turnOne.tilesCoordinates[0]);
-      expect(turnOne.allWordsCoordinates).to.deep.equal([[[2, 2], [2, 3]]]);
+      expect(turnOne.allWordsCoordinates).to.deep.equal([[[3, 3], [3, 4]]]);
     });
 
     it('should throw error if called when no tiles have been placed during current move', () => {
@@ -322,13 +324,13 @@ describe('Turn', () => {
 
   describe('collectVerticalAdjacentTiles', () => {
     it('should log the coordinates of all the adjacent vertical tiles for a given tile and the tile itself, in order', () => {
-      turnOne.placeTile(2, 2, 0);
-      turnOne.placeTile(1, 2, 2);
-      turnOne.placeTile(0, 2, 1);
-      turnOne.placeTile(3, 2, 3);
+      turnOne.placeTile(2, 3, 0);
+      turnOne.placeTile(1, 3, 2);
+      turnOne.placeTile(0, 3, 1);
+      turnOne.placeTile(3, 3, 3);
       turnOne.validateTilePlacements();
       turnOne.collectVerticalAdjacentTiles(turnOne.tilesCoordinates[0]);
-      expect(turnOne.allWordsCoordinates).to.deep.equal([[[0, 2], [1, 2], [2, 2], [3, 2]]]);
+      expect(turnOne.allWordsCoordinates).to.deep.equal([[[0, 3], [1, 3], [2, 3], [3, 3]]]);
     });
 
     it('should throw error if called when no tiles have been placed during current move', () => {
@@ -338,21 +340,21 @@ describe('Turn', () => {
 
   describe('collectCurrentTurnWordsCoordinates', () => {
     it('should collect all the words formed by a side by side vertical move, in coordinate form', () => {
-      turnOne.placeTile(2, 2, 0);
-      turnOne.placeTile(1, 2, 2);
-      turnOne.placeTile(0, 2, 1);
-      turnOne.placeTile(3, 2, 3);
+      turnOne.placeTile(3, 3, 0);
+      turnOne.placeTile(1, 3, 2);
+      turnOne.placeTile(0, 3, 1);
+      turnOne.placeTile(2, 3, 3);
 
-      turnTwo.placeTile(2, 1, 0);
-      turnTwo.placeTile(1, 1, 2);
-      turnTwo.placeTile(0, 1, 1);
+      turnTwo.placeTile(2, 2, 0);
+      turnTwo.placeTile(1, 2, 2);
+      turnTwo.placeTile(0, 2, 1);
       turnTwo.validateTilePlacements();
       turnTwo.collectCurrentTurnWordsCoordinates(turnTwo.tilesCoordinates[0]);
       expect(turnTwo.allWordsCoordinates).to.deep.equal([
-        [[0, 1], [1, 1], [2, 1]],
-        [[0, 1], [0, 2]],
-        [[1, 1], [1, 2]],
-        [[2, 1], [2, 2]]
+        [[0, 2], [1, 2], [2, 2]],
+        [[0, 2], [0, 3]],
+        [[1, 2], [1, 3]],
+        [[2, 2], [2, 3]]
       ]);
     });
 
@@ -376,42 +378,42 @@ describe('Turn', () => {
     });
 
     it('should collect all the words formed by a single tile move, in coordinate form', () => {
-      turnOne.placeTile(1, 2, 0);
-      turnOne.placeTile(2, 2, 1);
+      turnOne.placeTile(2, 3, 0);
+      turnOne.placeTile(3, 3, 1);
 
-      turnTwo.placeTile(2, 3, 0);
-      turnTwo.placeTile(2, 4, 1);
+      turnTwo.placeTile(3, 4, 0);
+      turnTwo.placeTile(3, 5, 1);
 
-      turnThree.placeTile(1, 3, 4);
+      turnThree.placeTile(2, 4, 4);
       turnThree.validateTilePlacements();
       turnThree.collectCurrentTurnWordsCoordinates(turnThree.tilesCoordinates[0]);
       expect(turnThree.allWordsCoordinates).to.deep.equal([
-        [[1, 2], [1, 3]],
-        [[1, 3], [2, 3]]
+        [[2, 3], [2, 4]],
+        [[2, 4], [3, 4]]
       ]);
     });
 
     it('should remove any one-letter words from allWordsCoordinates', () => {
-      turnOne.placeTile(1, 2, 5);
-      turnOne.placeTile(2, 2, 2);
+      turnOne.placeTile(2, 3, 5);
+      turnOne.placeTile(3, 3, 2);
 
-      turnTwo.placeTile(3, 0, 3);
-      turnTwo.placeTile(3, 1, 0);
-      turnTwo.placeTile(3, 2, 1);
+      turnTwo.placeTile(4, 1, 3);
+      turnTwo.placeTile(4, 2, 0);
+      turnTwo.placeTile(4, 3, 1);
       turnTwo.validateTilePlacements();
       turnTwo.collectCurrentTurnWordsCoordinates(turnTwo.tilesCoordinates[0]);
-      expect(turnTwo.allWordsCoordinates).to.deep.equal([[[3, 0], [3, 1], [3, 2]], [[1, 2], [2, 2], [3, 2]]]);
+      expect(turnTwo.allWordsCoordinates).to.deep.equal([[[4, 1], [4, 2], [4, 3]], [[2, 3], [3, 3], [4, 3]]]);
     });
   });
 
   describe('getCurrentTurnsWords', () => {
     it('should return true if every word formed by the current turn exists', () => {
-      turnOne.placeTile(1, 2, 5);
-      turnOne.placeTile(2, 2, 2);
+      turnOne.placeTile(2, 3, 5);
+      turnOne.placeTile(3, 3, 2);
   
-      turnTwo.placeTile(3, 0, 3);
-      turnTwo.placeTile(3, 1, 0);
-      turnTwo.placeTile(3, 2, 1);
+      turnTwo.placeTile(4, 1, 3);
+      turnTwo.placeTile(4, 2, 0);
+      turnTwo.placeTile(4, 3, 1);
       turnTwo.validateTilePlacements();
       turnTwo.collectCurrentTurnWordsCoordinates(turnTwo.tilesCoordinates[0]);
       turnTwo.getCurrentTurnsWords();
@@ -421,12 +423,12 @@ describe('Turn', () => {
 
   describe('checkAllTurnsWordsExist', () => {
     it('should return true if every word formed by the current turn exists', () => {
-      turnOne.placeTile(1, 2, 5);
-      turnOne.placeTile(2, 2, 2);
+      turnOne.placeTile(2, 3, 5);
+      turnOne.placeTile(3, 3, 2);
 
-      turnTwo.placeTile(3, 0, 3);
-      turnTwo.placeTile(3, 1, 0);
-      turnTwo.placeTile(3, 2, 1);
+      turnTwo.placeTile(4, 1, 3);
+      turnTwo.placeTile(4, 2, 0);
+      turnTwo.placeTile(4, 3, 1);
       turnTwo.validateTilePlacements();
       turnTwo.collectCurrentTurnWordsCoordinates(turnTwo.tilesCoordinates[0]);
       turnTwo.getCurrentTurnsWords();
@@ -434,12 +436,12 @@ describe('Turn', () => {
     });
 
     it('if not all the words exist, it should let you know which words are not in the dictionary', () => {
-      turnOne.placeTile(0, 3, 3);
-      turnOne.placeTile(1, 3, 4);
+      turnOne.placeTile(1, 4, 3);
+      turnOne.placeTile(2, 4, 4);
 
-      turnTwo.placeTile(2, 2, 4);
-      turnTwo.placeTile(3, 2, 1);
-      turnTwo.placeTile(1, 2, 3);
+      turnTwo.placeTile(3, 3, 4);
+      turnTwo.placeTile(4, 3, 1);
+      turnTwo.placeTile(2, 3, 3);
       turnTwo.validateTilePlacements();
       turnTwo.collectCurrentTurnWordsCoordinates(turnTwo.tilesCoordinates[0]);
       turnTwo.getCurrentTurnsWords();
@@ -449,9 +451,9 @@ describe('Turn', () => {
 
   describe('calculateScore', () => {
     it('should return the score of a non-bonus word', () => {
-      turnOne.placeTile(2, 1, 3);
-      turnOne.placeTile(2, 2, 0);
-      turnOne.placeTile(2, 3, 1);
+      turnOne.placeTile(3, 2, 3);
+      turnOne.placeTile(3, 3, 0);
+      turnOne.placeTile(3, 4, 1);
       turnOne.validateTilePlacements();
       turnOne.collectCurrentTurnWordsCoordinates(turnOne.tilesCoordinates[0]);
       turnOne.getCurrentTurnsWords();
