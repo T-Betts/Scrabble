@@ -2,7 +2,7 @@ const arraysEqual = require('./helper-functions.js').arraysEqual;
 const scrabbleDictionary = require('../word-list.js');
 
 function Turn(player, startBoard, tileBag, turnID, dictionary = scrabbleDictionary) {
-  this.id = turnID
+  this.id = turnID;
   this.player = player;
   this.score = 0;
   this.board = startBoard;
@@ -19,8 +19,8 @@ Turn.prototype.checkWordExists = function(word) {
 }
 
 Turn.prototype.placeTile = function(row, column, rackIndex) {
-  let rack = this.player.getRack()
-  if (rack[rackIndex].value === undefined) throw 'Selected rack space does not contain a tile.'
+  let rack = this.player.getRack();
+  if (rack[rackIndex].value === undefined) throw 'Selected rack space does not contain a tile.';
   if (this.capitalLettersRegEx.test(this.board.squares[row][column].letter)) {
     throw 'Square already occupied.';
   }
@@ -102,7 +102,7 @@ Turn.prototype.validateTilePlacements = function () {
   let tilesCoordinates = this.tilesCoordinates;
   let allSameCol = tilesCoordinates.every(tc => tc[1] === tilesCoordinates[0][1]);
   let allSameRow =  tilesCoordinates.every(tc => tc[0] === tilesCoordinates[0][0]);
-  if (this.id === 1 && tilesCoordinates.length === 1) throw 'Words must be longer than one letter.'
+  if (this.id === 1 && tilesCoordinates.length === 1) throw 'Words must be longer than one letter.';
   if (tilesCoordinates.length === 0) throw 'No tiles placed.';
   if (this.id === 1 && !tilesCoordinates.some(tc => arraysEqual(tc, this.board.getCentreSquareCoordinates()))) throw 'First move must use centre square.';
   if (allSameRow || allSameCol) {
@@ -200,6 +200,18 @@ Turn.prototype.checkAllTurnsWordsExist = function() {
   } else {
     throw `Invalid word(s): ${notWords.join(', ')}`;
   }
+}
+
+Turn.prototype.calculateScore = function() {
+  let turnScore = 0
+  this.allWordsCoordinates.forEach((word) => {
+    let wordScore = 0
+    word.forEach((tile) => {
+      wordScore += this.board.squares[tile[0]][tile[1]].value;
+    })
+    turnScore += wordScore;
+  })
+  return turnScore;
 }
 
 module.exports = Turn;

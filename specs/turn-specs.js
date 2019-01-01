@@ -47,9 +47,9 @@ describe('Turn', () => {
         ],
       getBonusSquares: {
         doubleWord: {indices: [[0, 0]], symbol: '2'},
-        doubleLetter: {indices: [[0, 1]], symbol: 'd'},
-        tripWord: {indices: [[0, 2]], symbol: '3'},
-        tripLetter: {indices: [[1, 0]], symbol: 't'}
+        doubleLetter: {indices: [[0, 2]], symbol: 'd'},
+        tripWord: {indices: [[2, 0]], symbol: '3'},
+        tripLetter: {indices: [[2, 4]], symbol: 't'}
       },
       getCentreSquareCoordinates: [2, 2]
     });
@@ -130,21 +130,21 @@ describe('Turn', () => {
     });
 
     it('removes a tile from a designated double letter square', () => {
-      turnOne.placeTile(0, 1, 1);
-      turnOne.removeTile(0, 1, 1);
-      expect(turnOne.board.squares[0][1].letter).to.deep.equal('d');
+      turnOne.placeTile(0, 2, 1);
+      turnOne.removeTile(0, 2, 1);
+      expect(turnOne.board.squares[0][2].letter).to.deep.equal('d');
     });
 
     it('removes a tile from a designated triple word square', () => {
-      turnOne.placeTile(0, 2, 1);
-      turnOne.removeTile(0, 2, 1);
-      expect(turnOne.board.squares[0][2].letter).to.deep.equal('3');
+      turnOne.placeTile(2, 0, 1);
+      turnOne.removeTile(2, 0, 1);
+      expect(turnOne.board.squares[2][0].letter).to.deep.equal('3');
     });
 
     it('removes a tile from a designated triple letter square', () => {
-      turnOne.placeTile(1, 0, 1);
-      turnOne.removeTile(1, 0, 1);
-      expect(turnOne.board.squares[1][0].letter).to.deep.equal('t');
+      turnOne.placeTile(2, 4, 1);
+      turnOne.removeTile(2, 4, 1);
+      expect(turnOne.board.squares[2][4].letter).to.deep.equal('t');
     });
 
     it('should throw error if designated square does not contain tile letter placed during current turn', () => {
@@ -444,6 +444,18 @@ describe('Turn', () => {
       turnTwo.collectCurrentTurnWordsCoordinates(turnTwo.tilesCoordinates[0]);
       turnTwo.getCurrentTurnsWords();
       expect(() => {turnTwo.checkAllTurnsWordsExist()}).to.throw('Invalid word(s): CRT, CR');
+    });
+  });
+
+  describe('calculateScore', () => {
+    it('should return the score of a non-bonus word', () => {
+      turnOne.placeTile(2, 1, 3);
+      turnOne.placeTile(2, 2, 0);
+      turnOne.placeTile(2, 3, 1);
+      turnOne.validateTilePlacements();
+      turnOne.collectCurrentTurnWordsCoordinates(turnOne.tilesCoordinates[0]);
+      turnOne.getCurrentTurnsWords();
+      expect(turnOne.calculateScore()).to.deep.equal(5);
     });
   });
 });
