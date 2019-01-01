@@ -203,19 +203,24 @@ Turn.prototype.checkAllTurnsWordsExist = function() {
 }
 
 Turn.prototype.calculateScore = function() {
+  let bonuses = this.board.getBonusSquares();
   let turnScore = 0;
   this.allWordsCoordinates.forEach((word) => {
+    let wordBonuses = [];
     let wordScore = 0;
     word.forEach((tile) => {
       let tileValue = this.board.squares[tile[0]][tile[1]].value
-      if (this.board.getBonusSquares().doubleLetter.indices.some(index => arraysEqual(index, tile))) {
+      if(bonuses.doubleWord.indices.some(index => arraysEqual(index, tile))) wordBonuses.push(2);
+      if(bonuses.tripWord.indices.some(index => arraysEqual(index, tile))) wordBonuses.push(3);
+      if (bonuses.doubleLetter.indices.some(index => arraysEqual(index, tile))) {
         wordScore += tileValue * 2;
-      } else if(this.board.getBonusSquares().tripLetter.indices.some(index => arraysEqual(index, tile))){
+      } else if(bonuses.tripLetter.indices.some(index => arraysEqual(index, tile))){
         wordScore += tileValue * 3;
       } else {
         wordScore += tileValue;
       }   
     })
+    wordBonuses.forEach(bonus => wordScore *= bonus);
     turnScore += wordScore;
   })
   return turnScore;
