@@ -36,4 +36,8 @@ Game.prototype.switchTurn = function() {
   this.currentTurn = this.createTurn(this.players[(this.turnID - 1) % this.playerCount], this.board, this.tileBag, this.turnID);
 }
 
+Game.prototype.shuffleAndDraw = function() {
+  this.tileBag.shuffle();
+}
+
 module.exports = Game;

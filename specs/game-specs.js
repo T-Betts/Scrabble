@@ -31,11 +31,11 @@ describe('Game', () => {
     let createPlayer = (name, id) => new Player(name, id);
     let createTurn = (player, startBoard, tileBag, turnID, dictionary) => new Turn(player, startBoard, tileBag, turnID, dictionary);
     game = new Game(['A', 'B', 'C'], createPlayer, new Board, new TileBag((letter, value) => new Tile(letter, value), randomCallback), createTurn);
-    game.tileBag.shuffle();
   });
 
   describe('playTurn', () => {
     it('should throw an error if the tile placement from the current move is invalid', () => {
+      game.shuffleAndDraw();
       game.currentTurn.player.drawMaxTiles(game.tileBag.showRemainingTiles());
       game.currentTurn.placeTile(7, 7, 0);
       game.currentTurn.placeTile(1, 1, 1);
@@ -43,6 +43,7 @@ describe('Game', () => {
     });
 
     it('should collect the coordinates of all the words formed by the current turn', () => {
+      game.shuffleAndDraw();
       game.currentTurn.player.drawMaxTiles(game.tileBag.showRemainingTiles());
       game.currentTurn.placeTile(7, 7, 0);
       game.currentTurn.placeTile(7, 6, 1);
@@ -55,6 +56,7 @@ describe('Game', () => {
     });
 
     it('should throw error if one or more words formed in current turn are not in the dictionary', () => {
+      game.shuffleAndDraw();
       game.currentTurn.player.drawMaxTiles(game.tileBag.showRemainingTiles());
       game.currentTurn.placeTile(7, 7, 4);
       game.currentTurn.placeTile(7, 6, 0);
@@ -62,14 +64,16 @@ describe('Game', () => {
     });
 
     it('should calculate the turn score', () => {
+      game.shuffleAndDraw();
       game.currentTurn.player.drawMaxTiles(game.tileBag.showRemainingTiles());
       game.currentTurn.placeTile(7, 7, 0);
       game.currentTurn.placeTile(7, 6, 1);
       game.playTurn();
-      expect(game.turnHistory[0].score).to.deep.equal(4)
+      expect(game.turnHistory[0].score).to.deep.equal(4);
     });
 
     it('should add the current turn score to the current player\'s overall score', () => {
+      game.shuffleAndDraw();
       game.currentTurn.player.drawMaxTiles(game.tileBag.showRemainingTiles());
       game.currentTurn.placeTile(7, 7, 0);
       game.currentTurn.placeTile(7, 6, 1);
@@ -78,6 +82,7 @@ describe('Game', () => {
     });
 
     it('should switch to the next turn if current turn was legal', () => {
+      game.shuffleAndDraw();
       game.currentTurn.player.drawMaxTiles(game.tileBag.showRemainingTiles());
       game.currentTurn.placeTile(7, 7, 0);
       game.currentTurn.placeTile(7, 6, 1);
@@ -88,18 +93,28 @@ describe('Game', () => {
 
   describe('switchTurn', () => {
     it('should add the current turn to the turnHistory', () => {
+      game.shuffleAndDraw();
       game.switchTurn();
       expect(game.turnHistory[0].id).to.deep.equal(1);
     });
 
     it('should add one to the games turnID', () => {
+      game.shuffleAndDraw();
       game.switchTurn();
       expect(game.turnID).to.deep.equal(2);
     });
 
     it('should create a new turn and set this as the game\'s currentTurn', () => {
+      game.shuffleAndDraw();
       game.switchTurn();
       expect(game.currentTurn.id).to.deep.equal(2);
+    });
+  });
+
+  describe('shuffleAndDraw', () => {
+    it('should shuffle the tile bag', () => {
+      game.shuffleAndDraw();
+      expect(game.tileBag.showRemainingTiles()[91].letter).to.deep.equal('A')
     });
   });
 });
