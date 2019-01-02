@@ -114,7 +114,12 @@ describe('Game', () => {
   describe('shuffleAndDraw', () => {
     it('should shuffle the tile bag', () => {
       game.shuffleAndDraw();
-      expect(game.tileBag.showRemainingTiles()[91].letter).to.deep.equal('A')
+      expect(game.tileBag.showRemainingTiles()[78].letter).to.deep.equal('G')
     });
+
+    it('should draw tile\'s for any empty rack space across all player racks', () => {
+      game.shuffleAndDraw();
+      expect(game.tileBag.showRemainingTiles().length).to.deep.equal(79);
+    })
   });
 });

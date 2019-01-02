@@ -30,14 +30,15 @@ Game.prototype.playTurn = function() {
   this.switchTurn();
 }
 
+Game.prototype.shuffleAndDraw = function() {
+  this.tileBag.shuffle();
+  this.players.forEach(player => player.drawMaxTiles(this.tileBag.showRemainingTiles()));
+}
+
 Game.prototype.switchTurn = function() {
   this.turnHistory.push(this.currentTurn);
   this.turnID++;
   this.currentTurn = this.createTurn(this.players[(this.turnID - 1) % this.playerCount], this.board, this.tileBag, this.turnID);
-}
-
-Game.prototype.shuffleAndDraw = function() {
-  this.tileBag.shuffle();
 }
 
 module.exports = Game;
