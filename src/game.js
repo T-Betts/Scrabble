@@ -19,6 +19,12 @@ function Game(playerNamesArray, createPlayer = (name, id) => new Player(name, id
   this.currentTurn = this.createTurn(this.players[(this.turnID - 1) % this.playerCount], this.board, this.tileBag, this.turnID);
 }
 
+
+Game.prototype.shuffleAndDraw = function() {
+  this.tileBag.shuffle();
+  this.players.forEach(player => player.drawMaxTiles(this.tileBag.showRemainingTiles()));
+}
+
 Game.prototype.playTurn = function() {
   turn = this.currentTurn;
   turn.validateTilePlacements();
@@ -30,9 +36,13 @@ Game.prototype.playTurn = function() {
   this.switchTurn();
 }
 
-Game.prototype.shuffleAndDraw = function() {
-  this.tileBag.shuffle();
-  this.players.forEach(player => player.drawMaxTiles(this.tileBag.showRemainingTiles()));
+Game.prototype.exchangeTurn = function(rackIndicesArray) {
+  rackIndicesArray.forEach((index) => {
+    let tile = this.currentTurn.player.getRack()[index];
+    this.tileBag.showRemainingTiles().unshift(tile);
+    this.currentTurn.player.getRack()[index] = {letter: '-'};
+  });
+  this.currentTurn.player.drawMaxTiles(this.tileBag.showRemainingTiles());
 }
 
 Game.prototype.switchTurn = function() {

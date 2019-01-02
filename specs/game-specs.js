@@ -132,4 +132,22 @@ describe('Game', () => {
       expect(game.tileBag.showRemainingTiles().length).to.deep.equal(79);
     })
   });
+
+  describe('exchangeTurn', () => {
+    it('should replace desingated tiles in a players rack with tiles from the tile bag', () => {
+      game.shuffleAndDraw();
+      game.exchangeTurn([0, 1, 6]);
+      expect(game.players[0].getRack()[0].letter).to.deep.equal('G');
+      expect(game.players[0].getRack()[1].letter).to.deep.equal('S');
+      expect(game.players[0].getRack()[6].letter).to.deep.equal('V');
+    });
+
+    it('should place designated removed tiles from a players rack into the tile bag', () => {
+      game.shuffleAndDraw();
+      game.exchangeTurn([0, 1, 6]);
+      expect(game.tileBag.showRemainingTiles()[0].letter).to.deep.equal('I');
+      expect(game.tileBag.showRemainingTiles()[1].letter).to.deep.equal('A');
+      expect(game.tileBag.showRemainingTiles()[2].letter).to.deep.equal('T');
+    });
+  });
 });
