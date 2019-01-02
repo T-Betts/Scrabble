@@ -81,7 +81,7 @@ describe('Game', () => {
     it('should add the current turn to the turnHistory', () => {
       game.switchTurn();
       expect(game.turnHistory[0].id).to.deep.equal(1);
-    })
+    });
 
     it('should add one to the games turnID', () => {
       game.switchTurn();

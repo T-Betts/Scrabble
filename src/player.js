@@ -23,7 +23,9 @@ Player.prototype.getRack = function() {
 Player.prototype.drawMaxTiles = function(bag) {
   for (let i = 0; i < this.rack.length; i++) {
     if (this.rack[i].letter === '-') {
-      this.rack[i] = (bag.pop());
+      if (bag.length >= 1) {
+        this.rack[i] = (bag.pop());
+      }
     }
   }
 }

@@ -42,5 +42,13 @@ describe('Player', () => {
       player1.drawMaxTiles(fakeLetterBag);
       expect(player1.getRack()).to.deep.equal([{letter: 'A'}, {letter: 'A'}, {letter: 'I'}, {letter: 'H'}, {letter: 'G'}, {letter: 'A'}, {letter: 'F'}]);
     });
+
+    it('should replace as many tiles as possible if there aren\'t enough tiles in the tile bag', () => {
+      for (let i = 0; i < 4; i++) {
+        fakeLetterBag.pop();
+      }
+      player1.drawMaxTiles(fakeLetterBag);
+      expect(player1.getRack()).to.deep.equal([{letter: 'E'}, {letter: 'D'}, {letter: 'C'}, {letter: 'B'}, {letter: 'A'}, {letter: '-'}, {letter: '-'}]);
+    });
   });
 });
