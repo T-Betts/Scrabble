@@ -7,7 +7,11 @@ describe('Player', () => {
 
   beforeEach(function() {
     player1 = new Player('Tom', 1);
-    fakeLetterBag = [{letter: 'A'}, {letter: 'B'}, {letter: 'C'}, {letter: 'D'}, {letter: 'E'}];
+    fakeLetterBag = [
+      {letter: 'A'}, {letter: 'B'}, {letter: 'C'},
+      {letter: 'D'}, {letter: 'E'}, {letter: 'F'},
+      {letter: 'G'}, {letter: 'H'}, {letter: 'I'}
+    ];
   });
 
   describe('getId', () => {
@@ -19,7 +23,7 @@ describe('Player', () => {
   describe('drawTiles', () => {
     it('should draw a given number of tiles and place them into the players rack', () => {
       player1.drawTiles(4, fakeLetterBag);
-      expect(player1.rack[3]).to.deep.equal({letter: 'B'});
+      expect(player1.rack[3]).to.deep.equal({letter: 'F'});
     });
   });
 
@@ -33,7 +37,15 @@ describe('Player', () => {
   describe('getRack', () => {
     it('should return a players tile rack', () => {
       player1.drawTiles(4, fakeLetterBag);
-      expect(player1.getRack()).to.deep.equal([{letter: 'E'}, {letter: 'D'}, {letter: 'C'}, {letter: 'B'}, {letter: '-'}, {letter: '-'}, {letter: '-'}]);
+      expect(player1.getRack()).to.deep.equal([{letter: 'I'}, {letter: 'H'}, {letter: 'G'}, {letter: 'F'}, {letter: '-'}, {letter: '-'}, {letter: '-'}]);
+    });
+  });
+
+  describe('fillRackSpaces', () => {
+    it('should replace all used tiles if there are enough left in the tile bag', () => {
+      player1.drawTiles(4, fakeLetterBag);
+      player1.fillRackSpaces(fakeLetterBag);
+      expect(player1.getRack()).to.deep.equal([{letter: 'I'}, {letter: 'H'}, {letter: 'G'}, {letter: 'F'}, {letter: 'E'}, {letter: 'D'}, {letter: 'C'}]);
     });
   });
 });

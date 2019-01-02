@@ -12,7 +12,7 @@ function Game(playerNamesArray, createPlayer = (name, id) => new Player(name, id
   this.players = [];
   this.turnID = 1;
   this.turnHistory = [];
-  this.createTurn = createTurn
+  this.createTurn = createTurn;
   playerNamesArray.forEach((playerName, index) => {
     this.players.push(createPlayer(playerName, index + 1));
   });

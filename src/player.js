@@ -26,4 +26,12 @@ Player.prototype.getRack = function() {
   return this.rack;
 }
 
+Player.prototype.fillRackSpaces = function(bag) {
+  for (let i = 0; i < this.rack.length; i++) {
+    if (this.rack[i].letter === '-') {
+      this.rack[i] = (bag.pop());
+    }
+  }
+}
+
 module.exports = Player;
