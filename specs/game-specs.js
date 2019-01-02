@@ -92,6 +92,16 @@ describe('Game', () => {
   });
 
   describe('switchTurn', () => {
+    it('should shuffle the tile bag', () => {
+      game.switchTurn();
+      expect(game.tileBag.showRemainingTiles()[76].letter).to.deep.equal('V');
+    });
+
+    it('should draw tile\'s for any empty rack space across all player racks', () => {
+      game.switchTurn();
+      expect(game.players[2].getRack()[6].letter).to.deep.equal('Z');
+    });
+
     it('should add the current turn to the turnHistory', () => {
       game.shuffleAndDraw();
       game.switchTurn();

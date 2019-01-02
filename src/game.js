@@ -36,6 +36,7 @@ Game.prototype.shuffleAndDraw = function() {
 }
 
 Game.prototype.switchTurn = function() {
+  this.shuffleAndDraw();
   this.turnHistory.push(this.currentTurn);
   this.turnID++;
   this.currentTurn = this.createTurn(this.players[(this.turnID - 1) % this.playerCount], this.board, this.tileBag, this.turnID);
