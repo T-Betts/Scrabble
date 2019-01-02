@@ -11,18 +11,27 @@ describe('Game', () => {
   let game;
 
   beforeEach(() => {
-    let tileBagStub = sinon.createStubInstance(TileBag, {
-      showRemainingTiles: [
-        {letter: 'A', value: 1}, {letter: 'B', value: 3}, {letter: 'C', value: 3},
-        {letter: 'D', value: 2}, {letter: 'E', value: 1}, {letter: 'F', value: 4},
-        {letter: 'A', value: 1}, {letter: 'T', value: 1}, {letter: 'I', value: 1},
-        {letter: 'B', value: 3}, {letter: 'Q', value: 10}, {letter: 'A', value: 1}, 
-        {letter: 'T', value: 1}, {letter: 'A', value: 1}, {letter: 'T', value: 1},
-      ],
-    });
+    let randomCallback = sinon.stub();    
+    randomCallback.onCall(0).returns(0.81);
+    randomCallback.onCall(1).returns(0.01);
+    randomCallback.onCall(2).returns(0.82);
+    randomCallback.onCall(3).returns(0.02);
+    randomCallback.onCall(4).returns(0.72);
+    randomCallback.onCall(5).returns(0.1);
+    randomCallback.onCall(6).returns(0.39);
+    randomCallback.onCall(7).returns(0.9);
+    randomCallback.onCall(8).returns(0.03);
+    randomCallback.onCall(9).returns(0.33);
+    randomCallback.onCall(10).returns(0.2);
+    randomCallback.onCall(11).returns(0.15);
+    randomCallback.onCall(12).returns(0.13);
+    randomCallback.onCall(13).returns(0.12);
+    randomCallback.onCall(14).returns(0.04);
+    randomCallback.returns(0.4); 
     let createPlayer = (name, id) => new Player(name, id);
     let createTurn = (player, startBoard, tileBag, turnID, dictionary) => new Turn(player, startBoard, tileBag, turnID, dictionary);
-    game = new Game(['A', 'B', 'C'], createPlayer, new Board, tileBagStub, createTurn);
+    game = new Game(['A', 'B', 'C'], createPlayer, new Board, new TileBag((letter, value) => new Tile(letter, value), randomCallback), createTurn);
+    game.tileBag.shuffle();
   });
 
   describe('playTurn', () => {
