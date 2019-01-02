@@ -20,13 +20,6 @@ describe('Player', () => {
     });
   });
 
-  describe('drawTiles', () => {
-    it('should draw a given number of tiles and place them into the players rack', () => {
-      player1.drawTiles(4, fakeLetterBag);
-      expect(player1.rack[3]).to.deep.equal({letter: 'F'});
-    });
-  });
-
   describe('updateScore', () => {
     it('should change a player score by a given amount', () => {
       player1.updateScore(10);
@@ -36,16 +29,18 @@ describe('Player', () => {
 
   describe('getRack', () => {
     it('should return a players tile rack', () => {
-      player1.drawTiles(4, fakeLetterBag);
-      expect(player1.getRack()).to.deep.equal([{letter: 'I'}, {letter: 'H'}, {letter: 'G'}, {letter: 'F'}, {letter: '-'}, {letter: '-'}, {letter: '-'}]);
+      player1.drawMaxTiles(fakeLetterBag);
+      expect(player1.getRack()).to.deep.equal([{letter: 'I'}, {letter: 'H'}, {letter: 'G'}, {letter: 'F'}, {letter: 'E'}, {letter: 'D'}, {letter: 'C'}]);
     });
   });
 
-  describe('fillRackSpaces', () => {
+  describe('drawMaxTiles', () => {
     it('should replace all used tiles if there are enough left in the tile bag', () => {
-      player1.drawTiles(4, fakeLetterBag);
-      player1.fillRackSpaces(fakeLetterBag);
-      expect(player1.getRack()).to.deep.equal([{letter: 'I'}, {letter: 'H'}, {letter: 'G'}, {letter: 'F'}, {letter: 'E'}, {letter: 'D'}, {letter: 'C'}]);
+      player1.rack[0] = {letter: 'A'}
+      player1.rack[1] = {letter: 'A'}
+      player1.rack[5] = {letter: 'A'}
+      player1.drawMaxTiles(fakeLetterBag);
+      expect(player1.getRack()).to.deep.equal([{letter: 'A'}, {letter: 'A'}, {letter: 'I'}, {letter: 'H'}, {letter: 'G'}, {letter: 'A'}, {letter: 'F'}]);
     });
   });
 });

@@ -13,7 +13,10 @@ describe('Game', () => {
   beforeEach(() => {
     let tileBagStub = sinon.createStubInstance(TileBag, {
       showRemainingTiles: [
-        {letter: 'B', value: 3}, {letter: 'Q', value: 1}, {letter: 'A', value: 1}, 
+        {letter: 'A', value: 1}, {letter: 'B', value: 3}, {letter: 'C', value: 3},
+        {letter: 'D', value: 2}, {letter: 'E', value: 1}, {letter: 'F', value: 4},
+        {letter: 'A', value: 1}, {letter: 'T', value: 1}, {letter: 'I', value: 1},
+        {letter: 'B', value: 3}, {letter: 'Q', value: 10}, {letter: 'A', value: 1}, 
         {letter: 'T', value: 1}, {letter: 'A', value: 1}, {letter: 'T', value: 1},
       ],
     });
@@ -24,18 +27,18 @@ describe('Game', () => {
 
   describe('playTurn', () => {
     it('should throw an error if the tile placement from the current move is invalid', () => {
-      game.currentTurn.player.drawTiles(2, game.tileBag.showRemainingTiles());
+      game.currentTurn.player.drawMaxTiles(game.tileBag.showRemainingTiles());
       game.currentTurn.placeTile(7, 7, 0);
       game.currentTurn.placeTile(1, 1, 1);
       expect(() => {game.playTurn()}).to.throw('Invalid move. Tiles must all be in same row or column.');
     });
 
     it('should collect the coordinates of all the words formed by the current turn', () => {
-      game.currentTurn.player.drawTiles(2, game.tileBag.showRemainingTiles());
+      game.currentTurn.player.drawMaxTiles(game.tileBag.showRemainingTiles());
       game.currentTurn.placeTile(7, 7, 0);
       game.currentTurn.placeTile(7, 6, 1);
       game.playTurn();
-      game.currentTurn.player.drawTiles(2, game.tileBag.showRemainingTiles());
+      game.currentTurn.player.drawMaxTiles(game.tileBag.showRemainingTiles());
       game.currentTurn.placeTile(6, 6, 0);
       game.currentTurn.placeTile(6, 7, 1);
       game.playTurn();
@@ -43,14 +46,14 @@ describe('Game', () => {
     });
 
     it('should throw error if one or more words formed in current turn are not in the dictionary', () => {
-      game.currentTurn.player.drawTiles(5, game.tileBag.showRemainingTiles());
+      game.currentTurn.player.drawMaxTiles(game.tileBag.showRemainingTiles());
       game.currentTurn.placeTile(7, 7, 4);
       game.currentTurn.placeTile(7, 6, 0);
       expect(() => {game.playTurn()}).to.throw('Invalid word(s): TQ');
     });
 
     it('should calculate the turn score', () => {
-      game.currentTurn.player.drawTiles(5, game.tileBag.showRemainingTiles());
+      game.currentTurn.player.drawMaxTiles(game.tileBag.showRemainingTiles());
       game.currentTurn.placeTile(7, 7, 0);
       game.currentTurn.placeTile(7, 6, 1);
       game.playTurn();
@@ -58,7 +61,7 @@ describe('Game', () => {
     });
 
     it('should add the current turn score to the current player\'s overall score', () => {
-      game.currentTurn.player.drawTiles(5, game.tileBag.showRemainingTiles());
+      game.currentTurn.player.drawMaxTiles(game.tileBag.showRemainingTiles());
       game.currentTurn.placeTile(7, 7, 0);
       game.currentTurn.placeTile(7, 6, 1);
       game.playTurn();
@@ -66,7 +69,7 @@ describe('Game', () => {
     });
 
     it('should switch to the next turn if current turn was legal', () => {
-      game.currentTurn.player.drawTiles(5, game.tileBag.showRemainingTiles());
+      game.currentTurn.player.drawMaxTiles(game.tileBag.showRemainingTiles());
       game.currentTurn.placeTile(7, 7, 0);
       game.currentTurn.placeTile(7, 6, 1);
       game.playTurn();
