@@ -37,6 +37,7 @@ Game.prototype.playTurn = function() {
 }
 
 Game.prototype.exchangeTurn = function(rackIndicesArray) {
+  if (this.tileBag.showRemainingTiles().length < 7) throw 'Cannot exchange tiles when there are fewer than 7 tiles left in tile bag.';
   rackIndicesArray.forEach((index) => {
     let tile = this.currentTurn.player.getRack()[index];
     this.tileBag.showRemainingTiles().unshift(tile);

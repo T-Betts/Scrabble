@@ -149,5 +149,13 @@ describe('Game', () => {
       expect(game.tileBag.showRemainingTiles()[1].letter).to.deep.equal('A');
       expect(game.tileBag.showRemainingTiles()[2].letter).to.deep.equal('T');
     });
+
+    it('should throw an error if there are fewer than 7 tiles left in the tile bag', () => {
+      game.shuffleAndDraw();
+      for (let i = 0; i < 73; i++) {
+        game.tileBag.showRemainingTiles().pop();
+      }
+      expect(() => {game.exchangeTurn([0, 6])}).to.throw('Cannot exchange tiles when there are fewer than 7 tiles left in tile bag.');
+    });
   });
 });
