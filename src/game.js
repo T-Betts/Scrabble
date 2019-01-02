@@ -44,6 +44,7 @@ Game.prototype.exchangeTurn = function(rackIndicesArray) {
     this.currentTurn.player.getRack()[index] = {letter: '-'};
   });
   this.currentTurn.player.drawMaxTiles(this.tileBag.showRemainingTiles());
+  this.switchTurn();
 }
 
 Game.prototype.switchTurn = function() {

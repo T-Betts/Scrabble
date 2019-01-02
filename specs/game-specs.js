@@ -145,9 +145,7 @@ describe('Game', () => {
     it('should place designated removed tiles from a players rack into the tile bag', () => {
       game.shuffleAndDraw();
       game.exchangeTurn([0, 1, 6]);
-      expect(game.tileBag.showRemainingTiles()[0].letter).to.deep.equal('I');
-      expect(game.tileBag.showRemainingTiles()[1].letter).to.deep.equal('A');
-      expect(game.tileBag.showRemainingTiles()[2].letter).to.deep.equal('T');
+      expect(game.tileBag.showRemainingTiles().length).to.deep.equal(79);
     });
 
     it('should throw an error if there are fewer than 7 tiles left in the tile bag', () => {
@@ -156,6 +154,13 @@ describe('Game', () => {
         game.tileBag.showRemainingTiles().pop();
       }
       expect(() => {game.exchangeTurn([0, 6])}).to.throw('Cannot exchange tiles when there are fewer than 7 tiles left in tile bag.');
+    });
+
+    it('should call switchTurn after exchanging tiles', () => {
+      game.shuffleAndDraw();
+      game.exchangeTurn([0, 1, 6]);
+      expect(game.players[0].getRack()[6].letter).to.deep.equal('V');
+      expect(game.currentTurn.player.id).to.deep.equal(2);
     });
   });
 });
