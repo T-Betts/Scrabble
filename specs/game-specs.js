@@ -182,5 +182,15 @@ describe('Game', () => {
       game.currentTurn.placeTile(7, 10, 2);
       expect(() => {game.checkStatus()}).to.alter(() => game.isComplete, {from: false, to: true});
     });
+
+    it('should end the game if all players have passed twice in consecutive turns', () => {
+      game.switchTurn();
+      game.switchTurn();
+      game.switchTurn();
+      game.switchTurn();
+      game.switchTurn();
+      game.switchTurn();
+      expect(() => {game.checkStatus()}).to.alter(() => game.isComplete, {from: false, to: true});
+    });
   });
 });

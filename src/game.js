@@ -61,6 +61,7 @@ Game.prototype.checkStatus = function() {
   if (this.tileBag.showRemainingTiles().length === 0 && this.players.some(player => {return player.isRackEmpty()})) {
     this.isComplete = true;
   }
+  if (this.consecutivePassCount >= (2 * this.playerCount)) this.isComplete = true;
 }
 
 module.exports = Game;
