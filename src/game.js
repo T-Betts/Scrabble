@@ -66,4 +66,12 @@ Game.prototype.checkStatus = function() {
   if (this.consecutivePassCount >= (2 * this.playerCount)) this.isComplete = true;
 }
 
+Game.prototype.calculateFinalScores = function() {
+  if (this.isComplete) {
+    this.players.forEach((player) => {
+      player.score -= player.getRackTotalValue(); 
+    });
+  } 
+}
+
 module.exports = Game;

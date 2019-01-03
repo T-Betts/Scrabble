@@ -224,4 +224,22 @@ describe('Game', () => {
       expect(() => {game.switchTurn()}).to.throw('Game has finished.');
     });
   });
+
+  describe('calculateFinalScores', () => {
+    it('should reduce a players score by the points total of the tiles left in their rack', () => {
+      game.shuffleAndDraw();
+      for (let i = 0; i < 79; i++) {
+        game.tileBag.showRemainingTiles().pop();
+      }
+      game.currentTurn.placeTile(7, 4, 4);
+      game.currentTurn.placeTile(7, 5, 3);
+      game.currentTurn.placeTile(7, 6, 5);
+      game.currentTurn.placeTile(7, 7, 6);
+      game.currentTurn.placeTile(7, 8, 0);
+      game.currentTurn.placeTile(7, 9, 1);
+      game.currentTurn.placeTile(7, 10, 2);
+      game.switchTurn()
+      expect(() => {game.calculateFinalScores()}).to.alter(() => game.players[1].score,{by: -15});
+    });
+  });
 });
