@@ -4,7 +4,9 @@ const Tile = require('../src/tile.js');
 const TileBag = require('../src/tile-bag.js');
 const Turn = require('../src/turn.js');
 const sinon = require('sinon');
-const expect = require('chai').expect;
+const chai = require('chai');
+chai.use(require('chai-change'));
+const expect = chai.expect;
 
 describe('Turn', () => {
   let turnOne;
@@ -32,7 +34,7 @@ describe('Turn', () => {
     let playerThreeStub = sinon.createStubInstance(Player, {
       getId: 3, 
       getRack: [
-        {letter: 'A', value: 1}, {letter: 'T', value: 1}, {letter: 'E', value: 1},
+        {letter: 'A', value: 1}, {letter: 'T', value: 1}, {letter: '*', value: 0},
         {letter: 'C', value: 3}, {letter: 'R', value: 1}, {letter: 'S', value: 1}, {letter: 'R', value: 1}
       ]
     });
@@ -116,6 +118,12 @@ describe('Turn', () => {
     it('should throw an error if trying to use an empty rack space', () => {
       expect(() => {turnOne.placeTile(1, 1, 6)}).to.throw('Selected rack space does not contain a tile.');
     });
+
+    it('should set the letter of a blank tile to a given letter', () => {
+      turnThree.placeTile(1, 1, 2, 'S');
+      expect(turnThree.board.squares[1][1].letter).to.deep.equal('S');
+      expect(turnThree.board.squares[1][1].value).to.deep.equal(0);
+    });
   });
 
   describe('removeTile', () => {
@@ -163,6 +171,12 @@ describe('Turn', () => {
       turnOne.placeTile(1, 0, 1);
       turnOne.removeTile(1, 0, 1);
       expect(turnOne.tilesCoordinates.length).to.deep.equal(0);
+    });
+
+    it('should reset a removed blank tile\'s letter to *', () => {
+      turnThree.placeTile(1, 1, 2, 'S');
+      turnThree.removeTile(1, 1, 2);
+      expect(playerThreeRack[2].getLetter()).to.deep.equal('*');
     });
   });
 

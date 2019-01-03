@@ -10,15 +10,16 @@ function Turn(player, startBoard, tileBag, turnID, dictionary = scrabbleDictiona
   this.words = [];
   this.dictionary = dictionary;
   this.tileBag = tileBag;
-  this.capitalLettersRegEx = new RegExp('[*A-Z]');
+  this.capitalLettersRegEx = new RegExp('[A-Z]');
 }
 
 Turn.prototype.checkWordExists = function(word) {
   return this.dictionary.includes(word);
 }
 
-Turn.prototype.placeTile = function(row, column, rackIndex) {
+Turn.prototype.placeTile = function(row, column, rackIndex, blankLetterReplacement) {
   let rack = this.player.getRack();
+  if (rack[rackIndex].value === 0) rack[rackIndex].letter = blankLetterReplacement;
   if (rack[rackIndex].value === undefined) throw 'Selected rack space does not contain a tile.';
   if (this.capitalLettersRegEx.test(this.board.squares[row][column].letter)) {
     throw 'Square already occupied.';
@@ -33,6 +34,7 @@ Turn.prototype.removeTile = function(row, column, rackIndex) {
     throw 'No tile placed in this square during current turn.';
   }
   let initialTile = this.board.squares[row][column];
+  if (initialTile.value === 0) initialTile.letter = '*';
   Object.keys(this.board.getBonusSquares()).forEach((key) => {
     if (this.board.getBonusSquares()[key].indices.some(index => arraysEqual(index, [row, column]))) {
       this.board.squares[row][column] = {letter: this.board.getBonusSquares()[key].symbol};
