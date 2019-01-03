@@ -34,4 +34,10 @@ Player.prototype.isRackEmpty = function() {
   return this.getRack().every(rackSpace => {return rackSpace.letter === '-'})
 }
 
+Player.prototype.getRackTotalValue = function() {
+  let total = 0;
+  this.rack.forEach(rackSpace => {total += rackSpace.value})
+  return total;
+}
+
 module.exports = Player;
