@@ -30,4 +30,8 @@ Player.prototype.drawMaxTiles = function(bag) {
   }
 }
 
+Player.prototype.isRackEmpty = function() {
+  return this.getRack().every(rackSpace => {return rackSpace.letter === '-'})
+}
+
 module.exports = Player;

@@ -51,4 +51,15 @@ describe('Player', () => {
       expect(player1.getRack()).to.deep.equal([{letter: 'E'}, {letter: 'D'}, {letter: 'C'}, {letter: 'B'}, {letter: 'A'}, {letter: '-'}, {letter: '-'}]);
     });
   });
+
+  describe('isRackEmpty', () => {
+    it('should return true if the player\'s rack is empty', () => {
+      expect(player1.isRackEmpty()).to.deep.equal(true);
+    })
+
+    it('should return false if the player\'s rack is not empty', () => {
+      player1.drawMaxTiles(fakeLetterBag);
+      expect(player1.isRackEmpty()).to.deep.equal(false);
+    });
+  })
 });
