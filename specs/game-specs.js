@@ -169,8 +169,7 @@ describe('Game', () => {
       game.currentTurn.placeTile(7, 8, 0);
       game.currentTurn.placeTile(7, 9, 1);
       game.currentTurn.placeTile(7, 10, 2);
-      game.checkStatus();
-      expect(game.isComplete).to.deep.equal(true);
+      expect(() => {game.checkStatus()}).to.alter(() => game.isComplete, {from: false, to: true});
     });
   });
 });

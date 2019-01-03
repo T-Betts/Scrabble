@@ -550,4 +550,15 @@ describe('Turn', () => {
       expect(turnTwo.score).to.deep.equal(67);
     });
   });
+
+  describe('noTilesPlayed', () => {
+    it('should return true if no tiles have been played in the turn', () => {
+      expect(turnOne.noTilesPlayed()).to.deep.equal(true);
+    });
+
+    it('should return true if tiles have been played in the turn', () => {
+      turnOne.placeTile(5, 5, 0);
+      expect(turnOne.noTilesPlayed()).to.deep.equal(false);
+    });
+  });
 });

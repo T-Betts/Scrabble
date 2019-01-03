@@ -226,4 +226,8 @@ Turn.prototype.calculateScore = function() {
   this.score = turnScore;
 }
 
+Turn.prototype.noTilesPlayed = function() {
+  return this.tilesCoordinates.length === 0;
+}
+
 module.exports = Turn;
