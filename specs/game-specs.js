@@ -88,6 +88,17 @@ describe('Game', () => {
   });
 
   describe('switchTurn', () => {
+    it('should add 1 to the consecutivePassCount if the current turn was a pass', () => {
+      expect(() => {game.switchTurn()}).to.alter(() => game.consecutivePassCount, {from: 0, to: 1});
+    })
+
+    it('should reset the consecutivePassCount to zero if any tiles were played in the current turn', () => {
+      game.switchTurn()
+      game.switchTurn()
+      game.currentTurn.placeTile(7, 7, 1);
+      expect(() => {game.switchTurn()}).to.alter(() => game.consecutivePassCount, {from: 2, to: 0});
+    })
+
     it('should shuffle the tile bag', () => {
       game.switchTurn();
       expect(game.tileBag.showRemainingTiles()[76].letter).to.deep.equal('V');

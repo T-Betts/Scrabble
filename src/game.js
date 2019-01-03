@@ -8,6 +8,7 @@ function Game(playerNamesArray, createPlayer = (name, id) => new Player(name, id
   this.playerCount = playerNamesArray.length;
   this.board = board;
   this.board.insertBonusSquares();
+  this.consecutivePassCount = 0;
   this.isComplete = false;
   this.tileBag = tileBag;
   this.players = [];
@@ -49,6 +50,7 @@ Game.prototype.exchangeTurn = function(rackIndicesArray) {
 }
 
 Game.prototype.switchTurn = function() {
+  this.currentTurn.tilesCoordinates.length === 0 ? this.consecutivePassCount += 1 :this.consecutivePassCount = 0;
   this.shuffleAndDraw();
   this.turnHistory.push(this.currentTurn);
   this.turnID++;
