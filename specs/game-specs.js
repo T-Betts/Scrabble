@@ -36,6 +36,23 @@ describe('Game', () => {
   });
 
   describe('playTurn', () => {
+    it('should throw an error if the game has finished', () => {
+      game.shuffleAndDraw();
+      for (let i = 0; i < 79; i++) {
+        game.tileBag.showRemainingTiles().pop();
+      }
+      game.currentTurn.placeTile(7, 4, 4);
+      game.currentTurn.placeTile(7, 5, 3);
+      game.currentTurn.placeTile(7, 6, 5);
+      game.currentTurn.placeTile(7, 7, 6);
+      game.currentTurn.placeTile(7, 8, 0);
+      game.currentTurn.placeTile(7, 9, 1);
+      game.currentTurn.placeTile(7, 10, 2);
+      game.playTurn();
+      game.currentTurn.placeTile(8, 7, 0);
+      expect(() => {game.playTurn()}).to.throw('Game has finished.');
+    });
+
     it('should throw an error if the tile placement from the current move is invalid', () => {
       game.shuffleAndDraw();
       game.currentTurn.player.drawMaxTiles(game.tileBag.showRemainingTiles());
@@ -88,6 +105,13 @@ describe('Game', () => {
   });
 
   describe('switchTurn', () => {
+    it('should throw an error if the game has finished', () => {
+      for (let i = 0; i < 6; i++) {
+        game.switchTurn();
+      }
+      expect(() => {game.switchTurn()}).to.throw('Game has finished.');
+    });
+
     it('should add 1 to the consecutivePassCount if the current turn was a pass', () => {
       expect(() => {game.switchTurn()}).to.alter(() => game.consecutivePassCount, {from: 0, to: 1});
     })
@@ -137,6 +161,13 @@ describe('Game', () => {
   });
 
   describe('exchangeTurn', () => {
+    it('should throw an error if the game has finished', () => {
+      for (let i = 0; i < 6; i++) {
+        game.switchTurn();
+      }
+      expect(() => {game.exchangeTurn([1, 4])}).to.throw('Game has finished.');
+    });
+
     it('should replace desingated tiles in a players rack with tiles from the tile bag', () => {
       game.shuffleAndDraw();
       game.exchangeTurn([0, 1, 6]);
@@ -190,7 +221,7 @@ describe('Game', () => {
       game.switchTurn();
       game.switchTurn();
       game.switchTurn();
-      expect(() => {game.checkStatus()}).to.alter(() => game.isComplete, {from: false, to: true});
+      expect(() => {game.switchTurn()}).to.throw('Game has finished.');
     });
   });
 });
