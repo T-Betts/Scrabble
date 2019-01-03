@@ -1,4 +1,6 @@
-const expect = require('chai').expect;
+const chai = require('chai');
+chai.use(require('chai-change'));
+const expect = chai.expect;
 const sinon = require('sinon');
 const Game = require('../src/game.js');
 const Player = require('../src/player.js');
@@ -16,7 +18,7 @@ describe('Game', () => {
     randomCallback.onCall(1).returns(0.01);
     randomCallback.onCall(2).returns(0.82);
     randomCallback.onCall(3).returns(0.02);
-    randomCallback.onCall(4).returns(0.72);
+    randomCallback.onCall(4).returns(0.36);
     randomCallback.onCall(5).returns(0.1);
     randomCallback.onCall(6).returns(0.39);
     randomCallback.onCall(7).returns(0.9);
@@ -44,11 +46,9 @@ describe('Game', () => {
 
     it('should collect the coordinates of all the words formed by the current turn', () => {
       game.shuffleAndDraw();
-      game.currentTurn.player.drawMaxTiles(game.tileBag.showRemainingTiles());
       game.currentTurn.placeTile(7, 7, 0);
       game.currentTurn.placeTile(7, 6, 1);
       game.playTurn();
-      game.currentTurn.player.drawMaxTiles(game.tileBag.showRemainingTiles());
       game.currentTurn.placeTile(6, 6, 0);
       game.currentTurn.placeTile(6, 7, 1);
       game.playTurn();
@@ -57,15 +57,13 @@ describe('Game', () => {
 
     it('should throw error if one or more words formed in current turn are not in the dictionary', () => {
       game.shuffleAndDraw();
-      game.currentTurn.player.drawMaxTiles(game.tileBag.showRemainingTiles());
       game.currentTurn.placeTile(7, 7, 4);
       game.currentTurn.placeTile(7, 6, 0);
-      expect(() => {game.playTurn()}).to.throw('Invalid word(s): TQ');
+      expect(() => {game.playTurn()}).to.throw('Invalid word(s): TH');
     });
 
     it('should calculate the turn score', () => {
       game.shuffleAndDraw();
-      game.currentTurn.player.drawMaxTiles(game.tileBag.showRemainingTiles());
       game.currentTurn.placeTile(7, 7, 0);
       game.currentTurn.placeTile(7, 6, 1);
       game.playTurn();
@@ -74,7 +72,6 @@ describe('Game', () => {
 
     it('should add the current turn score to the current player\'s overall score', () => {
       game.shuffleAndDraw();
-      game.currentTurn.player.drawMaxTiles(game.tileBag.showRemainingTiles());
       game.currentTurn.placeTile(7, 7, 0);
       game.currentTurn.placeTile(7, 6, 1);
       game.playTurn();
@@ -83,7 +80,6 @@ describe('Game', () => {
 
     it('should switch to the next turn if current turn was legal', () => {
       game.shuffleAndDraw();
-      game.currentTurn.player.drawMaxTiles(game.tileBag.showRemainingTiles());
       game.currentTurn.placeTile(7, 7, 0);
       game.currentTurn.placeTile(7, 6, 1);
       game.playTurn();
@@ -103,19 +99,16 @@ describe('Game', () => {
     });
 
     it('should add the current turn to the turnHistory', () => {
-      game.shuffleAndDraw();
       game.switchTurn();
       expect(game.turnHistory[0].id).to.deep.equal(1);
     });
 
     it('should add one to the games turnID', () => {
-      game.shuffleAndDraw();
       game.switchTurn();
       expect(game.turnID).to.deep.equal(2);
     });
 
     it('should create a new turn and set this as the game\'s currentTurn', () => {
-      game.shuffleAndDraw();
       game.switchTurn();
       expect(game.currentTurn.id).to.deep.equal(2);
     });
@@ -128,8 +121,7 @@ describe('Game', () => {
     });
 
     it('should draw tile\'s for any empty rack space across all player racks', () => {
-      game.shuffleAndDraw();
-      expect(game.tileBag.showRemainingTiles().length).to.deep.equal(79);
+      expect(() => {game.shuffleAndDraw()}).to.alter(() => game.tileBag.showRemainingTiles().length, { from: 100, to: 79 });
     })
   });
 
@@ -161,6 +153,24 @@ describe('Game', () => {
       game.exchangeTurn([0, 1, 6]);
       expect(game.players[0].getRack()[6].letter).to.deep.equal('V');
       expect(game.currentTurn.player.id).to.deep.equal(2);
+    });
+  });
+
+  describe('checkStatus', () => {
+    it('should end the game if the tile bag is empty and a player has cleared their rack', () => {
+      game.shuffleAndDraw();
+      for (let i = 0; i < 79; i++) {
+        game.tileBag.showRemainingTiles().pop();
+      }
+      game.currentTurn.placeTile(7, 4, 4);
+      game.currentTurn.placeTile(7, 5, 3);
+      game.currentTurn.placeTile(7, 6, 5);
+      game.currentTurn.placeTile(7, 7, 6);
+      game.currentTurn.placeTile(7, 8, 0);
+      game.currentTurn.placeTile(7, 9, 1);
+      game.currentTurn.placeTile(7, 10, 2);
+      game.checkStatus();
+      expect(game.isComplete).to.deep.equal(true);
     });
   });
 });

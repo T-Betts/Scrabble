@@ -8,6 +8,7 @@ function Game(playerNamesArray, createPlayer = (name, id) => new Player(name, id
   this.playerCount = playerNamesArray.length;
   this.board = board;
   this.board.insertBonusSquares();
+  this.isComplete = false;
   this.tileBag = tileBag;
   this.players = [];
   this.turnID = 1;
@@ -52,6 +53,15 @@ Game.prototype.switchTurn = function() {
   this.turnHistory.push(this.currentTurn);
   this.turnID++;
   this.currentTurn = this.createTurn(this.players[(this.turnID - 1) % this.playerCount], this.board, this.tileBag, this.turnID);
+}
+
+Game.prototype.checkStatus = function() {
+  function playerRackEmpty(playerRack) {
+    return playerRack.every(rackSpace => {return rackSpace.letter === '-'})
+  }
+  if (this.tileBag.showRemainingTiles().length === 0 && this.players.some(player => {return playerRackEmpty(player.getRack())})) {
+    this.isComplete = true;
+  }
 }
 
 module.exports = Game;
