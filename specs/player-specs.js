@@ -71,5 +71,9 @@ describe('Player', () => {
       player1.drawMaxTiles(fakeTileBag);
       expect(player1.getRackTotalValue()).to.deep.equal(17);
     });
+
+    it('should return 0 if the rack is empty', () => {
+      expect(player1.getRackTotalValue()).to.deep.equal(0);
+    });
   });
 });

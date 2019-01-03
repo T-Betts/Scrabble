@@ -52,11 +52,11 @@ Game.prototype.exchangeTurn = function(rackIndicesArray) {
 Game.prototype.switchTurn = function() {
   if (this.isComplete) throw 'Game has finished.'
   this.currentTurn.tilesCoordinates.length === 0 ? this.consecutivePassCount += 1 :this.consecutivePassCount = 0;
-  this.shuffleAndDraw();
   this.turnHistory.push(this.currentTurn);
+  this.shuffleAndDraw();
   this.turnID++;
-  this.currentTurn = this.createTurn(this.players[(this.turnID - 1) % this.playerCount], this.board, this.tileBag, this.turnID);
   this.checkStatus();
+  this.currentTurn = this.createTurn(this.players[(this.turnID - 1) % this.playerCount], this.board, this.tileBag, this.turnID);
 }
 
 Game.prototype.checkStatus = function() {
@@ -69,8 +69,9 @@ Game.prototype.checkStatus = function() {
 Game.prototype.calculateFinalScores = function() {
   if (this.isComplete) {
     this.players.forEach((player) => {
-      player.score -= player.getRackTotalValue(); 
-    });
+      this.players.find(player => player.isRackEmpty()).updateScore(player.getRackTotalValue());
+      player.score -= player.getRackTotalValue();
+    });    
   } 
 }
 

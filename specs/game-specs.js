@@ -226,7 +226,7 @@ describe('Game', () => {
   });
 
   describe('calculateFinalScores', () => {
-    it('should reduce a players score by the points total of the tiles left in their rack', () => {
+    beforeEach(() => {
       game.shuffleAndDraw();
       for (let i = 0; i < 79; i++) {
         game.tileBag.showRemainingTiles().pop();
@@ -238,8 +238,15 @@ describe('Game', () => {
       game.currentTurn.placeTile(7, 8, 0);
       game.currentTurn.placeTile(7, 9, 1);
       game.currentTurn.placeTile(7, 10, 2);
-      game.switchTurn()
+      game.switchTurn();
+    });
+
+    it('should reduce a players score by the points total of the tiles left in their rack', () => {  
       expect(() => {game.calculateFinalScores()}).to.alter(() => game.players[1].score,{by: -15});
+    });
+
+    it('should add the rack totals of players to the score of the player who cleared their rack', () => {
+      expect(() => {game.calculateFinalScores()}).to.alter(() => game.players[0].score, {by: +38});
     });
   });
 });

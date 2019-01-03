@@ -36,7 +36,8 @@ Player.prototype.isRackEmpty = function() {
 
 Player.prototype.getRackTotalValue = function() {
   let total = 0;
-  this.rack.forEach(rackSpace => {total += rackSpace.value})
+  if (this.isRackEmpty()) return total;
+  this.rack.forEach(rackSpace => {total += rackSpace.value});
   return total;
 }
 
