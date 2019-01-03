@@ -17,8 +17,9 @@ Turn.prototype.checkWordExists = function(word) {
   return this.dictionary.includes(word);
 }
 
-Turn.prototype.placeTile = function(row, column, rackIndex) {
+Turn.prototype.placeTile = function(row, column, rackIndex, blankLetterReplacement) {
   let rack = this.player.getRack();
+  if (rack[rackIndex].value === 0) rack[rackIndex].letter = blankLetterReplacement;
   if (rack[rackIndex].value === undefined) throw 'Selected rack space does not contain a tile.';
   if (this.capitalLettersRegEx.test(this.board.squares[row][column].letter)) {
     throw 'Square already occupied.';
