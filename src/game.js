@@ -56,10 +56,7 @@ Game.prototype.switchTurn = function() {
 }
 
 Game.prototype.checkStatus = function() {
-  function playerRackEmpty(playerRack) {
-    return playerRack.every(rackSpace => {return rackSpace.letter === '-'})
-  }
-  if (this.tileBag.showRemainingTiles().length === 0 && this.players.some(player => {return playerRackEmpty(player.getRack())})) {
+  if (this.tileBag.showRemainingTiles().length === 0 && this.players.some(player => {return player.isRackEmpty()})) {
     this.isComplete = true;
   }
 }
