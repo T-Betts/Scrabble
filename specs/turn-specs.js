@@ -4,7 +4,9 @@ const Tile = require('../src/tile.js');
 const TileBag = require('../src/tile-bag.js');
 const Turn = require('../src/turn.js');
 const sinon = require('sinon');
-const expect = require('chai').expect;
+const chai = require('chai');
+chai.use(require('chai-change'));
+const expect = chai.expect;
 
 describe('Turn', () => {
   let turnOne;
@@ -169,6 +171,12 @@ describe('Turn', () => {
       turnOne.placeTile(1, 0, 1);
       turnOne.removeTile(1, 0, 1);
       expect(turnOne.tilesCoordinates.length).to.deep.equal(0);
+    });
+
+    it('should reset a removed blank tile\'s letter to *', () => {
+      turnThree.placeTile(1, 1, 2, 'S');
+      turnThree.removeTile(1, 1, 2);
+      expect(playerThreeRack[2].getLetter()).to.deep.equal('*');
     });
   });
 

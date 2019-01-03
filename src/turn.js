@@ -10,7 +10,7 @@ function Turn(player, startBoard, tileBag, turnID, dictionary = scrabbleDictiona
   this.words = [];
   this.dictionary = dictionary;
   this.tileBag = tileBag;
-  this.capitalLettersRegEx = new RegExp('[*A-Z]');
+  this.capitalLettersRegEx = new RegExp('[A-Z]');
 }
 
 Turn.prototype.checkWordExists = function(word) {
@@ -34,6 +34,7 @@ Turn.prototype.removeTile = function(row, column, rackIndex) {
     throw 'No tile placed in this square during current turn.';
   }
   let initialTile = this.board.squares[row][column];
+  if (initialTile.value === 0) initialTile.letter = '*';
   Object.keys(this.board.getBonusSquares()).forEach((key) => {
     if (this.board.getBonusSquares()[key].indices.some(index => arraysEqual(index, [row, column]))) {
       this.board.squares[row][column] = {letter: this.board.getBonusSquares()[key].symbol};
