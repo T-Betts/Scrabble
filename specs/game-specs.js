@@ -171,9 +171,9 @@ describe('Game', () => {
     it('should replace desingated tiles in a players rack with tiles from the tile bag', () => {
       game.shuffleAndDraw();
       game.exchangeTurn([0, 1, 6]);
-      expect(game.players[0].getRack()[0].letter).to.deep.equal('G');
-      expect(game.players[0].getRack()[1].letter).to.deep.equal('S');
-      expect(game.players[0].getRack()[6].letter).to.deep.equal('V');
+      expect(game.players[0].getRack()[0].letter).to.deep.equal('R');
+      expect(game.players[0].getRack()[1].letter).to.deep.equal('G');
+      expect(game.players[0].getRack()[6].letter).to.deep.equal('S');
     });
 
     it('should place designated removed tiles from a players rack into the tile bag', () => {
@@ -193,7 +193,7 @@ describe('Game', () => {
     it('should call switchTurn after exchanging tiles', () => {
       game.shuffleAndDraw();
       game.exchangeTurn([0, 1, 6]);
-      expect(game.players[0].getRack()[6].letter).to.deep.equal('V');
+      expect(game.players[0].getRack()[6].letter).to.deep.equal('S');
       expect(game.currentTurn.player.id).to.deep.equal(2);
     });
   });
