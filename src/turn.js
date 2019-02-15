@@ -11,6 +11,7 @@ function Turn(player, startBoard, tileBag, turnID, dictionary = scrabbleDictiona
   this.dictionary = dictionary;
   this.tileBag = tileBag;
   this.capitalLettersRegEx = new RegExp('[A-Z]');
+  this.score = 0;
 }
 
 Turn.prototype.checkWordExists = function(word) {
@@ -205,7 +206,6 @@ Turn.prototype.checkAllTurnsWordsExist = function() {
 
 Turn.prototype.calculateScore = function() {
   let bonuses = this.board.getBonusSquares();
-  let turnScore = 0;
   this.allWordsCoordinates.forEach((word) => {
     let wordBonuses = [];
     let wordScore = 0;
@@ -226,10 +226,9 @@ Turn.prototype.calculateScore = function() {
       }    
     })
     wordBonuses.forEach(bonus => wordScore *= bonus);
-    turnScore += wordScore;
+    this.score += wordScore;
   })
-  if(this.tilesCoordinates.length === 7) turnScore += 50;
-  this.score = turnScore;
+  if(this.tilesCoordinates.length === 7) this.score += 50;
 }
 
 Turn.prototype.noTilesPlayed = function() {
