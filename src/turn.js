@@ -210,16 +210,20 @@ Turn.prototype.calculateScore = function() {
     let wordBonuses = [];
     let wordScore = 0;
     word.forEach((tile) => {
-      let tileValue = this.board.squares[tile[0]][tile[1]].value
-      if(bonuses.doubleWord.indices.some(index => arraysEqual(index, tile))) wordBonuses.push(2);
-      if(bonuses.tripWord.indices.some(index => arraysEqual(index, tile))) wordBonuses.push(3);
-      if (bonuses.doubleLetter.indices.some(index => arraysEqual(index, tile))) {
-        wordScore += tileValue * 2;
-      } else if(bonuses.tripLetter.indices.some(index => arraysEqual(index, tile))){
-        wordScore += tileValue * 3;
-      } else {
+      let tileValue = this.board.squares[tile[0]][tile[1]].value;
+      if (!this.tilesCoordinates.some(tc => arraysEqual(tc, tile))) {
         wordScore += tileValue;
-      }   
+      } else {
+        if(bonuses.doubleWord.indices.some(index => arraysEqual(index, tile))) wordBonuses.push(2);
+        if(bonuses.tripWord.indices.some(index => arraysEqual(index, tile))) wordBonuses.push(3);
+        if (bonuses.doubleLetter.indices.some(index => arraysEqual(index, tile))) {
+          wordScore += tileValue * 2;
+        } else if(bonuses.tripLetter.indices.some(index => arraysEqual(index, tile))){
+          wordScore += tileValue * 3;
+        } else {
+          wordScore += tileValue;
+        }
+      }    
     })
     wordBonuses.forEach(bonus => wordScore *= bonus);
     turnScore += wordScore;

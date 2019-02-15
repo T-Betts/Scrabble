@@ -563,6 +563,20 @@ describe('Turn', () => {
       turnTwo.calculateScore();
       expect(turnTwo.score).to.deep.equal(67);
     });
+
+    it('should not include bonuses from tiles involved in, but not placed during, the current turn', () => {
+      turnOne.placeTile(3, 3, 3);
+      turnOne.placeTile(3, 4, 0);
+      turnOne.placeTile(3, 5, 1);
+      
+      turnTwo.placeTile(1, 5, 5);
+      turnTwo.placeTile(2, 5, 0);
+      turnTwo.validateTilePlacements();
+      turnTwo.collectCurrentTurnWordsCoordinates(turnTwo.tilesCoordinates[0]);
+      turnTwo.getCurrentTurnsWords();
+      turnTwo.calculateScore();
+      expect(turnTwo.score).to.deep.equal(3);
+    });
   });
 
   describe('noTilesPlayed', () => {
