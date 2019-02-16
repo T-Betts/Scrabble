@@ -164,7 +164,7 @@ Turn.prototype.collectVerticalAdjacentTiles = function(tileLocation) {
   this.allWordsCoordinates.push(verticalCoordinates);
 }
 
-Turn.prototype.collectCurrentTurnWordsCoordinates = function(tileLocation) {
+Turn.prototype.collectAllWordsCoordinates = function(tileLocation) {
   let direction = this.direction;
   if (direction === 'horizontal' || direction === 'oneTile') {
     this.collectHorizontalAdjacentTiles(tileLocation);
@@ -180,7 +180,7 @@ Turn.prototype.collectCurrentTurnWordsCoordinates = function(tileLocation) {
   this.allWordsCoordinates = this.allWordsCoordinates.filter(word => word.length > 1);
 }
 
-Turn.prototype.getCurrentTurnsWords = function() {
+Turn.prototype.getAllWords = function() {
   this.allWordsCoordinates.forEach((wordCoordinates) => {
     let word = [];
     wordCoordinates.forEach((coordinates) => {
@@ -190,7 +190,7 @@ Turn.prototype.getCurrentTurnsWords = function() {
   });
 }
 
-Turn.prototype.checkAllTurnsWordsExist = function() {
+Turn.prototype.checkAllWordsExist = function() {
   let notWords = [];
   this.words.forEach((word) => {
     if (!this.checkWordExists(word)) {

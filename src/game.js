@@ -30,9 +30,9 @@ Game.prototype.shuffleAndDraw = function() {
 Game.prototype.playTurn = function() {
   turn = this.currentTurn;
   turn.validateTilePlacements();
-  turn.collectCurrentTurnWordsCoordinates(this.currentTurn.tilesCoordinates[0]);
-  turn.getCurrentTurnsWords();
-  turn.checkAllTurnsWordsExist();
+  turn.collectAllWordsCoordinates(this.currentTurn.tilesCoordinates[0]);
+  turn.getAllWords();
+  turn.checkAllWordsExist();
   turn.calculateScore();
   this.currentTurn.player.updateScore(this.currentTurn.score);
   this.switchTurn();

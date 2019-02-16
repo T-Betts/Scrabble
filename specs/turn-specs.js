@@ -352,7 +352,7 @@ describe('Turn', () => {
     });
   });
 
-  describe('collectCurrentTurnWordsCoordinates', () => {
+  describe('collectAllWordsCoordinates', () => {
     it('should collect all the words formed by a side by side vertical move, in coordinate form', () => {
       turnOne.placeTile(3, 3, 0);
       turnOne.placeTile(1, 3, 2);
@@ -363,7 +363,7 @@ describe('Turn', () => {
       turnTwo.placeTile(1, 2, 2);
       turnTwo.placeTile(0, 2, 1);
       turnTwo.validateTilePlacements();
-      turnTwo.collectCurrentTurnWordsCoordinates(turnTwo.tilesCoordinates[0]);
+      turnTwo.collectAllWordsCoordinates(turnTwo.tilesCoordinates[0]);
       expect(turnTwo.allWordsCoordinates).to.deep.equal([
         [[0, 2], [1, 2], [2, 2]],
         [[0, 2], [0, 3]],
@@ -382,7 +382,7 @@ describe('Turn', () => {
       turnTwo.placeTile(4, 2, 2);
       turnTwo.placeTile(4, 4, 1);
       turnTwo.validateTilePlacements();
-      turnTwo.collectCurrentTurnWordsCoordinates(turnTwo.tilesCoordinates[0]);
+      turnTwo.collectAllWordsCoordinates(turnTwo.tilesCoordinates[0]);
       expect(turnTwo.allWordsCoordinates).to.deep.equal([
         [[4, 2], [4, 3], [4, 4]],
         [[3, 2], [4, 2]],
@@ -400,7 +400,7 @@ describe('Turn', () => {
 
       turnThree.placeTile(2, 4, 4);
       turnThree.validateTilePlacements();
-      turnThree.collectCurrentTurnWordsCoordinates(turnThree.tilesCoordinates[0]);
+      turnThree.collectAllWordsCoordinates(turnThree.tilesCoordinates[0]);
       expect(turnThree.allWordsCoordinates).to.deep.equal([
         [[2, 3], [2, 4]],
         [[2, 4], [3, 4]]
@@ -415,12 +415,12 @@ describe('Turn', () => {
       turnTwo.placeTile(4, 2, 0);
       turnTwo.placeTile(4, 3, 1);
       turnTwo.validateTilePlacements();
-      turnTwo.collectCurrentTurnWordsCoordinates(turnTwo.tilesCoordinates[0]);
+      turnTwo.collectAllWordsCoordinates(turnTwo.tilesCoordinates[0]);
       expect(turnTwo.allWordsCoordinates).to.deep.equal([[[4, 1], [4, 2], [4, 3]], [[2, 3], [3, 3], [4, 3]]]);
     });
   });
 
-  describe('getCurrentTurnsWords', () => {
+  describe('getAllWords', () => {
     it('should return true if every word formed by the current turn exists', () => {
       turnOne.placeTile(2, 3, 5);
       turnOne.placeTile(3, 3, 2);
@@ -429,13 +429,13 @@ describe('Turn', () => {
       turnTwo.placeTile(4, 2, 0);
       turnTwo.placeTile(4, 3, 1);
       turnTwo.validateTilePlacements();
-      turnTwo.collectCurrentTurnWordsCoordinates(turnTwo.tilesCoordinates[0]);
-      turnTwo.getCurrentTurnsWords();
+      turnTwo.collectAllWordsCoordinates(turnTwo.tilesCoordinates[0]);
+      turnTwo.getAllWords();
       expect(turnTwo.words).to.deep.equal(['cat', 'set']);
     });
   });
 
-  describe('checkAllTurnsWordsExist', () => {
+  describe('checkAllWordsExist', () => {
     it('should return true if every word formed by the current turn exists', () => {
       turnOne.placeTile(2, 3, 5);
       turnOne.placeTile(3, 3, 2);
@@ -444,9 +444,9 @@ describe('Turn', () => {
       turnTwo.placeTile(4, 2, 0);
       turnTwo.placeTile(4, 3, 1);
       turnTwo.validateTilePlacements();
-      turnTwo.collectCurrentTurnWordsCoordinates(turnTwo.tilesCoordinates[0]);
-      turnTwo.getCurrentTurnsWords();
-      expect(turnTwo.checkAllTurnsWordsExist()).to.deep.equal(true);
+      turnTwo.collectAllWordsCoordinates(turnTwo.tilesCoordinates[0]);
+      turnTwo.getAllWords();
+      expect(turnTwo.checkAllWordsExist()).to.deep.equal(true);
     });
 
     it('if not all the words exist, it should let you know which words are not in the dictionary', () => {
@@ -457,9 +457,9 @@ describe('Turn', () => {
       turnTwo.placeTile(4, 3, 1);
       turnTwo.placeTile(2, 3, 3);
       turnTwo.validateTilePlacements();
-      turnTwo.collectCurrentTurnWordsCoordinates(turnTwo.tilesCoordinates[0]);
-      turnTwo.getCurrentTurnsWords();
-      expect(() => {turnTwo.checkAllTurnsWordsExist()}).to.throw('Invalid word(s): CRT, CR');
+      turnTwo.collectAllWordsCoordinates(turnTwo.tilesCoordinates[0]);
+      turnTwo.getAllWords();
+      expect(() => {turnTwo.checkAllWordsExist()}).to.throw('Invalid word(s): CRT, CR');
     });
   });
 
@@ -469,8 +469,8 @@ describe('Turn', () => {
       turnOne.placeTile(3, 3, 0);
       turnOne.placeTile(3, 4, 1);
       turnOne.validateTilePlacements();
-      turnOne.collectCurrentTurnWordsCoordinates(turnOne.tilesCoordinates[0]);
-      turnOne.getCurrentTurnsWords();
+      turnOne.collectAllWordsCoordinates(turnOne.tilesCoordinates[0]);
+      turnOne.getAllWords();
       turnOne.calculateScore()
       expect(turnOne.score).to.deep.equal(5);
     });
@@ -480,8 +480,8 @@ describe('Turn', () => {
       turnOne.placeTile(2, 3, 0);
       turnOne.placeTile(3, 3, 1);
       turnOne.validateTilePlacements();
-      turnOne.collectCurrentTurnWordsCoordinates(turnOne.tilesCoordinates[0]);
-      turnOne.getCurrentTurnsWords();
+      turnOne.collectAllWordsCoordinates(turnOne.tilesCoordinates[0]);
+      turnOne.getAllWords();
       turnOne.calculateScore()
       expect(turnOne.score).to.deep.equal(8);
     });
@@ -491,8 +491,8 @@ describe('Turn', () => {
       turnOne.placeTile(4, 3, 0);
       turnOne.placeTile(5, 3, 1);
       turnOne.validateTilePlacements();
-      turnOne.collectCurrentTurnWordsCoordinates(turnOne.tilesCoordinates[0]);
-      turnOne.getCurrentTurnsWords();
+      turnOne.collectAllWordsCoordinates(turnOne.tilesCoordinates[0]);
+      turnOne.getAllWords();
       turnOne.calculateScore();
       expect(turnOne.score).to.deep.equal(7);
     });
@@ -502,8 +502,8 @@ describe('Turn', () => {
       turnOne.placeTile(3, 2, 0);
       turnOne.placeTile(3, 3, 1);
       turnOne.validateTilePlacements();
-      turnOne.collectCurrentTurnWordsCoordinates(turnOne.tilesCoordinates[0]);
-      turnOne.getCurrentTurnsWords();
+      turnOne.collectAllWordsCoordinates(turnOne.tilesCoordinates[0]);
+      turnOne.getAllWords();
       turnOne.calculateScore();
       expect(turnOne.score).to.deep.equal(10);
     });
@@ -513,8 +513,8 @@ describe('Turn', () => {
       turnOne.placeTile(3, 4, 0);
       turnOne.placeTile(3, 5, 1);
       turnOne.validateTilePlacements();
-      turnOne.collectCurrentTurnWordsCoordinates(turnOne.tilesCoordinates[0]);
-      turnOne.getCurrentTurnsWords();
+      turnOne.collectAllWordsCoordinates(turnOne.tilesCoordinates[0]);
+      turnOne.getAllWords();
       turnOne.calculateScore();
       expect(turnOne.score).to.deep.equal(15);
     });
@@ -526,8 +526,8 @@ describe('Turn', () => {
       turnOne.placeTile(3, 4, 1);
       turnOne.placeTile(3, 5, 5);
       turnOne.validateTilePlacements();
-      turnOne.collectCurrentTurnWordsCoordinates(turnOne.tilesCoordinates[0]);
-      turnOne.getCurrentTurnsWords();
+      turnOne.collectAllWordsCoordinates(turnOne.tilesCoordinates[0]);
+      turnOne.getAllWords();
       turnOne.calculateScore();
       expect(turnOne.score).to.deep.equal(42);
     });
@@ -541,8 +541,8 @@ describe('Turn', () => {
       turnTwo.placeTile(4, 5, 0);
       turnTwo.placeTile(5, 5, 1);
       turnTwo.validateTilePlacements();
-      turnTwo.collectCurrentTurnWordsCoordinates(turnTwo.tilesCoordinates[0]);
-      turnTwo.getCurrentTurnsWords();
+      turnTwo.collectAllWordsCoordinates(turnTwo.tilesCoordinates[0]);
+      turnTwo.getAllWords();
       turnTwo.calculateScore();
       expect(turnTwo.score).to.deep.equal(27);
     });
@@ -558,8 +558,8 @@ describe('Turn', () => {
       turnTwo.placeTile(5, 5, 4);
       turnTwo.placeTile(5, 6, 5);
       turnTwo.validateTilePlacements();
-      turnTwo.collectCurrentTurnWordsCoordinates(turnTwo.tilesCoordinates[0]);
-      turnTwo.getCurrentTurnsWords();
+      turnTwo.collectAllWordsCoordinates(turnTwo.tilesCoordinates[0]);
+      turnTwo.getAllWords();
       turnTwo.calculateScore();
       expect(turnTwo.score).to.deep.equal(67);
     });
@@ -572,8 +572,8 @@ describe('Turn', () => {
       turnTwo.placeTile(1, 5, 5);
       turnTwo.placeTile(2, 5, 0);
       turnTwo.validateTilePlacements();
-      turnTwo.collectCurrentTurnWordsCoordinates(turnTwo.tilesCoordinates[0]);
-      turnTwo.getCurrentTurnsWords();
+      turnTwo.collectAllWordsCoordinates(turnTwo.tilesCoordinates[0]);
+      turnTwo.getAllWords();
       turnTwo.calculateScore();
       expect(turnTwo.score).to.deep.equal(3);
     });
